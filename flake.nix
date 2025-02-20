@@ -22,7 +22,16 @@
       pkgs = nixpkgsFor.${system};
     in {
       default = pkgs.mkShell {
-        packages = [pkgs.go pkgs.elmPackages.elm pkgs.go-task];
+        packages = [
+          # Frontend
+          pkgs.elmPackages.elm
+          pkgs.elmPackages.elm-live
+
+          # Backend
+          pkgs.go-task
+          pkgs.go
+          pkgs.air
+        ];
       };
     });
   };
