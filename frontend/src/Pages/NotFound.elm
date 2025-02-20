@@ -1,4 +1,4 @@
-module Pages.Report exposing (..)
+module Pages.NotFound exposing (..)
 
 import Html exposing (h1, text)
 import Utils exposing (StyledDocument)
@@ -29,6 +29,6 @@ update msg model =
 
 view : Model -> StyledDocument Msg
 view model =
-    { title = "Report!"
-    , body = [ h1 [] [ text "In Report!" ] ]
+    { title = "NOT FOUND"
+    , body = [ h1 [] [ text "404 - Not Found" ] ]
     }

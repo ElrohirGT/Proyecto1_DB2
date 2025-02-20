@@ -1,33 +1,35 @@
 module Routing exposing (..)
 
+import Html exposing (Attribute)
+import Html.Attributes exposing (href)
 import Url exposing (Url)
 import Url.Parser as P exposing ((</>), Parser, s)
 
 
 type Route
     = Home
-    | Trazability { productId : Int }
+    | Trace { productId : Int }
     | Statistics
     | Report
     | NotFound
 
 
-routeParser : String -> Parser (Route -> c) c
-routeParser basePath =
+routeParser : Parser (Route -> c) c
+routeParser =
     P.oneOf
         [ P.map Home
-            (s basePath </> P.top)
-        , P.map (\id -> Trazability { productId = id }) (s basePath </> s "trace" </> P.int)
-        , P.map Statistics (s basePath </> s "stats")
-        , P.map Report (s basePath </> s "report")
+            P.top
+        , P.map (\id -> Trace { productId = id }) (s "trace" </> P.int)
+        , P.map Statistics (s "stats")
+        , P.map Report (s "report")
         ]
 
 
-parseUrl : String -> Url -> Route
-parseUrl basePath url =
+parseUrl : Url -> Route
+parseUrl url =
     let
         parsedUrl =
-            P.parse (routeParser basePath) url
+            P.parse routeParser url
     in
     case parsedUrl of
         Just a ->
@@ -35,3 +37,8 @@ parseUrl basePath url =
 
         Nothing ->
             NotFound
+
+
+goToTrace : Int -> Attribute msg
+goToTrace productId =
+    href (String.join "/" [ "/trace", String.fromInt productId ])
