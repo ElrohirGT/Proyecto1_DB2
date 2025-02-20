@@ -2,7 +2,6 @@ module Main exposing (main)
 
 import Browser
 import Browser.Navigation as Nav
-import Html exposing (Html, h1, text)
 import Pages.Home as HomePage
 import Pages.NotFound as NotFoundPage
 import Pages.Report as ReportPage
@@ -10,7 +9,7 @@ import Pages.Stats as StatsPage
 import Pages.Trace as TracePage
 import Routing exposing (Route(..))
 import Url exposing (Url)
-import Utils exposing (StyledDocument)
+import Utils
 
 
 main : Program String Model Msg
@@ -194,4 +193,4 @@ view model =
                 Trace inner ->
                     Utils.mapMsg TraceMsg (TracePage.view inner)
     in
-    styledDoc
+    Utils.toUnstyled styledDoc

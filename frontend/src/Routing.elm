@@ -1,7 +1,7 @@
 module Routing exposing (..)
 
-import Html exposing (Attribute)
-import Html.Attributes exposing (href)
+import Html.Styled exposing (Attribute)
+import Html.Styled.Attributes exposing (href)
 import Url exposing (Url)
 import Url.Parser as P exposing ((</>), Parser, s)
 

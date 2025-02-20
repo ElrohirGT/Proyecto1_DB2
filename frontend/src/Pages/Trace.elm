@@ -1,6 +1,6 @@
 module Pages.Trace exposing (..)
 
-import Html exposing (h1, text)
+import Html.Styled exposing (h1, text)
 import Utils exposing (StyledDocument)
 
 
