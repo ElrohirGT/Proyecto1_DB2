@@ -8,15 +8,21 @@ import (
 	mw "github.com/ElrohirGT/Proyecto1_DB2/api/middlewares"
 	"github.com/ElrohirGT/Proyecto1_DB2/config"
 	"github.com/ElrohirGT/Proyecto1_DB2/db_client"
+	"github.com/ElrohirGT/Proyecto1_DB2/utils"
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog/log"
 )
 
 func main() {
+
 	// Loading env variables from .env file
 	godotenv.Load()
+
 	config := config.LoadConfig()
+
+	// Configure Logger
+	utils.ConfigureLogger()
 
 	// Database Client
 	dbClient, closeDB, err := db_client.NewDriver(&config.DatabaseConfig)

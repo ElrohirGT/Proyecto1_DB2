@@ -1,0 +1,32 @@
+version: '3'
+tasks:
+  clean:
+    desc: "Remove compiled files"
+    cmds:
+      - "{{if eq OS `windows`}}rmdir /s /q .target{{else}}rm -rf .target{{end}}"
+    silent: true
+
+  build:
+    desc: "Compile the project"
+    cmds:
+      - "mkdir -p .target"
+      - "go build -o .target/main main.go"
+
+  run:
+    desc: "Build and run the project"
+    deps:
+      - build
+    cmds:
+      - "./.target/main"
+      
+  dev:
+    desc: "Build and run the project"
+    deps:
+      - build
+    cmds:
+      - "./.target/main"
+
+  default:
+    desc: "Show available tasks"
+    cmds:
+      - "task --list"
