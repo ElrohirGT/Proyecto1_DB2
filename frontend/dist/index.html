@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Neo4J Proyect</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+	</style>
+</head>
+
+<body>
+	<script src="elm.js"></script>
+	<script>
+		const loc = window.location.pathname;
+		const bPath = loc === "/" ? "" : loc.substring(1, 8);
+		console.log(`The supplied base path is: ${bPath}`)
+		Elm.Main.init({
+			flags: bPath
+		});
+	</script>
+</body>
+
+</html>
