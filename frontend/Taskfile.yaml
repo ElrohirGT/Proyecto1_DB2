@@ -2,6 +2,12 @@ version: '3'
 
 tasks:
   dev:
+    desc: "Start the hot reloading elm app in debug mode"
     cmds:
       - elm-live src/Main.elm --start-page=index.html --dir=$(readlink -f ./dist) -- --output=./dist/elm.js --debug
     silent: true
+
+  default:
+    desc: "Show available tasks"
+    cmds:
+      - "task --list"
