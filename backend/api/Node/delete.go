@@ -26,7 +26,7 @@ func NewDeleteNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 
 		err := decoder.Decode(&body)
 		if err != nil {
-			msg := fmt.Sprintf("BAD REQUEST - INVALID `Properties` array! `%s`", err.Error())
+			msg := fmt.Sprintf("BAD REQUEST - INVALID BODY! `%s`", err.Error())
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte(msg))
 			return
@@ -34,6 +34,8 @@ func NewDeleteNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 
 		// MATCH (n:$NodeType {$nodeName: $nodeValue})
 		// DETACH DELETE n
+		// RETURN n
+		// LIMIT 1
 		b := strings.Builder{}
 		b.WriteString("MATCH (n:")
 		b.WriteString(body.NodeType)

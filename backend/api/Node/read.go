@@ -44,6 +44,7 @@ func NewReadNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 
 		// MATCH (n:$NodeType {$nodeName: $nodeValue})
 		// RETURN n
+		// LIMIT 1
 		b := strings.Builder{}
 		b.WriteString("MATCH (n:")
 		b.WriteString(nodeType)
