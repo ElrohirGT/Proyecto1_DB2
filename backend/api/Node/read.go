@@ -64,7 +64,6 @@ func NewReadNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 		b.WriteString("}) RETURN n LIMIT 1")
 
 		query := b.String()
-		// query = "MATCH (n) -[]->() RETURN n"
 		log.Info().Str("query", query).Msg("Querying DB...")
 		result, err := neo4j.ExecuteQuery(ctx, *client, query, nodeProperties, neo4j.EagerResultTransformer, neo4j.ExecuteQueryWithDatabase("neo4j"))
 
