@@ -55,7 +55,7 @@ func main() {
 		r.Post("/node", app.CreateNodeHandler)
 		r.Get("/node", app.ReadNodeHandler)
 		r.Put("/node", app.CreateUserHandler)
-		r.Delete("/node", app.CreateUserHandler)
+		r.Delete("/node", app.DeleteNodeHandler)
 
 		// Relations
 		r.Post("/relation", app.CreateUserHandler)

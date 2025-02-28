@@ -1,6 +1,7 @@
 package node
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -10,11 +11,6 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 	"github.com/rs/zerolog/log"
 )
-
-type GetNodeGeneric struct {
-	NodeType   string
-	Properties map[string]any
-}
 
 func NewReadNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -48,6 +44,7 @@ func NewReadNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 
 		// MATCH (n:$NodeType {$nodeName: $nodeValue})
 		// RETURN n
+		// LIMIT 1
 		b := strings.Builder{}
 		b.WriteString("MATCH (n:")
 		b.WriteString(nodeType)
@@ -68,7 +65,6 @@ func NewReadNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 		b.WriteString("}) RETURN n LIMIT 1")
 
 		query := b.String()
-		// query = "MATCH (n) -[]->() RETURN n"
 		log.Info().Str("query", query).Msg("Querying DB...")
 		result, err := neo4j.ExecuteQuery(ctx, *client, query, nodeProperties, neo4j.EagerResultTransformer, neo4j.ExecuteQueryWithDatabase("neo4j"))
 
@@ -78,12 +74,27 @@ func NewReadNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 			msg := fmt.Sprintf("INTERNAL SERVER ERROR - QUERY ERROR `%s`", err.Error())
 			w.Write([]byte(msg))
 		}
-		log.Info().Int("recordCount", len(result.Records)).Msg("Done!")
+		nodeCount := len(result.Records)
+		log.Info().Int("recordCount", nodeCount).Msg("Done!")
 
-		for _, record := range result.Records {
-			log.Info().Interface("row", record).Msg("Node found!")
+		if nodeCount == 0 {
+			log.Fatal().Err(err).Msg("No node found!")
+			w.WriteHeader(http.StatusNotFound)
+			w.Write([]byte("404 ERROR - NOT FOUND"))
+			return
 		}
 
-		w.Write([]byte("OK"))
+		var buff bytes.Buffer
+		enc := json.NewEncoder(&buff)
+
+		err = enc.Encode(result.Records[0])
+		if err != nil {
+			log.Fatal().Err(err).Interface("row", result.Records[0]).Msg("Error encoding row!")
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("500 ERROR - INTERNAL SERVER ERROR"))
+			return
+		}
+
+		w.Write(buff.Bytes())
 	}
 }

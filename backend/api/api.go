@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	node "github.com/ElrohirGT/Proyecto1_DB2/api/Node"
+	relation "github.com/ElrohirGT/Proyecto1_DB2/api/Relation"
 	"github.com/ElrohirGT/Proyecto1_DB2/api/health"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
@@ -16,9 +17,11 @@ type Api struct {
 	CreateUserHandler  http.HandlerFunc
 
 	// CRUD
-
-	ReadNodeHandler http.HandlerFunc
 	CreateNodeHandler http.HandlerFunc
+	ReadNodeHandler   http.HandlerFunc
+	DeleteNodeHandler http.HandlerFunc
+
+	UpdateRelationHandler http.HandlerFunc
 
 	// CRUD (multiple)
 
@@ -35,6 +38,8 @@ func NewApi(
 
 		CheckHealthHandler: health.CheckHealthHandler,
 		CreateNodeHandler: node.NewCreateNodeHandler(mongoClient),
-		ReadNodeHandler: node.NewReadNodeHandler(mongoClient),
+		ReadNodeHandler:       node.NewReadNodeHandler(mongoClient),
+		DeleteNodeHandler:     node.NewDeleteNodeHandler(mongoClient),
+		UpdateRelationHandler: relation.NewUpdateRelationHandler(mongoClient),
 	}
 }
