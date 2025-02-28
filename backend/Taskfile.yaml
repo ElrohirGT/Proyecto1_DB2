@@ -24,7 +24,7 @@ tasks:
     deps:
       - build
     cmds:
-      - "./.target/main"
+      - air
 
   default:
     desc: "Show available tasks"
