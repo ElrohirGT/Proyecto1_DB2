@@ -18,6 +18,7 @@ type Api struct {
 	// CRUD
 
 	ReadNodeHandler http.HandlerFunc
+	CreateNodeHandler http.HandlerFunc
 
 	// CRUD (multiple)
 
@@ -33,7 +34,7 @@ func NewApi(
 		dbClient: mongoClient,
 
 		CheckHealthHandler: health.CheckHealthHandler,
-
+		CreateNodeHandler: node.NewCreateNodeHandler(mongoClient),
 		ReadNodeHandler: node.NewReadNodeHandler(mongoClient),
 	}
 }

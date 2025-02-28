@@ -48,11 +48,11 @@ func main() {
 	r.Use(mw.CreateCors(config.CorsConfig))
 
 	r.Get("/health", app.CheckHealthHandler)
-
+	
 	r.Group(func(r chi.Router) {
 
 		// Nodes
-		r.Post("/node", app.CreateUserHandler)
+		r.Post("/node", app.CreateNodeHandler)
 		r.Get("/node", app.ReadNodeHandler)
 		r.Put("/node", app.CreateUserHandler)
 		r.Delete("/node", app.CreateUserHandler)
