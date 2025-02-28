@@ -53,7 +53,7 @@ func main() {
 
 		// Nodes
 		r.Post("/node", app.CreateUserHandler)
-		r.Get("/node", app.CreateUserHandler)
+		r.Get("/node", app.ReadNodeHandler)
 		r.Put("/node", app.CreateUserHandler)
 		r.Delete("/node", app.CreateUserHandler)
 

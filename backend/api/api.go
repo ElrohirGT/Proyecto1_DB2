@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 
+	node "github.com/ElrohirGT/Proyecto1_DB2/api/Node"
 	"github.com/ElrohirGT/Proyecto1_DB2/api/health"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
@@ -12,8 +13,16 @@ type Api struct {
 
 	// Handlers: endpoint functions
 	CheckHealthHandler http.HandlerFunc
+	CreateUserHandler  http.HandlerFunc
 
-	CreateUserHandler http.HandlerFunc
+	// CRUD
+
+	ReadNodeHandler http.HandlerFunc
+
+	// CRUD (multiple)
+
+	// FUNC REQUIREMENTS
+
 }
 
 func NewApi(
@@ -24,5 +33,7 @@ func NewApi(
 		dbClient: mongoClient,
 
 		CheckHealthHandler: health.CheckHealthHandler,
+
+		ReadNodeHandler: node.NewReadNodeHandler(mongoClient),
 	}
 }
