@@ -17,7 +17,8 @@ type Api struct {
 
 	// CRUD
 
-	ReadNodeHandler http.HandlerFunc
+	ReadNodeHandler   http.HandlerFunc
+	DeleteNodeHandler http.HandlerFunc
 
 	// CRUD (multiple)
 
@@ -34,6 +35,7 @@ func NewApi(
 
 		CheckHealthHandler: health.CheckHealthHandler,
 
-		ReadNodeHandler: node.NewReadNodeHandler(mongoClient),
+		ReadNodeHandler:   node.NewReadNodeHandler(mongoClient),
+		DeleteNodeHandler: node.NewDeleteNodeHandler(mongoClient),
 	}
 }
