@@ -20,7 +20,6 @@ type Api struct {
 	CreateNodeHandler http.HandlerFunc
 	ReadNodeHandler   http.HandlerFunc
 	DeleteNodeHandler http.HandlerFunc
-
 	UpdateRelationHandler http.HandlerFunc
 
 	// CRUD (multiple)
