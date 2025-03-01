@@ -1,6 +1,5 @@
 package relation
 
-
 import (
 	"context"
 	"encoding/json"
@@ -8,14 +7,15 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/ElrohirGT/Proyecto1_DB2/api/utils"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 	"github.com/rs/zerolog/log"
 )
 
 type CreateRelationRequest struct {
-	OriginNode      neo4JObject `json:"OriginNode"`
-	DestinationNode neo4JObject `json:"DestinationNode"`
-	Relation        neo4JObject `json:"Relation"`
+	OriginNode      utils.Neo4JObject `json:"OriginNode"`
+	DestinationNode utils.Neo4JObject `json:"DestinationNode"`
+	Relation        utils.Neo4JObject `json:"Relation"`
 }
 
 func NewCreateRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
@@ -47,7 +47,6 @@ func NewCreateRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc 
 		queryBuilder.WriteString(req.OriginNode.Category)
 		queryBuilder.WriteString(" {")
 
-		
 		i := 0
 		for key := range req.OriginNode.Properties {
 			if i > 0 {
@@ -62,7 +61,6 @@ func NewCreateRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc 
 		queryBuilder.WriteString(req.DestinationNode.Category)
 		queryBuilder.WriteString(" {")
 
-		
 		i = 0
 		for key := range req.DestinationNode.Properties {
 			if i > 0 {
@@ -77,7 +75,6 @@ func NewCreateRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc 
 		queryBuilder.WriteString(req.Relation.Category)
 		queryBuilder.WriteString(" {")
 
-		
 		i = 0
 		for key := range req.Relation.Properties {
 			if i > 0 {
@@ -93,7 +90,6 @@ func NewCreateRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc 
 		query := queryBuilder.String()
 
 		params := make(map[string]any)
-
 
 		for property, val := range req.OriginNode.Properties {
 			params["n1_"+property] = val
