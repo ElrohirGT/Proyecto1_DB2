@@ -58,7 +58,7 @@ init flags url navKey =
                 Routing.Statistics ->
                     Tuple.mapBoth Stats (Cmd.map StatsMsg) StatsPage.init
 
-                Routing.Trace id ->
+                Routing.Trace ->
                     Tuple.mapBoth Trace (Cmd.map TraceMsg) TracePage.init
     in
     ( Model navKey innerModel, initialEffect )

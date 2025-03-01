@@ -8,7 +8,7 @@ import Url.Parser as P exposing ((</>), Parser, s)
 
 type Route
     = Home
-    | Trace { productId : Int }
+    | Trace
     | Statistics
     | Report
     | NotFound
@@ -19,7 +19,7 @@ routeParser =
     P.oneOf
         [ P.map Home
             P.top
-        , P.map (\id -> Trace { productId = id }) (s "trace" </> P.int)
+        , P.map Trace (s "trace")
         , P.map Statistics (s "stats")
         , P.map Report (s "report")
         ]
@@ -39,6 +39,6 @@ parseUrl url =
             NotFound
 
 
-goToTrace : Int -> Attribute msg
-goToTrace productId =
-    href (String.join "/" [ "/trace", String.fromInt productId ])
+goToTrace : Attribute msg
+goToTrace =
+    href "/trace"

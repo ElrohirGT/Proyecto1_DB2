@@ -41,7 +41,7 @@ view model =
                     ]
                 ]
                 [ text "In Home!" ]
-            , a [ goToTrace 5 ] [ text "Go to Trace!" ]
+            , a [ goToTrace ] [ text "Go to Trace!" ]
             ]
         ]
     }
