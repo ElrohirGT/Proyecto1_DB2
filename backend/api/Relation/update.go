@@ -8,53 +8,16 @@ import (
 	"net/http"
 	"strings"
 
+	ut "github.com/ElrohirGT/Proyecto1_DB2/api/utils"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 	"github.com/rs/zerolog/log"
 )
 
-type neo4JObject struct {
-	Category   string
-	Properties map[string]any
-}
-
 type reqBody struct {
-	OriginNode      neo4JObject
-	DestinationNode neo4JObject
-	Relation        neo4JObject
+	OriginNode      ut.Neo4JObject
+	DestinationNode ut.Neo4JObject
+	Relation        ut.Neo4JObject
 	NewProperties   map[string]any
-}
-
-func (self *neo4JObject) appendAsNeo4JMatch(b *strings.Builder, limits []string, queryId string) {
-	if len(limits) != 2 {
-		panic("The should only be two limits! Example []string {\"[\", \"]\"}")
-	}
-
-	b.WriteString(limits[0])
-	b.WriteString(queryId)
-	b.WriteRune(':')
-	b.WriteString(self.Category)
-
-	propertiesCount := len(self.Properties)
-	if propertiesCount > 0 {
-		b.WriteString(" {")
-
-		i := 1
-		for property := range self.Properties {
-			b.WriteString(property)
-			b.WriteString(": ")
-			b.WriteRune('$')
-			b.WriteString(queryId)
-			b.WriteRune('_')
-			b.WriteString(property)
-
-			if i != propertiesCount {
-				b.WriteRune(',')
-			}
-			i++
-		}
-		b.WriteString("}")
-	}
-	b.WriteString(limits[1])
 }
 
 func NewUpdateRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
@@ -78,11 +41,11 @@ func NewUpdateRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc 
 		// LIMIT 1
 		b := &strings.Builder{}
 		b.WriteString("MATCH ")
-		body.OriginNode.appendAsNeo4JMatch(b, []string{"(", ")"}, "n1")
+		body.OriginNode.AppendAsNeo4JMatch(b, []string{"(", ")"}, "n1")
 		b.WriteString(" -")
-		body.Relation.appendAsNeo4JMatch(b, []string{"[", "]"}, "r")
+		body.Relation.AppendAsNeo4JMatch(b, []string{"[", "]"}, "r")
 		b.WriteString("-> ")
-		body.DestinationNode.appendAsNeo4JMatch(b, []string{"(", ")"}, "n2")
+		body.DestinationNode.AppendAsNeo4JMatch(b, []string{"(", ")"}, "n2")
 
 		for propertyName := range body.NewProperties {
 			b.WriteString("SET ")

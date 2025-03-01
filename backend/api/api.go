@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	node "github.com/ElrohirGT/Proyecto1_DB2/api/Node"
+	nodes "github.com/ElrohirGT/Proyecto1_DB2/api/Nodes"
 	relation "github.com/ElrohirGT/Proyecto1_DB2/api/Relation"
 	"github.com/ElrohirGT/Proyecto1_DB2/api/health"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
@@ -23,10 +24,12 @@ type Api struct {
 	DeleteNodeHandler http.HandlerFunc
 
 	CreateRelationHandler http.HandlerFunc
-	ReadRelationHandler  http.HandlerFunc
+	ReadRelationHandler   http.HandlerFunc
 	UpdateRelationHandler http.HandlerFunc
 	DeleteRelationHandler http.HandlerFunc
+
 	// CRUD (multiple)
+	UpdateNodesHandler http.HandlerFunc
 
 	// FUNC REQUIREMENTS
 
@@ -39,14 +42,16 @@ func NewApi(
 	return &Api{
 		dbClient: mongoClient,
 
-		CheckHealthHandler: health.CheckHealthHandler,
-		CreateNodeHandler: node.NewCreateNodeHandler(mongoClient),
+		CheckHealthHandler:    health.CheckHealthHandler,
+		CreateNodeHandler:     node.NewCreateNodeHandler(mongoClient),
 		ReadNodeHandler:       node.NewReadNodeHandler(mongoClient),
-		UpdateNodeHandler:	 node.NewUpdateNodeHandler(mongoClient),
+		UpdateNodeHandler:     node.NewUpdateNodeHandler(mongoClient),
 		DeleteNodeHandler:     node.NewDeleteNodeHandler(mongoClient),
 		CreateRelationHandler: relation.NewCreateRelationHandler(mongoClient),
-		ReadRelationHandler:	relation.NewReadRelationHandler(mongoClient),
+		ReadRelationHandler:   relation.NewReadRelationHandler(mongoClient),
 		UpdateRelationHandler: relation.NewUpdateRelationHandler(mongoClient),
 		DeleteRelationHandler: relation.NewDeleteRelationHandler(mongoClient),
+
+		UpdateNodesHandler: nodes.NewUpdateNodesHandler(mongoClient),
 	}
 }
