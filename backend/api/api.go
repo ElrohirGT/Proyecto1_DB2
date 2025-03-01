@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 
+	functionalrequirements "github.com/ElrohirGT/Proyecto1_DB2/api/FunctionalRequirements"
 	"github.com/ElrohirGT/Proyecto1_DB2/api/Node"
 	"github.com/ElrohirGT/Proyecto1_DB2/api/Properties"
 	"github.com/ElrohirGT/Proyecto1_DB2/api/Relation"
@@ -33,7 +34,7 @@ type Api struct {
 	DeletePropertiesHandler http.HandlerFunc
 
 	// FUNC REQUIREMENTS
-
+	GetProductHistoryHandler http.HandlerFunc
 }
 
 func NewApi(
@@ -55,5 +56,7 @@ func NewApi(
 
 		UpdatePropertiesHandler: properties.NewUpdatePropertiesHandler(mongoClient),
 		DeletePropertiesHandler: properties.NewDeleteNodePropertiesHandler(mongoClient),
+
+		GetProductHistoryHandler: functionalrequirements.NewGetHistoryHandler(mongoClient),
 	}
 }

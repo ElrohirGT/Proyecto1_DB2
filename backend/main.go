@@ -67,6 +67,9 @@ func main() {
 		r.Put("/relation", app.UpdateRelationHandler)
 		r.Delete("/relation", app.DeleteRelationHandler)
 
+		// Functional requirements
+		r.Get("/history", app.GetProductHistoryHandler)
+
 	})
 
 	// Start server
