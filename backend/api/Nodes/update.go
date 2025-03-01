@@ -1,6 +1,7 @@
 package node
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -15,6 +16,7 @@ import (
 type UpdateNodeRequest struct {
 	Target           utils.Neo4JObject
 	UpdateProperties utils.Neo4JObjectProperties
+	Limit            *int
 }
 
 func NewUpdateNodesHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
@@ -39,8 +41,9 @@ func NewUpdateNodesHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 		b.WriteString("MATCH ")
 		req.Target.AppendAsNeo4JMatch(&b, []string{"(", ")"}, "n1")
 
-		b.WriteString("SET ")
 		for prop := range req.UpdateProperties {
+			b.WriteString(" SET ")
+			b.WriteString("n1.")
 			b.WriteString(prop)
 			b.WriteString(" = ")
 			b.WriteString("$new_")
@@ -55,11 +58,16 @@ func NewUpdateNodesHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 			params["n1_"+prop] = val
 		}
 
-		b.WriteString(" RETURN n1")
+		b.WriteString(" RETURN n1 ")
+
+		if req.Limit != nil {
+			b.WriteString("LIMIT ")
+			b.WriteString(fmt.Sprint(*req.Limit))
+		}
 
 		query := b.String()
 		log.Info().Str("query", query).Msg("⏳ Ejecutando consulta de actualización en Neo4j...")
-		_, err = neo4j.ExecuteQuery(ctx, *client, query, params, neo4j.EagerResultTransformer, neo4j.ExecuteQueryWithDatabase("neo4j"))
+		result, err := neo4j.ExecuteQuery(ctx, *client, query, params, neo4j.EagerResultTransformer, neo4j.ExecuteQueryWithDatabase("neo4j"))
 
 		if err != nil {
 			log.Error().Err(err).Msg("❌ Error actualizando en Neo4j")
@@ -68,7 +76,18 @@ func NewUpdateNodesHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 			return
 		}
 
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("✅ NODE UPDATED SUCCESSFULLY"))
+		var buff bytes.Buffer
+		enc := json.NewEncoder(&buff)
+
+		err = enc.Encode(result.Records)
+		if err != nil {
+			log.Error().Err(err).Interface("array", result.Records[0]).Msg("Error encoding array!")
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("500 ERROR - INTERNAL SERVER ERROR"))
+			return
+		}
+
+		log.Info().Msg("✅ NODE UPDATED SUCCESSFULLY")
+		w.Write(buff.Bytes())
 	}
 }

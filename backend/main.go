@@ -48,7 +48,7 @@ func main() {
 	r.Use(mw.CreateCors(config.CorsConfig))
 
 	r.Get("/health", app.CheckHealthHandler)
-	
+
 	r.Group(func(r chi.Router) {
 
 		// Nodes
@@ -56,6 +56,9 @@ func main() {
 		r.Get("/node", app.ReadNodeHandler)
 		r.Put("/node", app.UpdateNodeHandler)
 		r.Delete("/node", app.DeleteNodeHandler)
+
+		// Multiple Nodes
+		r.Put("/nodes", app.UpdateNodesHandler)
 
 		// Relations
 		r.Post("/relation", app.CreateRelationHandler)
