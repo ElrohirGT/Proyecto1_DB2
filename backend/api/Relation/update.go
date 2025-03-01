@@ -24,8 +24,12 @@ type reqBody struct {
 	NewProperties   map[string]any
 }
 
-func (self *neo4JObject) appendAsNode(b *strings.Builder, queryId string) {
-	b.WriteRune('(')
+func (self *neo4JObject) appendAsNeo4JMatch(b *strings.Builder, limits []string, queryId string) {
+	if len(limits) != 2 {
+		panic("The should only be two limits! Example []string {\"[\", \"]\"}")
+	}
+
+	b.WriteString(limits[0])
 	b.WriteString(queryId)
 	b.WriteRune(':')
 	b.WriteString(self.Category)
@@ -34,6 +38,7 @@ func (self *neo4JObject) appendAsNode(b *strings.Builder, queryId string) {
 	if propertiesCount > 0 {
 		b.WriteString(" {")
 
+		i := 1
 		for property := range self.Properties {
 			b.WriteString(property)
 			b.WriteString(": ")
@@ -41,35 +46,15 @@ func (self *neo4JObject) appendAsNode(b *strings.Builder, queryId string) {
 			b.WriteString(queryId)
 			b.WriteRune('_')
 			b.WriteString(property)
-			b.WriteRune(',')
+
+			if i != propertiesCount {
+				b.WriteRune(',')
+			}
+			i++
 		}
 		b.WriteString("}")
 	}
-	b.WriteRune(')')
-}
-
-func (self *neo4JObject) appendAsRelation(b *strings.Builder, queryId string) {
-	b.WriteRune('[')
-	b.WriteString(queryId)
-	b.WriteRune(':')
-	b.WriteString(self.Category)
-
-	propertiesCount := len(self.Properties)
-	if propertiesCount > 0 {
-		b.WriteString(" {")
-
-		for property := range self.Properties {
-			b.WriteString(property)
-			b.WriteString(": ")
-			b.WriteRune('$')
-			b.WriteString(queryId)
-			b.WriteRune('_')
-			b.WriteString(property)
-			b.WriteRune(',')
-		}
-		b.WriteString("}")
-	}
-	b.WriteRune(']')
+	b.WriteString(limits[1])
 }
 
 func NewUpdateRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
@@ -88,18 +73,27 @@ func NewUpdateRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc 
 		}
 
 		// MATCH (n:$NodeType {$nodeName: $nodeValue}) -[r:$RelationType {$relName: $relValue}]-> (n2:$NodeType {$nodeName: $nodeValue})
-		// DELETE r
+		// SET r.$NewProperty = $NewValue
 		// RETURN r
 		// LIMIT 1
 		b := &strings.Builder{}
 		b.WriteString("MATCH ")
-		body.OriginNode.appendAsNode(b, "n1")
+		body.OriginNode.appendAsNeo4JMatch(b, []string{"(", ")"}, "n1")
 		b.WriteString(" -")
-		body.Relation.appendAsRelation(b, "r")
+		body.Relation.appendAsNeo4JMatch(b, []string{"[", "]"}, "r")
 		b.WriteString("-> ")
-		body.DestinationNode.appendAsNode(b, "n2")
+		body.DestinationNode.appendAsNeo4JMatch(b, []string{"(", ")"}, "n2")
 
-		b.WriteString(" DELETE r RETURN r LIMIT 1")
+		for propertyName := range body.NewProperties {
+			b.WriteString("SET ")
+			b.WriteString("r.")
+			b.WriteString(propertyName)
+			b.WriteString(" = ")
+			b.WriteString("$new_")
+			b.WriteString(propertyName)
+			b.WriteRune(' ')
+		}
+		b.WriteString(" RETURN r LIMIT 1")
 
 		query := b.String()
 		params := make(map[string]any)
@@ -119,20 +113,26 @@ func NewUpdateRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc 
 			params[key] = val
 		}
 
+		for property, val := range body.NewProperties {
+			key := strings.Join([]string{"new_", property}, "")
+			params[key] = val
+		}
+
 		log.Info().Str("query", query).Msg("Querying DB...")
 		result, err := neo4j.ExecuteQuery(ctx, *client, query, params, neo4j.EagerResultTransformer, neo4j.ExecuteQueryWithDatabase("neo4j"))
 
 		if err != nil {
-			log.Fatal().Err(err).Msg("Error querying DB!")
+			log.Error().Err(err).Msg("Error querying DB!")
 			w.WriteHeader(http.StatusInternalServerError)
 			msg := fmt.Sprintf("INTERNAL SERVER ERROR - QUERY ERROR `%s`", err.Error())
 			w.Write([]byte(msg))
+			return
 		}
 		nodeCount := len(result.Records)
 		log.Info().Int("recordCount", nodeCount).Msg("Done!")
 
 		if nodeCount == 0 {
-			log.Fatal().Err(err).Msg("No row found!")
+			log.Error().Err(err).Msg("No row found!")
 			w.WriteHeader(http.StatusNotFound)
 			w.Write([]byte("404 ERROR - NOT FOUND"))
 			return
@@ -143,7 +143,7 @@ func NewUpdateRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc 
 
 		err = enc.Encode(result.Records[0])
 		if err != nil {
-			log.Fatal().Err(err).Interface("row", result.Records[0]).Msg("Error encoding row!")
+			log.Error().Err(err).Interface("row", result.Records[0]).Msg("Error encoding row!")
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("500 ERROR - INTERNAL SERVER ERROR"))
 			return

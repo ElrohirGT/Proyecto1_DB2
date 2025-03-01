@@ -69,16 +69,17 @@ func NewReadNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 		result, err := neo4j.ExecuteQuery(ctx, *client, query, nodeProperties, neo4j.EagerResultTransformer, neo4j.ExecuteQueryWithDatabase("neo4j"))
 
 		if err != nil {
-			log.Fatal().Err(err).Msg("Error querying DB!")
+			log.Error().Err(err).Msg("Error querying DB!")
 			w.WriteHeader(http.StatusInternalServerError)
 			msg := fmt.Sprintf("INTERNAL SERVER ERROR - QUERY ERROR `%s`", err.Error())
 			w.Write([]byte(msg))
+			return
 		}
 		nodeCount := len(result.Records)
 		log.Info().Int("recordCount", nodeCount).Msg("Done!")
 
 		if nodeCount == 0 {
-			log.Fatal().Err(err).Msg("No node found!")
+			log.Error().Err(err).Msg("No node found!")
 			w.WriteHeader(http.StatusNotFound)
 			w.Write([]byte("404 ERROR - NOT FOUND"))
 			return
@@ -89,7 +90,7 @@ func NewReadNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 
 		err = enc.Encode(result.Records[0])
 		if err != nil {
-			log.Fatal().Err(err).Interface("row", result.Records[0]).Msg("Error encoding row!")
+			log.Error().Err(err).Interface("row", result.Records[0]).Msg("Error encoding row!")
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("500 ERROR - INTERNAL SERVER ERROR"))
 			return
