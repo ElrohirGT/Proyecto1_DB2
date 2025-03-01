@@ -16,6 +16,7 @@ func NewGetHistoryHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 		ctx := context.Background()
 		queries := r.URL.Query()
 		productId := queries.Get("ProductId")
+		w.Header().Add("Access-Control-Allow-Origin", "*")
 
 		if productId == "" {
 			w.WriteHeader(http.StatusBadRequest)
