@@ -58,7 +58,8 @@ func main() {
 		r.Delete("/node", app.DeleteNodeHandler)
 
 		// Multiple Nodes
-		r.Put("/nodes", app.UpdateNodesHandler)
+		r.Put("/properties", app.UpdatePropertiesHandler)
+		r.Delete("/properties", app.DeletePropertiesHandler)
 
 		// Relations
 		r.Post("/relation", app.CreateRelationHandler)

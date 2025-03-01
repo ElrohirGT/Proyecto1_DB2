@@ -1,4 +1,4 @@
-package node
+package properties
 
 import (
 	"bytes"
@@ -13,23 +13,23 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-type UpdateNodeRequest struct {
+type DeleteNodeRequest struct {
 	Target           utils.Neo4JObject
-	UpdateProperties utils.Neo4JObjectProperties
+	RemoveProperties []string
 	Limit            *int
 }
 
-func NewUpdateNodesHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
+func NewDeleteNodePropertiesHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.Background()
 
-		if r.Method != http.MethodPut {
+		if r.Method != http.MethodDelete {
 			w.WriteHeader(http.StatusMethodNotAllowed)
-			w.Write([]byte("405 Method Not Allowed - Use PUT"))
+			w.Write([]byte("405 Method Not Allowed - Use DELETE"))
 			return
 		}
 
-		var req UpdateNodeRequest
+		var req DeleteNodeRequest
 		err := json.NewDecoder(r.Body).Decode(&req)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
@@ -41,19 +41,13 @@ func NewUpdateNodesHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 		b.WriteString("MATCH ")
 		req.Target.AppendAsNeo4JMatch(&b, []string{"(", ")"}, "n1")
 
-		for prop := range req.UpdateProperties {
-			b.WriteString(" SET ")
+		for _, prop := range req.RemoveProperties {
+			b.WriteString(" REMOVE ")
 			b.WriteString("n1.")
-			b.WriteString(prop)
-			b.WriteString(" = ")
-			b.WriteString("$new_")
 			b.WriteString(prop)
 		}
 
 		params := make(map[string]any)
-		for prop, val := range req.UpdateProperties {
-			params["new_"+prop] = val
-		}
 		for prop, val := range req.Target.Properties {
 			params["n1_"+prop] = val
 		}
@@ -87,7 +81,7 @@ func NewUpdateNodesHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 			return
 		}
 
-		log.Info().Msg("✅ NODE UPDATED SUCCESSFULLY")
+		log.Info().Msg("✅ PROPERTIES REMOVED SUCCESSFULLY")
 		w.Write(buff.Bytes())
 	}
 }

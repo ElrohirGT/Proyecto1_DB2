@@ -3,9 +3,9 @@ package api
 import (
 	"net/http"
 
-	node "github.com/ElrohirGT/Proyecto1_DB2/api/Node"
-	nodes "github.com/ElrohirGT/Proyecto1_DB2/api/Nodes"
-	relation "github.com/ElrohirGT/Proyecto1_DB2/api/Relation"
+	"github.com/ElrohirGT/Proyecto1_DB2/api/Node"
+	"github.com/ElrohirGT/Proyecto1_DB2/api/Properties"
+	"github.com/ElrohirGT/Proyecto1_DB2/api/Relation"
 	"github.com/ElrohirGT/Proyecto1_DB2/api/health"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
@@ -29,7 +29,8 @@ type Api struct {
 	DeleteRelationHandler http.HandlerFunc
 
 	// CRUD (multiple)
-	UpdateNodesHandler http.HandlerFunc
+	UpdatePropertiesHandler http.HandlerFunc
+	DeletePropertiesHandler http.HandlerFunc
 
 	// FUNC REQUIREMENTS
 
@@ -52,6 +53,7 @@ func NewApi(
 		UpdateRelationHandler: relation.NewUpdateRelationHandler(mongoClient),
 		DeleteRelationHandler: relation.NewDeleteRelationHandler(mongoClient),
 
-		UpdateNodesHandler: nodes.NewUpdateNodesHandler(mongoClient),
+		UpdatePropertiesHandler: properties.NewUpdatePropertiesHandler(mongoClient),
+		DeletePropertiesHandler: properties.NewDeleteNodePropertiesHandler(mongoClient),
 	}
 }
