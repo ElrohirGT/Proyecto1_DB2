@@ -61,7 +61,7 @@ func main() {
 		r.Post("/relation", app.CreateRelationHandler)
 		r.Get("/relation", app.ReadRelationHandler)
 		r.Put("/relation", app.UpdateRelationHandler)
-		r.Delete("/relation", app.CreateUserHandler)
+		r.Delete("/relation", app.DeleteRelationHandler)
 
 	})
 

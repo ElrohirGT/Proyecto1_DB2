@@ -21,11 +21,11 @@ type Api struct {
 	ReadNodeHandler   http.HandlerFunc
 	UpdateNodeHandler http.HandlerFunc
 	DeleteNodeHandler http.HandlerFunc
-	
+
 	CreateRelationHandler http.HandlerFunc
 	ReadRelationHandler  http.HandlerFunc
 	UpdateRelationHandler http.HandlerFunc
-
+	DeleteRelationHandler http.HandlerFunc
 	// CRUD (multiple)
 
 	// FUNC REQUIREMENTS
@@ -47,5 +47,6 @@ func NewApi(
 		CreateRelationHandler: relation.NewCreateRelationHandler(mongoClient),
 		ReadRelationHandler:	relation.NewReadRelationHandler(mongoClient),
 		UpdateRelationHandler: relation.NewUpdateRelationHandler(mongoClient),
+		DeleteRelationHandler: relation.NewDeleteRelationHandler(mongoClient),
 	}
 }
