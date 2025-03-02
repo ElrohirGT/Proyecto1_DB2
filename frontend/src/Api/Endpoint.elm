@@ -1,6 +1,10 @@
-module Api.Endpoint exposing (getHistory, request)
+module Api.Endpoint exposing (GetHistoryResponse, getHistory, getHistoryResponseDecoder, request)
 
 import Http
+import Json.Decode as Decode exposing (list)
+import Json.Decode.Pipeline exposing (required)
+import Models.Node exposing (Node, nodeDecoder)
+import Models.Relation exposing (Relation, relationDecoder)
 import Url.Builder exposing (string)
 
 
@@ -54,8 +58,30 @@ url paths queryParams =
 
 
 -- ENDPOINTS
+-- GET /history endpoint
 
 
 getHistory : String -> Endpoint
 getHistory productId =
     url [ "history" ] [ string "ProductId" productId ]
+
+
+type alias GetHistoryResponse =
+    { values :
+        List
+            { nodes : List Node
+            , relationships : List Relation
+            }
+    }
+
+
+getHistoryResponseDecoder : Decode.Decoder GetHistoryResponse
+getHistoryResponseDecoder =
+    Decode.succeed GetHistoryResponse
+        |> required "Values"
+            (list
+                (Decode.succeed (\nodes -> \relationships -> { nodes = nodes, relationships = relationships })
+                    |> required "Nodes" (list nodeDecoder)
+                    |> required "Relationships" (list relationDecoder)
+                )
+            )

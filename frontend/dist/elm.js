@@ -11237,17 +11237,6 @@ var $elm$http$Http$expectStringResponse = F2(
 			$elm$core$Basics$identity,
 			A2($elm$core$Basics$composeR, toResult, toMsg));
 	});
-var $elm$http$Http$BadBody = function (a) {
-	return {$: 'BadBody', a: a};
-};
-var $elm$http$Http$BadStatus = function (a) {
-	return {$: 'BadStatus', a: a};
-};
-var $elm$http$Http$BadUrl = function (a) {
-	return {$: 'BadUrl', a: a};
-};
-var $elm$http$Http$NetworkError = {$: 'NetworkError'};
-var $elm$http$Http$Timeout = {$: 'Timeout'};
 var $elm$core$Result$mapError = F2(
 	function (f, result) {
 		if (result.$ === 'Ok') {
@@ -11259,6 +11248,17 @@ var $elm$core$Result$mapError = F2(
 				f(e));
 		}
 	});
+var $elm$http$Http$BadBody = function (a) {
+	return {$: 'BadBody', a: a};
+};
+var $elm$http$Http$BadStatus = function (a) {
+	return {$: 'BadStatus', a: a};
+};
+var $elm$http$Http$BadUrl = function (a) {
+	return {$: 'BadUrl', a: a};
+};
+var $elm$http$Http$NetworkError = {$: 'NetworkError'};
+var $elm$http$Http$Timeout = {$: 'Timeout'};
 var $elm$http$Http$resolve = F2(
 	function (toResult, response) {
 		switch (response.$) {
@@ -11282,12 +11282,19 @@ var $elm$http$Http$resolve = F2(
 					toResult(body));
 		}
 	});
-var $elm$http$Http$expectString = function (toMsg) {
-	return A2(
-		$elm$http$Http$expectStringResponse,
-		toMsg,
-		$elm$http$Http$resolve($elm$core$Result$Ok));
-};
+var $elm$http$Http$expectJson = F2(
+	function (toMsg, decoder) {
+		return A2(
+			$elm$http$Http$expectStringResponse,
+			toMsg,
+			$elm$http$Http$resolve(
+				function (string) {
+					return A2(
+						$elm$core$Result$mapError,
+						$elm$json$Json$Decode$errorToString,
+						A2($elm$json$Json$Decode$decodeString, decoder, string));
+				}));
+	});
 var $elm$url$Url$Builder$QueryParameter = F2(
 	function (a, b) {
 		return {$: 'QueryParameter', a: a, b: b};
@@ -11337,6 +11344,74 @@ var $author$project$Api$Endpoint$getHistory = function (productId) {
 				A2($elm$url$Url$Builder$string, 'ProductId', productId)
 			]));
 };
+var $author$project$Api$Endpoint$GetHistoryResponse = function (values) {
+	return {values: values};
+};
+var $author$project$Models$Node$Node = F3(
+	function (id, labels, props) {
+		return {id: id, labels: labels, props: props};
+	});
+var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$custom = $elm$json$Json$Decode$map2($elm$core$Basics$apR);
+var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required = F3(
+	function (key, valDecoder, decoder) {
+		return A2(
+			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$custom,
+			A2($elm$json$Json$Decode$field, key, valDecoder),
+			decoder);
+	});
+var $author$project$Models$Node$nodeDecoder = A3(
+	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+	'Props',
+	$elm$json$Json$Decode$dict($elm$json$Json$Decode$value),
+	A3(
+		$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+		'Labels',
+		$elm$json$Json$Decode$list($elm$json$Json$Decode$string),
+		A3(
+			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+			'Id',
+			$elm$json$Json$Decode$int,
+			$elm$json$Json$Decode$succeed($author$project$Models$Node$Node))));
+var $author$project$Models$Relation$Relation = F4(
+	function (startId, endId, relType, props) {
+		return {endId: endId, props: props, relType: relType, startId: startId};
+	});
+var $author$project$Models$Relation$relationDecoder = A3(
+	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+	'Props',
+	$elm$json$Json$Decode$dict($elm$json$Json$Decode$value),
+	A3(
+		$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+		'Type',
+		$elm$json$Json$Decode$string,
+		A3(
+			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+			'EndId',
+			$elm$json$Json$Decode$int,
+			A3(
+				$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+				'StartId',
+				$elm$json$Json$Decode$int,
+				$elm$json$Json$Decode$succeed($author$project$Models$Relation$Relation)))));
+var $author$project$Api$Endpoint$getHistoryResponseDecoder = A3(
+	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+	'Values',
+	$elm$json$Json$Decode$list(
+		A3(
+			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+			'Relationships',
+			$elm$json$Json$Decode$list($author$project$Models$Relation$relationDecoder),
+			A3(
+				$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+				'Nodes',
+				$elm$json$Json$Decode$list($author$project$Models$Node$nodeDecoder),
+				$elm$json$Json$Decode$succeed(
+					function (nodes) {
+						return function (relationships) {
+							return {nodes: nodes, relationships: relationships};
+						};
+					})))),
+	$elm$json$Json$Decode$succeed($author$project$Api$Endpoint$GetHistoryResponse));
 var $elm$http$Http$Request = function (a) {
 	return {$: 'Request', a: a};
 };
@@ -11514,7 +11589,7 @@ var $author$project$Pages$Trace$update = F2(
 					$author$project$Api$Endpoint$request(
 						{
 							body: $elm$http$Http$emptyBody,
-							expect: $elm$http$Http$expectString($author$project$Pages$Trace$GotHistory),
+							expect: A2($elm$http$Http$expectJson, $author$project$Pages$Trace$GotHistory, $author$project$Api$Endpoint$getHistoryResponseDecoder),
 							headers: _List_Nil,
 							method: 'GET',
 							timeout: $elm$core$Maybe$Nothing,
@@ -14291,6 +14366,8 @@ var $rtfeldman$elm_css$Html$Styled$Events$onInput = function (tagger) {
 			A2($elm$json$Json$Decode$map, tagger, $rtfeldman$elm_css$Html$Styled$Events$targetValue)));
 };
 var $rtfeldman$elm_css$Html$Styled$p = $rtfeldman$elm_css$Html$Styled$node('p');
+var $rtfeldman$elm_css$Html$Styled$pre = $rtfeldman$elm_css$Html$Styled$node('pre');
+var $elm$core$Debug$toString = _Debug_toString;
 var $rtfeldman$elm_css$Html$Styled$Attributes$value = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('value');
 var $author$project$Pages$Trace$view = function (model) {
 	return {
@@ -14362,25 +14439,42 @@ var $author$project$Pages$Trace$view = function (model) {
 											_List_Nil,
 											_List_fromArray(
 												[
-													$rtfeldman$elm_css$Html$Styled$text(val)
+													$rtfeldman$elm_css$Html$Styled$text(
+													$elm$core$Debug$toString(val))
 												]))
 										]))
 								]));
 					} else {
 						var error = response.a;
 						var _v2 = A2($elm$core$Debug$log, 'HTTP ERROR: ', error);
-						return _Utils_ap(
-							basicHeader,
-							_List_fromArray(
-								[
-									A2(
-									$rtfeldman$elm_css$Html$Styled$div,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$rtfeldman$elm_css$Html$Styled$text('An error occurred while trying to get the product history!')
-										]))
-								]));
+						if (error.$ === 'BadBody') {
+							var debugError = error.a;
+							return _Utils_ap(
+								basicHeader,
+								_List_fromArray(
+									[
+										A2(
+										$rtfeldman$elm_css$Html$Styled$pre,
+										_List_Nil,
+										_List_fromArray(
+											[
+												$rtfeldman$elm_css$Html$Styled$text(debugError)
+											]))
+									]));
+						} else {
+							return _Utils_ap(
+								basicHeader,
+								_List_fromArray(
+									[
+										A2(
+										$rtfeldman$elm_css$Html$Styled$div,
+										_List_Nil,
+										_List_fromArray(
+											[
+												$rtfeldman$elm_css$Html$Styled$text('An error occurred while trying to get the product history!')
+											]))
+									]));
+						}
 					}
 				}
 			}
@@ -14428,4 +14522,4 @@ var $author$project$Main$view = function (model) {
 };
 var $author$project$Main$main = $elm$browser$Browser$application(
 	{init: $author$project$Main$init, onUrlChange: $author$project$Main$UrlChanged, onUrlRequest: $author$project$Main$LinkClicked, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
-_Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$string)({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Url.Url":{"args":[],"type":"{ protocol : Url.Protocol, host : String.String, port_ : Maybe.Maybe Basics.Int, path : String.String, query : Maybe.Maybe String.String, fragment : Maybe.Maybe String.String }"},"Pages.Trace.APIResponse":{"args":[],"type":"Result.Result Http.Error String.String"}},"unions":{"Main.Msg":{"args":[],"tags":{"UrlChanged":["Url.Url"],"LinkClicked":["Browser.UrlRequest"],"HomeMsg":["Pages.Home.Msg"],"NotFoundMsg":["Pages.NotFound.Msg"],"ReportMsg":["Pages.Report.Msg"],"StatsMsg":["Pages.Stats.Msg"],"TraceMsg":["Pages.Trace.Msg"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Pages.Home.Msg":{"args":[],"tags":{"None":[]}},"Pages.NotFound.Msg":{"args":[],"tags":{"None":[]}},"Pages.Report.Msg":{"args":[],"tags":{"None":[]}},"Pages.Stats.Msg":{"args":[],"tags":{"None":[]}},"Pages.Trace.Msg":{"args":[],"tags":{"SearchClicked":[],"GotHistory":["Pages.Trace.APIResponse"],"ProductIdChanged":["String.String"]}},"Url.Protocol":{"args":[],"tags":{"Http":[],"Https":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Browser.UrlRequest":{"args":[],"tags":{"Internal":["Url.Url"],"External":["String.String"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}}}}})}});}(this));
+_Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$string)({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Url.Url":{"args":[],"type":"{ protocol : Url.Protocol, host : String.String, port_ : Maybe.Maybe Basics.Int, path : String.String, query : Maybe.Maybe String.String, fragment : Maybe.Maybe String.String }"},"Pages.Trace.APIResponse":{"args":[],"type":"Result.Result Http.Error Api.Endpoint.GetHistoryResponse"},"Api.Endpoint.GetHistoryResponse":{"args":[],"type":"{ values : List.List { nodes : List.List Models.Node.Node, relationships : List.List Models.Relation.Relation } }"},"Models.Node.Node":{"args":[],"type":"{ id : Basics.Int, labels : List.List String.String, props : Dict.Dict String.String Json.Decode.Value }"},"Models.Relation.Relation":{"args":[],"type":"{ startId : Basics.Int, endId : Basics.Int, relType : String.String, props : Dict.Dict String.String Json.Decode.Value }"},"Json.Decode.Value":{"args":[],"type":"Json.Encode.Value"}},"unions":{"Main.Msg":{"args":[],"tags":{"UrlChanged":["Url.Url"],"LinkClicked":["Browser.UrlRequest"],"HomeMsg":["Pages.Home.Msg"],"NotFoundMsg":["Pages.NotFound.Msg"],"ReportMsg":["Pages.Report.Msg"],"StatsMsg":["Pages.Stats.Msg"],"TraceMsg":["Pages.Trace.Msg"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Pages.Home.Msg":{"args":[],"tags":{"None":[]}},"Pages.NotFound.Msg":{"args":[],"tags":{"None":[]}},"Pages.Report.Msg":{"args":[],"tags":{"None":[]}},"Pages.Stats.Msg":{"args":[],"tags":{"None":[]}},"Pages.Trace.Msg":{"args":[],"tags":{"SearchClicked":[],"GotHistory":["Pages.Trace.APIResponse"],"ProductIdChanged":["String.String"]}},"Url.Protocol":{"args":[],"tags":{"Http":[],"Https":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Browser.UrlRequest":{"args":[],"tags":{"Internal":["Url.Url"],"External":["String.String"]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"List.List":{"args":["a"],"tags":{}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Json.Encode.Value":{"args":[],"tags":{"Value":[]}},"Dict.NColor":{"args":[],"tags":{"Red":[],"Black":[]}}}}})}});}(this));

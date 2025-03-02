@@ -1,15 +1,16 @@
 module Pages.Trace exposing (..)
 
-import Api.Endpoint exposing (getHistory, request)
-import Html.Styled exposing (button, div, h1, input, text)
+import Api.Endpoint exposing (GetHistoryResponse, getHistory, getHistoryResponseDecoder, request)
+import Html.Styled exposing (button, div, h1, input, pre, text)
 import Html.Styled.Attributes exposing (value)
 import Html.Styled.Events exposing (onClick, onInput)
 import Http
+import Json.Decode as Decode
 import Utils exposing (StyledDocument)
 
 
 type alias APIResponse =
-    Result Http.Error String
+    Result Http.Error GetHistoryResponse
 
 
 type alias Model =
@@ -17,6 +18,11 @@ type alias Model =
     , isLoading : Bool
     , history : Maybe APIResponse
     }
+
+
+exampleResponse : String
+exampleResponse =
+    "{\"Values\":[{\"Nodes\":[{\"Id\":4152,\"ElementId\":\"4:5eaea7dc-9320-449f-993e-45d993464520:4152\",\"Labels\":[\"Provider\"],\"Props\":{\"created_at\":\"05/08/2000\",\"email\":\"ksenchenkoi8@issuu.com\",\"id\":\"657\",\"name\":\"Feeney-Ward\",\"owner\":\"Kit Senchenko\"}},{\"Id\":2776,\"ElementId\":\"4:5eaea7dc-9320-449f-993e-45d993464520:2776\",\"Labels\":[\"Product\"],\"Props\":{\"brand\":\"Vertex\",\"category\":\"Electronics\",\"id\":\"5\",\"name\":\"Smartphone\",\"weight\":\"3.24\"}}],\"Relationships\":[{\"Id\":1155175503443791928,\"ElementId\":\"5:5eaea7dc-9320-449f-993e-45d993464520:1155175503443791928\",\"StartId\":4152,\"StartElementId\":\"4:5eaea7dc-9320-449f-993e-45d993464520:4152\",\"EndId\":2776,\"EndElementId\":\"4:5eaea7dc-9320-449f-993e-45d993464520:2776\",\"Type\":\"PRODUCES\",\"Props\":{\"max_quantity\":31,\"since\":{},\"speed\":2}}]}],\"Keys\":[\"p1\"]}"
 
 
 init : ( Model, Cmd Msg )
@@ -39,6 +45,14 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         SearchClicked ->
+            -- Local Parsing
+            -- Currently doesn't work because of emulating Http.error
+            -- let
+            --     response =
+            --         Decode.decodeString getHistoryResponseDecoder exampleResponse
+            -- in
+            -- ( { model | history = Just (Ok response) }, Cmd.none )
+            -- API Parsing
             ( { model | isLoading = True }
             , request
                 { url = getHistory model.productId
@@ -47,7 +61,7 @@ update msg model =
                 , tracker = Nothing
                 , headers = []
                 , body = Http.emptyBody
-                , expect = Http.expectString GotHistory
+                , expect = Http.expectJson GotHistory getHistoryResponseDecoder
                 }
             )
 
@@ -89,7 +103,7 @@ view model =
                         Ok val ->
                             basicHeader
                                 ++ [ div []
-                                        [ Html.Styled.p [] [ text val ]
+                                        [ Html.Styled.p [] [ text (Debug.toString val) ]
                                         ]
                                    ]
 
@@ -98,7 +112,14 @@ view model =
                                 _ =
                                     Debug.log "HTTP ERROR: " error
                             in
-                            basicHeader
-                                ++ [ div [] [ text "An error occurred while trying to get the product history!" ]
-                                   ]
+                            case error of
+                                Http.BadBody debugError ->
+                                    basicHeader
+                                        ++ [ pre [] [ text debugError ]
+                                           ]
+
+                                _ ->
+                                    basicHeader
+                                        ++ [ div [] [ text "An error occurred while trying to get the product history!" ]
+                                           ]
     }
