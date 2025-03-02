@@ -2,6 +2,6 @@ version: "0.5"
 
 processes:
   backend:
-    command: cd backend && task dev
+    command: nix develop --command bash -c "cd backend && task dev"
   frontend:
-    command: cd frontend && task dev
+    command: nix develop --command bash -c "cd frontend && task dev"

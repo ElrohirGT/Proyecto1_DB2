@@ -23,19 +23,7 @@
     in {
       default = pkgs.writeShellApplication {
         name = "dev-env";
-        runtimeInputs = [
-          # Frontend
-          pkgs.elmPackages.elm
-          pkgs.elmPackages.elm-live
-
-          # Backend
-          pkgs.go-task
-          pkgs.go
-          pkgs.air
-
-          # Dev
-          pkgs.process-compose
-        ];
+        runtimeInputs = [pkgs.process-compose];
 
         text = ''
           process-compose -f ./process-compose.yaml
