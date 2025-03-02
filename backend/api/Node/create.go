@@ -13,8 +13,8 @@ import (
 
 
 type NodeRequest struct {
-	NodeType   string         json:"NodeType"
-	Properties map[string]any json:"Properties"
+	NodeType   string         `json:"NodeType"`
+	Properties map[string]any `json:"Properties"`
 }
 
 func NewCreateNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
@@ -30,7 +30,7 @@ func NewCreateNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 
 		if req.NodeType == "" || len(req.Properties) == 0 {
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("400 Bad Request - NodeType y Properties son requeridos"))
+			w.Write([]byte("400 Bad Request - `NodeType` y `Properties` son requeridos"))
 			return
 		}
 
@@ -55,25 +55,25 @@ func NewCreateNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 
 		query := queryBuilder.String()
 
-		log.Info().Str("query", query).Msg("Creando nodo en Neo4j...")
+		log.Info().Str("query", query).Msg("⏳ Creando nodo en Neo4j...")
 		result, err := neo4j.ExecuteQuery(ctx, *client, query, params, neo4j.EagerResultTransformer, neo4j.ExecuteQueryWithDatabase("neo4j"))
 
 		if err != nil {
-			log.Error().Err(err).Msg("Error al crear el nodo en Neo4j")
+			log.Error().Err(err).Msg("❌ Error al crear el nodo en Neo4j")
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(fmt.Sprintf("500 Internal Server Error - Neo4j Create Error: %s", err.Error())))
 			return
 		}
 
 		if len(result.Records) == 0 {
-			log.Warn().Msg(" No se pudo crear el nodo")
+			log.Warn().Msg("⚠ No se pudo crear el nodo")
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("500 ERROR - Node was not created"))
 			return
 		}
 		
 		record := result.Records[0]
-		createdNode, found := record.Get("n") 
+		createdNode, found := record.Get("n")
 		
 		if !found {
 			log.Warn().Msg("⚠ No se pudo recuperar el nodo creado")
@@ -82,7 +82,10 @@ func NewCreateNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 			return
 		}
 		
+		// ✅ Enviar respuesta con el nodo creado
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(createdNode)
+
 	}
+		
 }

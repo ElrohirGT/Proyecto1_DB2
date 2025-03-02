@@ -18,6 +18,10 @@ type DeleteRelationRequest struct {
 	Relation        utils.Neo4JObject `json:"Relation"`
 }
 
+type DeleteResponse struct {
+	DeletedRelation map[string]any `json:"DeletedRelation"`
+}
+
 func NewDeleteRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.Background()
@@ -73,7 +77,8 @@ func NewDeleteRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc 
 			queryBuilder.WriteString(key)
 			i++
 		}
-		queryBuilder.WriteString("}) DELETE r RETURN r")
+		// Aquí cambiamos DELETE r por DELETE r RETURN properties(r) AS deletedRelation
+		queryBuilder.WriteString("}) RETURN properties(r) AS deletedRelation, type(r) AS relationType, startNode(r) AS startNode, endNode(r) AS endNode")
 
 		query := queryBuilder.String()
 
@@ -89,7 +94,7 @@ func NewDeleteRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc 
 			params["n2_"+property] = val
 		}
 
-		log.Info().Str("query", query).Msg("Eliminando relación en Neo4j...")
+		log.Info().Str("query", query).Msg("Buscando y eliminando relación en Neo4j...")
 		result, err := neo4j.ExecuteQuery(ctx, *client, query, params, neo4j.EagerResultTransformer, neo4j.ExecuteQueryWithDatabase("neo4j"))
 
 		if err != nil {
@@ -106,7 +111,25 @@ func NewDeleteRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc 
 			return
 		}
 
+		record := result.Records[0]
+		deletedRelation, _ := record.Get("deletedRelation")
+		relationType, _ := record.Get("relationType")
+		startNode, _ := record.Get("startNode")
+		endNode, _ := record.Get("endNode")
+
+		response := DeleteResponse{
+			DeletedRelation: map[string]any{
+				"type":       relationType,
+				"properties": deletedRelation,
+				"startNode":  startNode,
+				"endNode":    endNode,
+			},
+		}
+
+		log.Info().Interface("Deleted Relation", response).Msg("Relación eliminada correctamente")
+
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("RELATION DELETED SUCCESSFULLY"))
+		json.NewEncoder(w).Encode(response)
 	}
 }

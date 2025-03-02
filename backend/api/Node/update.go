@@ -12,9 +12,14 @@ import (
 )
 
 type UpdateNodeRequest struct {
-	NodeType    string         `json:"NodeType"`     
-	Identifier  map[string]any `json:"Identifier"`   
-	Properties  map[string]any `json:"Properties"`   
+	NodeType   string         `json:"NodeType"`
+	Identifier map[string]any `json:"Identifier"`
+	Properties map[string]any `json:"Properties"`
+}
+
+type UpdateResponse struct {
+	Before map[string]any `json:"Before"`
+	After  map[string]any `json:"After"`
 }
 
 func NewUpdateNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
@@ -26,7 +31,7 @@ func NewUpdateNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 			w.Write([]byte("405 Method Not Allowed - Use PUT"))
 			return
 		}
-	
+
 		var req UpdateNodeRequest
 		err := json.NewDecoder(r.Body).Decode(&req)
 		if err != nil {
@@ -45,15 +50,13 @@ func NewUpdateNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 		matchBuilder.WriteString("MATCH (n:")
 		matchBuilder.WriteString(req.NodeType)
 		matchBuilder.WriteString(" {")
-
 		params := make(map[string]any)
+
 		i := 1
 		for key, value := range req.Identifier {
 			matchBuilder.WriteString(key)
-			matchBuilder.WriteString(": $")
-			matchBuilder.WriteString("id_" + key)
+			matchBuilder.WriteString(": $id_" + key)
 			params["id_"+key] = value
-
 			if i < len(req.Identifier) {
 				matchBuilder.WriteString(", ")
 			}
@@ -67,29 +70,43 @@ func NewUpdateNodeHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 		for key, value := range req.Properties {
 			setBuilder.WriteString("n.")
 			setBuilder.WriteString(key)
-			setBuilder.WriteString(" = $")
-			setBuilder.WriteString("prop_" + key)
+			setBuilder.WriteString(" = $prop_" + key)
 			params["prop_"+key] = value
-
 			if i < len(req.Properties) {
 				setBuilder.WriteString(", ")
 			}
 			i++
 		}
 
-		query := matchBuilder.String() + setBuilder.String() + " RETURN n"
+		query := matchBuilder.String() + "WITH n, properties(n) AS beforeUpdate " + setBuilder.String() + " RETURN beforeUpdate, properties(n) AS afterUpdate"
 
-		log.Info().Str("query", query).Msg("⏳ Ejecutando consulta de actualización en Neo4j...")
-		_, err = neo4j.ExecuteQuery(ctx, *client, query, params, neo4j.EagerResultTransformer, neo4j.ExecuteQueryWithDatabase("neo4j"))
+		log.Info().Str("query", query).Msg("Ejecutando consulta de actualización en Neo4j...")
+		result, err := neo4j.ExecuteQuery(ctx, *client, query, params, neo4j.EagerResultTransformer, neo4j.ExecuteQueryWithDatabase("neo4j"))
 
 		if err != nil {
-			log.Error().Err(err).Msg("❌ Error actualizando en Neo4j")
+			log.Error().Err(err).Msg("Error actualizando en Neo4j")
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(fmt.Sprintf("500 Internal Server Error - Neo4j Update Error: %s", err.Error())))
 			return
 		}
 
+		if len(result.Records) == 0 {
+			w.WriteHeader(http.StatusNotFound)
+			w.Write([]byte("404 Not Found - Nodo no encontrado"))
+			return
+		}
+
+		record := result.Records[0]
+		beforeUpdate, _ := record.Get("beforeUpdate")
+		afterUpdate, _ := record.Get("afterUpdate")
+
+		response := UpdateResponse{
+			Before: beforeUpdate.(map[string]any),
+			After:  afterUpdate.(map[string]any),
+		}
+
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("✅ NODE UPDATED SUCCESSFULLY"))
+		json.NewEncoder(w).Encode(response)
 	}
 }
