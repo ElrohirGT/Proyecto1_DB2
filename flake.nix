@@ -21,6 +21,30 @@
     packages = forAllSystems (system: let
       pkgs = nixpkgsFor.${system};
     in {
+      default = pkgs.writeShellApplication {
+        runtimeInputs = [
+          # Frontend
+          pkgs.elmPackages.elm
+          pkgs.elmPackages.elm-live
+
+          # Backend
+          pkgs.go-task
+          pkgs.go
+          pkgs.air
+
+          # Dev
+          pkgs.process-compose
+        ];
+
+        text = ''
+          process-compose -f ./process-compose.yaml
+        '';
+      };
+    });
+
+    devShells = forAllSystems (system: let
+      pkgs = nixpkgsFor.${system};
+    in {
       default = pkgs.mkShell {
         packages = [
           # Frontend
@@ -31,6 +55,9 @@
           pkgs.go-task
           pkgs.go
           pkgs.air
+
+          # Dev
+          pkgs.process-compose
         ];
       };
     });

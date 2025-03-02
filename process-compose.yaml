@@ -1,0 +1,7 @@
+version: "0.5"
+
+processes:
+  backend:
+    command: cd backend && task dev
+  frontend:
+    command: cd frontend && task dev
