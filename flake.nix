@@ -22,6 +22,7 @@
       pkgs = nixpkgsFor.${system};
     in {
       default = pkgs.writeShellApplication {
+        name = "dev-env";
         runtimeInputs = [
           # Frontend
           pkgs.elmPackages.elm
