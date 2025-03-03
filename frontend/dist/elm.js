@@ -4955,23 +4955,6 @@ function _Browser_load(url)
 }
 
 
-function _Url_percentEncode(string)
-{
-	return encodeURIComponent(string);
-}
-
-function _Url_percentDecode(string)
-{
-	try
-	{
-		return $elm$core$Maybe$Just(decodeURIComponent(string));
-	}
-	catch (e)
-	{
-		return $elm$core$Maybe$Nothing;
-	}
-}
-
 
 // SEND REQUEST
 
@@ -5145,6 +5128,23 @@ function _Http_track(router, xhr, tracker)
 			size: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
+}
+
+function _Url_percentEncode(string)
+{
+	return encodeURIComponent(string);
+}
+
+function _Url_percentDecode(string)
+{
+	try
+	{
+		return $elm$core$Maybe$Just(decodeURIComponent(string));
+	}
+	catch (e)
+	{
+		return $elm$core$Maybe$Nothing;
+	}
 }var $author$project$Main$LinkClicked = function (a) {
 	return {$: 'LinkClicked', a: a};
 };
@@ -10795,9 +10795,361 @@ var $author$project$Pages$NotFound$init = _Utils_Tuple2(
 var $author$project$Pages$Report$init = _Utils_Tuple2(
 	{},
 	$elm$core$Platform$Cmd$none);
+var $author$project$Pages$Stats$StatsReceived = function (a) {
+	return {$: 'StatsReceived', a: a};
+};
+var $elm$http$Http$BadStatus_ = F2(
+	function (a, b) {
+		return {$: 'BadStatus_', a: a, b: b};
+	});
+var $elm$http$Http$BadUrl_ = function (a) {
+	return {$: 'BadUrl_', a: a};
+};
+var $elm$http$Http$GoodStatus_ = F2(
+	function (a, b) {
+		return {$: 'GoodStatus_', a: a, b: b};
+	});
+var $elm$http$Http$NetworkError_ = {$: 'NetworkError_'};
+var $elm$http$Http$Receiving = function (a) {
+	return {$: 'Receiving', a: a};
+};
+var $elm$http$Http$Sending = function (a) {
+	return {$: 'Sending', a: a};
+};
+var $elm$http$Http$Timeout_ = {$: 'Timeout_'};
+var $elm$core$Maybe$isJust = function (maybe) {
+	if (maybe.$ === 'Just') {
+		return true;
+	} else {
+		return false;
+	}
+};
+var $elm$core$Platform$sendToSelf = _Platform_sendToSelf;
+var $elm$http$Http$emptyBody = _Http_emptyBody;
+var $elm$http$Http$expectStringResponse = F2(
+	function (toMsg, toResult) {
+		return A3(
+			_Http_expect,
+			'',
+			$elm$core$Basics$identity,
+			A2($elm$core$Basics$composeR, toResult, toMsg));
+	});
+var $elm$core$Result$mapError = F2(
+	function (f, result) {
+		if (result.$ === 'Ok') {
+			var v = result.a;
+			return $elm$core$Result$Ok(v);
+		} else {
+			var e = result.a;
+			return $elm$core$Result$Err(
+				f(e));
+		}
+	});
+var $elm$http$Http$BadBody = function (a) {
+	return {$: 'BadBody', a: a};
+};
+var $elm$http$Http$BadStatus = function (a) {
+	return {$: 'BadStatus', a: a};
+};
+var $elm$http$Http$BadUrl = function (a) {
+	return {$: 'BadUrl', a: a};
+};
+var $elm$http$Http$NetworkError = {$: 'NetworkError'};
+var $elm$http$Http$Timeout = {$: 'Timeout'};
+var $elm$http$Http$resolve = F2(
+	function (toResult, response) {
+		switch (response.$) {
+			case 'BadUrl_':
+				var url = response.a;
+				return $elm$core$Result$Err(
+					$elm$http$Http$BadUrl(url));
+			case 'Timeout_':
+				return $elm$core$Result$Err($elm$http$Http$Timeout);
+			case 'NetworkError_':
+				return $elm$core$Result$Err($elm$http$Http$NetworkError);
+			case 'BadStatus_':
+				var metadata = response.a;
+				return $elm$core$Result$Err(
+					$elm$http$Http$BadStatus(metadata.statusCode));
+			default:
+				var body = response.b;
+				return A2(
+					$elm$core$Result$mapError,
+					$elm$http$Http$BadBody,
+					toResult(body));
+		}
+	});
+var $elm$http$Http$expectJson = F2(
+	function (toMsg, decoder) {
+		return A2(
+			$elm$http$Http$expectStringResponse,
+			toMsg,
+			$elm$http$Http$resolve(
+				function (string) {
+					return A2(
+						$elm$core$Result$mapError,
+						$elm$json$Json$Decode$errorToString,
+						A2($elm$json$Json$Decode$decodeString, decoder, string));
+				}));
+	});
+var $author$project$Api$Endpoint$Endpoint = function (a) {
+	return {$: 'Endpoint', a: a};
+};
+var $elm$url$Url$Builder$toQueryPair = function (_v0) {
+	var key = _v0.a;
+	var value = _v0.b;
+	return key + ('=' + value);
+};
+var $elm$url$Url$Builder$toQuery = function (parameters) {
+	if (!parameters.b) {
+		return '';
+	} else {
+		return '?' + A2(
+			$elm$core$String$join,
+			'&',
+			A2($elm$core$List$map, $elm$url$Url$Builder$toQueryPair, parameters));
+	}
+};
+var $elm$url$Url$Builder$crossOrigin = F3(
+	function (prePath, pathSegments, parameters) {
+		return prePath + ('/' + (A2($elm$core$String$join, '/', pathSegments) + $elm$url$Url$Builder$toQuery(parameters)));
+	});
+var $author$project$Api$Endpoint$url = F2(
+	function (paths, queryParams) {
+		return $author$project$Api$Endpoint$Endpoint(
+			A3($elm$url$Url$Builder$crossOrigin, 'http://localhost:8080', paths, queryParams));
+	});
+var $author$project$Api$Endpoint$getStats = A2(
+	$author$project$Api$Endpoint$url,
+	_List_fromArray(
+		['statistics']),
+	_List_Nil);
+var $author$project$Api$Endpoint$GetStatsResponse = F3(
+	function (topProducts, topProviders, topPurchasedProducts) {
+		return {topProducts: topProducts, topProviders: topProviders, topPurchasedProducts: topPurchasedProducts};
+	});
+var $author$project$Models$Product$Product = F2(
+	function (name, averageRating) {
+		return {averageRating: averageRating, name: name};
+	});
+var $author$project$Models$Product$productDecoder = A3(
+	$elm$json$Json$Decode$map2,
+	$author$project$Models$Product$Product,
+	A2($elm$json$Json$Decode$field, 'name', $elm$json$Json$Decode$string),
+	A2($elm$json$Json$Decode$field, 'average_rating', $elm$json$Json$Decode$float));
+var $author$project$Models$Provider$Provider = F2(
+	function (name, popularity) {
+		return {name: name, popularity: popularity};
+	});
+var $author$project$Models$Provider$providerDecoder = A3(
+	$elm$json$Json$Decode$map2,
+	$author$project$Models$Provider$Provider,
+	A2($elm$json$Json$Decode$field, 'name', $elm$json$Json$Decode$string),
+	A2($elm$json$Json$Decode$field, 'popularity', $elm$json$Json$Decode$int));
+var $author$project$Models$PurchasedProduct$PurchasedProduct = F3(
+	function (productName, productId, purchases) {
+		return {productId: productId, productName: productName, purchases: purchases};
+	});
+var $author$project$Models$PurchasedProduct$purchasedProductDecoder = A4(
+	$elm$json$Json$Decode$map3,
+	$author$project$Models$PurchasedProduct$PurchasedProduct,
+	A2($elm$json$Json$Decode$field, 'product_name', $elm$json$Json$Decode$string),
+	A2($elm$json$Json$Decode$field, 'product_id', $elm$json$Json$Decode$string),
+	A2($elm$json$Json$Decode$field, 'purchases', $elm$json$Json$Decode$int));
+var $author$project$Api$Endpoint$getStatsResponseDecoder = A4(
+	$elm$json$Json$Decode$map3,
+	$author$project$Api$Endpoint$GetStatsResponse,
+	A2(
+		$elm$json$Json$Decode$field,
+		'top_products',
+		$elm$json$Json$Decode$list($author$project$Models$Product$productDecoder)),
+	A2(
+		$elm$json$Json$Decode$field,
+		'top_providers',
+		$elm$json$Json$Decode$list($author$project$Models$Provider$providerDecoder)),
+	A2(
+		$elm$json$Json$Decode$field,
+		'top_purchased_products',
+		$elm$json$Json$Decode$list($author$project$Models$PurchasedProduct$purchasedProductDecoder)));
+var $elm$http$Http$Request = function (a) {
+	return {$: 'Request', a: a};
+};
+var $elm$http$Http$State = F2(
+	function (reqs, subs) {
+		return {reqs: reqs, subs: subs};
+	});
+var $elm$http$Http$init = $elm$core$Task$succeed(
+	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
+var $elm$core$Process$kill = _Scheduler_kill;
+var $elm$core$Process$spawn = _Scheduler_spawn;
+var $elm$http$Http$updateReqs = F3(
+	function (router, cmds, reqs) {
+		updateReqs:
+		while (true) {
+			if (!cmds.b) {
+				return $elm$core$Task$succeed(reqs);
+			} else {
+				var cmd = cmds.a;
+				var otherCmds = cmds.b;
+				if (cmd.$ === 'Cancel') {
+					var tracker = cmd.a;
+					var _v2 = A2($elm$core$Dict$get, tracker, reqs);
+					if (_v2.$ === 'Nothing') {
+						var $temp$router = router,
+							$temp$cmds = otherCmds,
+							$temp$reqs = reqs;
+						router = $temp$router;
+						cmds = $temp$cmds;
+						reqs = $temp$reqs;
+						continue updateReqs;
+					} else {
+						var pid = _v2.a;
+						return A2(
+							$elm$core$Task$andThen,
+							function (_v3) {
+								return A3(
+									$elm$http$Http$updateReqs,
+									router,
+									otherCmds,
+									A2($elm$core$Dict$remove, tracker, reqs));
+							},
+							$elm$core$Process$kill(pid));
+					}
+				} else {
+					var req = cmd.a;
+					return A2(
+						$elm$core$Task$andThen,
+						function (pid) {
+							var _v4 = req.tracker;
+							if (_v4.$ === 'Nothing') {
+								return A3($elm$http$Http$updateReqs, router, otherCmds, reqs);
+							} else {
+								var tracker = _v4.a;
+								return A3(
+									$elm$http$Http$updateReqs,
+									router,
+									otherCmds,
+									A3($elm$core$Dict$insert, tracker, pid, reqs));
+							}
+						},
+						$elm$core$Process$spawn(
+							A3(
+								_Http_toTask,
+								router,
+								$elm$core$Platform$sendToApp(router),
+								req)));
+				}
+			}
+		}
+	});
+var $elm$http$Http$onEffects = F4(
+	function (router, cmds, subs, state) {
+		return A2(
+			$elm$core$Task$andThen,
+			function (reqs) {
+				return $elm$core$Task$succeed(
+					A2($elm$http$Http$State, reqs, subs));
+			},
+			A3($elm$http$Http$updateReqs, router, cmds, state.reqs));
+	});
+var $elm$http$Http$maybeSend = F4(
+	function (router, desiredTracker, progress, _v0) {
+		var actualTracker = _v0.a;
+		var toMsg = _v0.b;
+		return _Utils_eq(desiredTracker, actualTracker) ? $elm$core$Maybe$Just(
+			A2(
+				$elm$core$Platform$sendToApp,
+				router,
+				toMsg(progress))) : $elm$core$Maybe$Nothing;
+	});
+var $elm$http$Http$onSelfMsg = F3(
+	function (router, _v0, state) {
+		var tracker = _v0.a;
+		var progress = _v0.b;
+		return A2(
+			$elm$core$Task$andThen,
+			function (_v1) {
+				return $elm$core$Task$succeed(state);
+			},
+			$elm$core$Task$sequence(
+				A2(
+					$elm$core$List$filterMap,
+					A3($elm$http$Http$maybeSend, router, tracker, progress),
+					state.subs)));
+	});
+var $elm$http$Http$Cancel = function (a) {
+	return {$: 'Cancel', a: a};
+};
+var $elm$http$Http$cmdMap = F2(
+	function (func, cmd) {
+		if (cmd.$ === 'Cancel') {
+			var tracker = cmd.a;
+			return $elm$http$Http$Cancel(tracker);
+		} else {
+			var r = cmd.a;
+			return $elm$http$Http$Request(
+				{
+					allowCookiesFromOtherDomains: r.allowCookiesFromOtherDomains,
+					body: r.body,
+					expect: A2(_Http_mapExpect, func, r.expect),
+					headers: r.headers,
+					method: r.method,
+					timeout: r.timeout,
+					tracker: r.tracker,
+					url: r.url
+				});
+		}
+	});
+var $elm$http$Http$MySub = F2(
+	function (a, b) {
+		return {$: 'MySub', a: a, b: b};
+	});
+var $elm$http$Http$subMap = F2(
+	function (func, _v0) {
+		var tracker = _v0.a;
+		var toMsg = _v0.b;
+		return A2(
+			$elm$http$Http$MySub,
+			tracker,
+			A2($elm$core$Basics$composeR, toMsg, func));
+	});
+_Platform_effectManagers['Http'] = _Platform_createManager($elm$http$Http$init, $elm$http$Http$onEffects, $elm$http$Http$onSelfMsg, $elm$http$Http$cmdMap, $elm$http$Http$subMap);
+var $elm$http$Http$command = _Platform_leaf('Http');
+var $elm$http$Http$subscription = _Platform_leaf('Http');
+var $elm$http$Http$request = function (r) {
+	return $elm$http$Http$command(
+		$elm$http$Http$Request(
+			{allowCookiesFromOtherDomains: false, body: r.body, expect: r.expect, headers: r.headers, method: r.method, timeout: r.timeout, tracker: r.tracker, url: r.url}));
+};
+var $author$project$Api$Endpoint$unwrap = function (_v0) {
+	var str = _v0.a;
+	return str;
+};
+var $author$project$Api$Endpoint$request = function (config) {
+	return $elm$http$Http$request(
+		{
+			body: config.body,
+			expect: config.expect,
+			headers: config.headers,
+			method: config.method,
+			timeout: config.timeout,
+			tracker: config.tracker,
+			url: $author$project$Api$Endpoint$unwrap(config.url)
+		});
+};
+var $author$project$Pages$Stats$fetchStats = $author$project$Api$Endpoint$request(
+	{
+		body: $elm$http$Http$emptyBody,
+		expect: A2($elm$http$Http$expectJson, $author$project$Pages$Stats$StatsReceived, $author$project$Api$Endpoint$getStatsResponseDecoder),
+		headers: _List_Nil,
+		method: 'GET',
+		timeout: $elm$core$Maybe$Nothing,
+		tracker: $elm$core$Maybe$Nothing,
+		url: $author$project$Api$Endpoint$getStats
+	});
 var $author$project$Pages$Stats$init = _Utils_Tuple2(
-	{},
-	$elm$core$Platform$Cmd$none);
+	{topProducts: _List_Nil, topProviders: _List_Nil, topPurchasedProducts: _List_Nil},
+	$author$project$Pages$Stats$fetchStats);
 var $author$project$Pages$Trace$Model = F3(
 	function (productId, isLoading, history) {
 		return {history: history, isLoading: isLoading, productId: productId};
@@ -11095,7 +11447,7 @@ var $author$project$Pages$NotFound$subscriptions = function (model) {
 var $author$project$Pages$Report$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$none;
 };
-var $author$project$Pages$Stats$subscriptions = function (model) {
+var $author$project$Pages$Stats$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$none;
 };
 var $author$project$Pages$Trace$subscriptions = function (model) {
@@ -11194,107 +11546,30 @@ var $author$project$Pages$Report$update = F2(
 	function (msg, model) {
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 	});
+var $elm$core$Debug$log = _Debug_log;
 var $author$project$Pages$Stats$update = F2(
 	function (msg, model) {
-		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+		if (msg.$ === 'FetchStats') {
+			return _Utils_Tuple2(model, $author$project$Pages$Stats$fetchStats);
+		} else {
+			if (msg.a.$ === 'Ok') {
+				var stats = msg.a.a;
+				var _v1 = A2($elm$core$Debug$log, 'Datos recibidos del backend', stats);
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{topProducts: stats.topProducts, topProviders: stats.topProviders, topPurchasedProducts: stats.topPurchasedProducts}),
+					$elm$core$Platform$Cmd$none);
+			} else {
+				var err = msg.a.a;
+				var _v2 = A2($elm$core$Debug$log, 'Error en la petición HTTP', err);
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+			}
+		}
 	});
 var $author$project$Pages$Trace$GotHistory = function (a) {
 	return {$: 'GotHistory', a: a};
 };
-var $elm$http$Http$BadStatus_ = F2(
-	function (a, b) {
-		return {$: 'BadStatus_', a: a, b: b};
-	});
-var $elm$http$Http$BadUrl_ = function (a) {
-	return {$: 'BadUrl_', a: a};
-};
-var $elm$http$Http$GoodStatus_ = F2(
-	function (a, b) {
-		return {$: 'GoodStatus_', a: a, b: b};
-	});
-var $elm$http$Http$NetworkError_ = {$: 'NetworkError_'};
-var $elm$http$Http$Receiving = function (a) {
-	return {$: 'Receiving', a: a};
-};
-var $elm$http$Http$Sending = function (a) {
-	return {$: 'Sending', a: a};
-};
-var $elm$http$Http$Timeout_ = {$: 'Timeout_'};
-var $elm$core$Maybe$isJust = function (maybe) {
-	if (maybe.$ === 'Just') {
-		return true;
-	} else {
-		return false;
-	}
-};
-var $elm$core$Platform$sendToSelf = _Platform_sendToSelf;
-var $elm$http$Http$emptyBody = _Http_emptyBody;
-var $elm$http$Http$expectStringResponse = F2(
-	function (toMsg, toResult) {
-		return A3(
-			_Http_expect,
-			'',
-			$elm$core$Basics$identity,
-			A2($elm$core$Basics$composeR, toResult, toMsg));
-	});
-var $elm$core$Result$mapError = F2(
-	function (f, result) {
-		if (result.$ === 'Ok') {
-			var v = result.a;
-			return $elm$core$Result$Ok(v);
-		} else {
-			var e = result.a;
-			return $elm$core$Result$Err(
-				f(e));
-		}
-	});
-var $elm$http$Http$BadBody = function (a) {
-	return {$: 'BadBody', a: a};
-};
-var $elm$http$Http$BadStatus = function (a) {
-	return {$: 'BadStatus', a: a};
-};
-var $elm$http$Http$BadUrl = function (a) {
-	return {$: 'BadUrl', a: a};
-};
-var $elm$http$Http$NetworkError = {$: 'NetworkError'};
-var $elm$http$Http$Timeout = {$: 'Timeout'};
-var $elm$http$Http$resolve = F2(
-	function (toResult, response) {
-		switch (response.$) {
-			case 'BadUrl_':
-				var url = response.a;
-				return $elm$core$Result$Err(
-					$elm$http$Http$BadUrl(url));
-			case 'Timeout_':
-				return $elm$core$Result$Err($elm$http$Http$Timeout);
-			case 'NetworkError_':
-				return $elm$core$Result$Err($elm$http$Http$NetworkError);
-			case 'BadStatus_':
-				var metadata = response.a;
-				return $elm$core$Result$Err(
-					$elm$http$Http$BadStatus(metadata.statusCode));
-			default:
-				var body = response.b;
-				return A2(
-					$elm$core$Result$mapError,
-					$elm$http$Http$BadBody,
-					toResult(body));
-		}
-	});
-var $elm$http$Http$expectJson = F2(
-	function (toMsg, decoder) {
-		return A2(
-			$elm$http$Http$expectStringResponse,
-			toMsg,
-			$elm$http$Http$resolve(
-				function (string) {
-					return A2(
-						$elm$core$Result$mapError,
-						$elm$json$Json$Decode$errorToString,
-						A2($elm$json$Json$Decode$decodeString, decoder, string));
-				}));
-	});
 var $elm$url$Url$Builder$QueryParameter = F2(
 	function (a, b) {
 		return {$: 'QueryParameter', a: a, b: b};
@@ -11306,33 +11581,6 @@ var $elm$url$Url$Builder$string = F2(
 			$elm$url$Url$Builder$QueryParameter,
 			$elm$url$Url$percentEncode(key),
 			$elm$url$Url$percentEncode(value));
-	});
-var $author$project$Api$Endpoint$Endpoint = function (a) {
-	return {$: 'Endpoint', a: a};
-};
-var $elm$url$Url$Builder$toQueryPair = function (_v0) {
-	var key = _v0.a;
-	var value = _v0.b;
-	return key + ('=' + value);
-};
-var $elm$url$Url$Builder$toQuery = function (parameters) {
-	if (!parameters.b) {
-		return '';
-	} else {
-		return '?' + A2(
-			$elm$core$String$join,
-			'&',
-			A2($elm$core$List$map, $elm$url$Url$Builder$toQueryPair, parameters));
-	}
-};
-var $elm$url$Url$Builder$crossOrigin = F3(
-	function (prePath, pathSegments, parameters) {
-		return prePath + ('/' + (A2($elm$core$String$join, '/', pathSegments) + $elm$url$Url$Builder$toQuery(parameters)));
-	});
-var $author$project$Api$Endpoint$url = F2(
-	function (paths, queryParams) {
-		return $author$project$Api$Endpoint$Endpoint(
-			A3($elm$url$Url$Builder$crossOrigin, 'http://localhost:8080', paths, queryParams));
 	});
 var $author$project$Api$Endpoint$getHistory = function (productId) {
 	return A2(
@@ -11406,178 +11654,11 @@ var $author$project$Api$Endpoint$getHistoryResponseDecoder = A3(
 				'Nodes',
 				$elm$json$Json$Decode$list($author$project$Models$Node$nodeDecoder),
 				$elm$json$Json$Decode$succeed(
-					function (nodes) {
-						return function (relationships) {
+					F2(
+						function (nodes, relationships) {
 							return {nodes: nodes, relationships: relationships};
-						};
-					})))),
+						}))))),
 	$elm$json$Json$Decode$succeed($author$project$Api$Endpoint$GetHistoryResponse));
-var $elm$http$Http$Request = function (a) {
-	return {$: 'Request', a: a};
-};
-var $elm$http$Http$State = F2(
-	function (reqs, subs) {
-		return {reqs: reqs, subs: subs};
-	});
-var $elm$http$Http$init = $elm$core$Task$succeed(
-	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
-var $elm$core$Process$kill = _Scheduler_kill;
-var $elm$core$Process$spawn = _Scheduler_spawn;
-var $elm$http$Http$updateReqs = F3(
-	function (router, cmds, reqs) {
-		updateReqs:
-		while (true) {
-			if (!cmds.b) {
-				return $elm$core$Task$succeed(reqs);
-			} else {
-				var cmd = cmds.a;
-				var otherCmds = cmds.b;
-				if (cmd.$ === 'Cancel') {
-					var tracker = cmd.a;
-					var _v2 = A2($elm$core$Dict$get, tracker, reqs);
-					if (_v2.$ === 'Nothing') {
-						var $temp$router = router,
-							$temp$cmds = otherCmds,
-							$temp$reqs = reqs;
-						router = $temp$router;
-						cmds = $temp$cmds;
-						reqs = $temp$reqs;
-						continue updateReqs;
-					} else {
-						var pid = _v2.a;
-						return A2(
-							$elm$core$Task$andThen,
-							function (_v3) {
-								return A3(
-									$elm$http$Http$updateReqs,
-									router,
-									otherCmds,
-									A2($elm$core$Dict$remove, tracker, reqs));
-							},
-							$elm$core$Process$kill(pid));
-					}
-				} else {
-					var req = cmd.a;
-					return A2(
-						$elm$core$Task$andThen,
-						function (pid) {
-							var _v4 = req.tracker;
-							if (_v4.$ === 'Nothing') {
-								return A3($elm$http$Http$updateReqs, router, otherCmds, reqs);
-							} else {
-								var tracker = _v4.a;
-								return A3(
-									$elm$http$Http$updateReqs,
-									router,
-									otherCmds,
-									A3($elm$core$Dict$insert, tracker, pid, reqs));
-							}
-						},
-						$elm$core$Process$spawn(
-							A3(
-								_Http_toTask,
-								router,
-								$elm$core$Platform$sendToApp(router),
-								req)));
-				}
-			}
-		}
-	});
-var $elm$http$Http$onEffects = F4(
-	function (router, cmds, subs, state) {
-		return A2(
-			$elm$core$Task$andThen,
-			function (reqs) {
-				return $elm$core$Task$succeed(
-					A2($elm$http$Http$State, reqs, subs));
-			},
-			A3($elm$http$Http$updateReqs, router, cmds, state.reqs));
-	});
-var $elm$http$Http$maybeSend = F4(
-	function (router, desiredTracker, progress, _v0) {
-		var actualTracker = _v0.a;
-		var toMsg = _v0.b;
-		return _Utils_eq(desiredTracker, actualTracker) ? $elm$core$Maybe$Just(
-			A2(
-				$elm$core$Platform$sendToApp,
-				router,
-				toMsg(progress))) : $elm$core$Maybe$Nothing;
-	});
-var $elm$http$Http$onSelfMsg = F3(
-	function (router, _v0, state) {
-		var tracker = _v0.a;
-		var progress = _v0.b;
-		return A2(
-			$elm$core$Task$andThen,
-			function (_v1) {
-				return $elm$core$Task$succeed(state);
-			},
-			$elm$core$Task$sequence(
-				A2(
-					$elm$core$List$filterMap,
-					A3($elm$http$Http$maybeSend, router, tracker, progress),
-					state.subs)));
-	});
-var $elm$http$Http$Cancel = function (a) {
-	return {$: 'Cancel', a: a};
-};
-var $elm$http$Http$cmdMap = F2(
-	function (func, cmd) {
-		if (cmd.$ === 'Cancel') {
-			var tracker = cmd.a;
-			return $elm$http$Http$Cancel(tracker);
-		} else {
-			var r = cmd.a;
-			return $elm$http$Http$Request(
-				{
-					allowCookiesFromOtherDomains: r.allowCookiesFromOtherDomains,
-					body: r.body,
-					expect: A2(_Http_mapExpect, func, r.expect),
-					headers: r.headers,
-					method: r.method,
-					timeout: r.timeout,
-					tracker: r.tracker,
-					url: r.url
-				});
-		}
-	});
-var $elm$http$Http$MySub = F2(
-	function (a, b) {
-		return {$: 'MySub', a: a, b: b};
-	});
-var $elm$http$Http$subMap = F2(
-	function (func, _v0) {
-		var tracker = _v0.a;
-		var toMsg = _v0.b;
-		return A2(
-			$elm$http$Http$MySub,
-			tracker,
-			A2($elm$core$Basics$composeR, toMsg, func));
-	});
-_Platform_effectManagers['Http'] = _Platform_createManager($elm$http$Http$init, $elm$http$Http$onEffects, $elm$http$Http$onSelfMsg, $elm$http$Http$cmdMap, $elm$http$Http$subMap);
-var $elm$http$Http$command = _Platform_leaf('Http');
-var $elm$http$Http$subscription = _Platform_leaf('Http');
-var $elm$http$Http$request = function (r) {
-	return $elm$http$Http$command(
-		$elm$http$Http$Request(
-			{allowCookiesFromOtherDomains: false, body: r.body, expect: r.expect, headers: r.headers, method: r.method, timeout: r.timeout, tracker: r.tracker, url: r.url}));
-};
-var $author$project$Api$Endpoint$unwrap = function (_v0) {
-	var str = _v0.a;
-	return str;
-};
-var $author$project$Api$Endpoint$request = function (config) {
-	return $elm$http$Http$request(
-		{
-			body: config.body,
-			expect: config.expect,
-			headers: config.headers,
-			method: config.method,
-			timeout: config.timeout,
-			tracker: config.tracker,
-			url: $author$project$Api$Endpoint$unwrap(config.url)
-		});
-};
 var $author$project$Pages$Trace$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -14126,6 +14207,7 @@ var $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty = F2(
 var $rtfeldman$elm_css$Html$Styled$Attributes$href = function (url) {
 	return A2($rtfeldman$elm_css$Html$Styled$Attributes$stringProperty, 'href', url);
 };
+var $author$project$Routing$goToStats = $rtfeldman$elm_css$Html$Styled$Attributes$href('/stats');
 var $author$project$Routing$goToTrace = $rtfeldman$elm_css$Html$Styled$Attributes$href('/trace');
 var $rtfeldman$elm_css$Html$Styled$h1 = $rtfeldman$elm_css$Html$Styled$node('h1');
 var $rtfeldman$elm_css$VirtualDom$Styled$text = function (str) {
@@ -14256,12 +14338,32 @@ var $author$project$Pages$Home$view = function (model) {
 								$rtfeldman$elm_css$Html$Styled$text('In Home!')
 							])),
 						A2(
-						$rtfeldman$elm_css$Html$Styled$a,
-						_List_fromArray(
-							[$author$project$Routing$goToTrace]),
+						$rtfeldman$elm_css$Html$Styled$div,
+						_List_Nil,
 						_List_fromArray(
 							[
-								$rtfeldman$elm_css$Html$Styled$text('Go to Trace!')
+								A2(
+								$rtfeldman$elm_css$Html$Styled$a,
+								_List_fromArray(
+									[$author$project$Routing$goToTrace]),
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Html$Styled$text('Go to Trace!')
+									]))
+							])),
+						A2(
+						$rtfeldman$elm_css$Html$Styled$div,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								$rtfeldman$elm_css$Html$Styled$a,
+								_List_fromArray(
+									[$author$project$Routing$goToStats]),
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Html$Styled$text('Go to Stats!')
+									]))
 							]))
 					]))
 			]),
@@ -14298,19 +14400,85 @@ var $author$project$Pages$Report$view = function (model) {
 		title: 'Report!'
 	};
 };
+var $rtfeldman$elm_css$Html$Styled$section = $rtfeldman$elm_css$Html$Styled$node('section');
+var $rtfeldman$elm_css$Html$Styled$ul = $rtfeldman$elm_css$Html$Styled$node('ul');
+var $rtfeldman$elm_css$Html$Styled$li = $rtfeldman$elm_css$Html$Styled$node('li');
+var $author$project$Pages$Stats$viewProduct = function (product) {
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$li,
+		_List_Nil,
+		_List_fromArray(
+			[
+				$rtfeldman$elm_css$Html$Styled$text(
+				product.name + (' - Rating: ' + $elm$core$String$fromFloat(product.averageRating)))
+			]));
+};
+var $author$project$Pages$Stats$viewProvider = function (provider) {
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$li,
+		_List_Nil,
+		_List_fromArray(
+			[
+				$rtfeldman$elm_css$Html$Styled$text(
+				provider.name + (' - Popularidad: ' + $elm$core$String$fromInt(provider.popularity)))
+			]));
+};
+var $author$project$Pages$Stats$viewPurchasedProduct = function (product) {
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$li,
+		_List_Nil,
+		_List_fromArray(
+			[
+				$rtfeldman$elm_css$Html$Styled$text(
+				product.productName + (' - Compras: ' + $elm$core$String$fromInt(product.purchases)))
+			]));
+};
 var $author$project$Pages$Stats$view = function (model) {
+	var _v0 = A2($elm$core$Debug$log, 'Model en view', model);
 	return {
 		body: _List_fromArray(
 			[
 				A2(
-				$rtfeldman$elm_css$Html$Styled$h1,
+				$rtfeldman$elm_css$Html$Styled$section,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$rtfeldman$elm_css$Html$Styled$text('In Stats!')
+						A2(
+						$rtfeldman$elm_css$Html$Styled$h1,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$rtfeldman$elm_css$Html$Styled$text('Top 3 Productos con Mejor Rating')
+							])),
+						A2(
+						$rtfeldman$elm_css$Html$Styled$ul,
+						_List_Nil,
+						A2($elm$core$List$map, $author$project$Pages$Stats$viewProduct, model.topProducts)),
+						A2(
+						$rtfeldman$elm_css$Html$Styled$h1,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$rtfeldman$elm_css$Html$Styled$text('Top 5 Proveedores Favoritos')
+							])),
+						A2(
+						$rtfeldman$elm_css$Html$Styled$ul,
+						_List_Nil,
+						A2($elm$core$List$map, $author$project$Pages$Stats$viewProvider, model.topProviders)),
+						A2(
+						$rtfeldman$elm_css$Html$Styled$h1,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$rtfeldman$elm_css$Html$Styled$text('Top 10 Productos Más Comprados')
+							])),
+						A2(
+						$rtfeldman$elm_css$Html$Styled$ul,
+						_List_Nil,
+						A2($elm$core$List$map, $author$project$Pages$Stats$viewPurchasedProduct, model.topPurchasedProducts))
 					]))
 			]),
-		title: 'Stats!'
+		title: 'Statistics'
 	};
 };
 var $author$project$Pages$Trace$ProductIdChanged = function (a) {
@@ -14319,7 +14487,6 @@ var $author$project$Pages$Trace$ProductIdChanged = function (a) {
 var $author$project$Pages$Trace$SearchClicked = {$: 'SearchClicked'};
 var $rtfeldman$elm_css$Html$Styled$button = $rtfeldman$elm_css$Html$Styled$node('button');
 var $rtfeldman$elm_css$Html$Styled$input = $rtfeldman$elm_css$Html$Styled$node('input');
-var $elm$core$Debug$log = _Debug_log;
 var $rtfeldman$elm_css$VirtualDom$Styled$on = F2(
 	function (eventName, handler) {
 		return A3(
@@ -14522,4 +14689,4 @@ var $author$project$Main$view = function (model) {
 };
 var $author$project$Main$main = $elm$browser$Browser$application(
 	{init: $author$project$Main$init, onUrlChange: $author$project$Main$UrlChanged, onUrlRequest: $author$project$Main$LinkClicked, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
-_Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$string)({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Url.Url":{"args":[],"type":"{ protocol : Url.Protocol, host : String.String, port_ : Maybe.Maybe Basics.Int, path : String.String, query : Maybe.Maybe String.String, fragment : Maybe.Maybe String.String }"},"Pages.Trace.APIResponse":{"args":[],"type":"Result.Result Http.Error Api.Endpoint.GetHistoryResponse"},"Api.Endpoint.GetHistoryResponse":{"args":[],"type":"{ values : List.List { nodes : List.List Models.Node.Node, relationships : List.List Models.Relation.Relation } }"},"Models.Node.Node":{"args":[],"type":"{ id : Basics.Int, labels : List.List String.String, props : Dict.Dict String.String Json.Decode.Value }"},"Models.Relation.Relation":{"args":[],"type":"{ startId : Basics.Int, endId : Basics.Int, relType : String.String, props : Dict.Dict String.String Json.Decode.Value }"},"Json.Decode.Value":{"args":[],"type":"Json.Encode.Value"}},"unions":{"Main.Msg":{"args":[],"tags":{"UrlChanged":["Url.Url"],"LinkClicked":["Browser.UrlRequest"],"HomeMsg":["Pages.Home.Msg"],"NotFoundMsg":["Pages.NotFound.Msg"],"ReportMsg":["Pages.Report.Msg"],"StatsMsg":["Pages.Stats.Msg"],"TraceMsg":["Pages.Trace.Msg"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Pages.Home.Msg":{"args":[],"tags":{"None":[]}},"Pages.NotFound.Msg":{"args":[],"tags":{"None":[]}},"Pages.Report.Msg":{"args":[],"tags":{"None":[]}},"Pages.Stats.Msg":{"args":[],"tags":{"None":[]}},"Pages.Trace.Msg":{"args":[],"tags":{"SearchClicked":[],"GotHistory":["Pages.Trace.APIResponse"],"ProductIdChanged":["String.String"]}},"Url.Protocol":{"args":[],"tags":{"Http":[],"Https":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Browser.UrlRequest":{"args":[],"tags":{"Internal":["Url.Url"],"External":["String.String"]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"List.List":{"args":["a"],"tags":{}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Json.Encode.Value":{"args":[],"tags":{"Value":[]}},"Dict.NColor":{"args":[],"tags":{"Red":[],"Black":[]}}}}})}});}(this));
+_Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$string)({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Url.Url":{"args":[],"type":"{ protocol : Url.Protocol, host : String.String, port_ : Maybe.Maybe Basics.Int, path : String.String, query : Maybe.Maybe String.String, fragment : Maybe.Maybe String.String }"},"Pages.Trace.APIResponse":{"args":[],"type":"Result.Result Http.Error Api.Endpoint.GetHistoryResponse"},"Api.Endpoint.GetHistoryResponse":{"args":[],"type":"{ values : List.List { nodes : List.List Models.Node.Node, relationships : List.List Models.Relation.Relation } }"},"Api.Endpoint.GetStatsResponse":{"args":[],"type":"{ topProducts : List.List Models.Product.Product, topProviders : List.List Models.Provider.Provider, topPurchasedProducts : List.List Models.PurchasedProduct.PurchasedProduct }"},"Models.Node.Node":{"args":[],"type":"{ id : Basics.Int, labels : List.List String.String, props : Dict.Dict String.String Json.Decode.Value }"},"Models.Product.Product":{"args":[],"type":"{ name : String.String, averageRating : Basics.Float }"},"Models.Provider.Provider":{"args":[],"type":"{ name : String.String, popularity : Basics.Int }"},"Models.PurchasedProduct.PurchasedProduct":{"args":[],"type":"{ productName : String.String, productId : String.String, purchases : Basics.Int }"},"Models.Relation.Relation":{"args":[],"type":"{ startId : Basics.Int, endId : Basics.Int, relType : String.String, props : Dict.Dict String.String Json.Decode.Value }"},"Json.Decode.Value":{"args":[],"type":"Json.Encode.Value"}},"unions":{"Main.Msg":{"args":[],"tags":{"UrlChanged":["Url.Url"],"LinkClicked":["Browser.UrlRequest"],"HomeMsg":["Pages.Home.Msg"],"NotFoundMsg":["Pages.NotFound.Msg"],"ReportMsg":["Pages.Report.Msg"],"StatsMsg":["Pages.Stats.Msg"],"TraceMsg":["Pages.Trace.Msg"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Pages.Home.Msg":{"args":[],"tags":{"None":[]}},"Pages.NotFound.Msg":{"args":[],"tags":{"None":[]}},"Pages.Report.Msg":{"args":[],"tags":{"None":[]}},"Pages.Stats.Msg":{"args":[],"tags":{"FetchStats":[],"StatsReceived":["Result.Result Http.Error Api.Endpoint.GetStatsResponse"]}},"Pages.Trace.Msg":{"args":[],"tags":{"SearchClicked":[],"GotHistory":["Pages.Trace.APIResponse"],"ProductIdChanged":["String.String"]}},"Url.Protocol":{"args":[],"tags":{"Http":[],"Https":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Browser.UrlRequest":{"args":[],"tags":{"Internal":["Url.Url"],"External":["String.String"]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Basics.Float":{"args":[],"tags":{"Float":[]}},"List.List":{"args":["a"],"tags":{}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Json.Encode.Value":{"args":[],"tags":{"Value":[]}},"Dict.NColor":{"args":[],"tags":{"Red":[],"Black":[]}}}}})}});}(this));

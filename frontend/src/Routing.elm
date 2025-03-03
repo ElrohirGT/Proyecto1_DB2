@@ -42,3 +42,8 @@ parseUrl url =
 goToTrace : Attribute msg
 goToTrace =
     href "/trace"
+
+goToStats : Attribute msg
+goToStats =
+    href "/stats"
+

@@ -4,7 +4,9 @@ import Css exposing (center, textAlign)
 import Html.Styled exposing (a, div, h1, text)
 import Html.Styled.Attributes exposing (css)
 import Routing exposing (goToTrace)
+import Routing exposing (goToTrace)
 import Utils exposing (StyledDocument)
+import Routing exposing (goToStats)
 
 
 type alias Model =
@@ -41,7 +43,8 @@ view model =
                     ]
                 ]
                 [ text "In Home!" ]
-            , a [ goToTrace ] [ text "Go to Trace!" ]
+            , div [] [ a [ goToTrace ] [ text "Go to Trace!" ] ] 
+            , div [] [ a [ goToStats ] [ text "Go to Stats!" ] ]  
             ]
         ]
     }

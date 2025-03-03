@@ -1,15 +1,18 @@
-module Api.Endpoint exposing (GetHistoryResponse, getHistory, getHistoryResponseDecoder, request)
+module Api.Endpoint exposing (GetHistoryResponse, getHistory, getHistoryResponseDecoder, GetStatsResponse, getStats, getStatsResponseDecoder, request)
 
 import Http
-import Json.Decode as Decode exposing (list)
+import Json.Decode exposing (Decoder, field, list, map3, succeed)
 import Json.Decode.Pipeline exposing (required)
 import Models.Node exposing (Node, nodeDecoder)
 import Models.Relation exposing (Relation, relationDecoder)
+import Models.Product exposing (Product, productDecoder)
+import Models.Provider exposing (Provider, providerDecoder)
+import Models.PurchasedProduct exposing (PurchasedProduct, purchasedProductDecoder)
 import Url.Builder exposing (string)
 
 
-{-| Http.request, except it takes an Endpoint instead of a Url.
--}
+-- HTTP Request Helper
+
 request :
     { body : Http.Body
     , expect : Http.Expect msg
@@ -32,23 +35,14 @@ request config =
         }
 
 
-
 -- TYPES
 
-
-{-| Get a URL to the localhost API.
-
-This is not publicly exposed, because we want to make sure the only way to get one of these URLs is from this module.
-
--}
 type Endpoint
     = Endpoint String
-
 
 unwrap : Endpoint -> String
 unwrap (Endpoint str) =
     str
-
 
 url : List String -> List Url.Builder.QueryParameter -> Endpoint
 url paths queryParams =
@@ -56,15 +50,11 @@ url paths queryParams =
         |> Endpoint
 
 
-
--- ENDPOINTS
 -- GET /history endpoint
-
 
 getHistory : String -> Endpoint
 getHistory productId =
     url [ "history" ] [ string "ProductId" productId ]
-
 
 type alias GetHistoryResponse =
     { values :
@@ -74,14 +64,33 @@ type alias GetHistoryResponse =
             }
     }
 
-
-getHistoryResponseDecoder : Decode.Decoder GetHistoryResponse
+getHistoryResponseDecoder : Decoder GetHistoryResponse
 getHistoryResponseDecoder =
-    Decode.succeed GetHistoryResponse
+    succeed GetHistoryResponse
         |> required "Values"
             (list
-                (Decode.succeed (\nodes -> \relationships -> { nodes = nodes, relationships = relationships })
+                (succeed (\nodes relationships -> { nodes = nodes, relationships = relationships })
                     |> required "Nodes" (list nodeDecoder)
                     |> required "Relationships" (list relationDecoder)
                 )
             )
+
+
+-- GET /stats endpoint
+
+getStats : Endpoint
+getStats =
+    url [ "statistics" ] []
+
+type alias GetStatsResponse =
+    { topProducts : List Product
+    , topProviders : List Provider
+    , topPurchasedProducts : List PurchasedProduct
+    }
+
+getStatsResponseDecoder : Decoder GetStatsResponse
+getStatsResponseDecoder =
+    map3 GetStatsResponse
+        (field "top_products" (list productDecoder))
+        (field "top_providers" (list providerDecoder))
+        (field "top_purchased_products" (list purchasedProductDecoder))
