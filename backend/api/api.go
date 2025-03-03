@@ -19,10 +19,11 @@ type Api struct {
 	CreateUserHandler  http.HandlerFunc
 
 	// CRUD
-	CreateNodeHandler http.HandlerFunc
-	ReadNodeHandler   http.HandlerFunc
-	UpdateNodeHandler http.HandlerFunc
-	DeleteNodeHandler http.HandlerFunc
+	CreateNodeHandler      http.HandlerFunc
+	ReadNodeHandler        http.HandlerFunc
+	UpdateNodeHandler      http.HandlerFunc
+	DeleteNodeHandler      http.HandlerFunc
+	DeleteManyNodesHandler http.HandlerFunc
 
 	CreateRelationHandler http.HandlerFunc
 	ReadRelationHandler   http.HandlerFunc
@@ -45,15 +46,16 @@ func NewApi(
 	return &Api{
 		dbClient: mongoClient,
 
-		CheckHealthHandler:    health.CheckHealthHandler,
-		CreateNodeHandler:     node.NewCreateNodeHandler(mongoClient),
-		ReadNodeHandler:       node.NewReadNodeHandler(mongoClient),
-		UpdateNodeHandler:     node.NewUpdateNodeHandler(mongoClient),
-		DeleteNodeHandler:     node.NewDeleteNodeHandler(mongoClient),
-		CreateRelationHandler: relation.NewCreateRelationHandler(mongoClient),
-		ReadRelationHandler:   relation.NewReadRelationHandler(mongoClient),
-		UpdateRelationHandler: relation.NewUpdateRelationHandler(mongoClient),
-		DeleteRelationHandler: relation.NewDeleteRelationHandler(mongoClient),
+		CheckHealthHandler:     health.CheckHealthHandler,
+		CreateNodeHandler:      node.NewCreateNodeHandler(mongoClient),
+		ReadNodeHandler:        node.NewReadNodeHandler(mongoClient),
+		UpdateNodeHandler:      node.NewUpdateNodeHandler(mongoClient),
+		DeleteNodeHandler:      node.NewDeleteNodeHandler(mongoClient),
+		DeleteManyNodesHandler: node.NewDeleteManyNodesHandler(mongoClient),
+		CreateRelationHandler:  relation.NewCreateRelationHandler(mongoClient),
+		ReadRelationHandler:    relation.NewReadRelationHandler(mongoClient),
+		UpdateRelationHandler:  relation.NewUpdateRelationHandler(mongoClient),
+		DeleteRelationHandler:  relation.NewDeleteRelationHandler(mongoClient),
 
 		UpdatePropertiesHandler: properties.NewUpdatePropertiesHandler(mongoClient),
 		DeletePropertiesHandler: properties.NewDeleteNodePropertiesHandler(mongoClient),

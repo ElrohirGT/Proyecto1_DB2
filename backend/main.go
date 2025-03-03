@@ -56,6 +56,7 @@ func main() {
 		r.Get("/node", app.ReadNodeHandler)
 		r.Put("/node", app.UpdateNodeHandler)
 		r.Delete("/node", app.DeleteNodeHandler)
+		r.Delete("/nodes", app.DeleteManyNodesHandler)
 
 		// Multiple Nodes
 		r.Put("/properties", app.UpdatePropertiesHandler)
