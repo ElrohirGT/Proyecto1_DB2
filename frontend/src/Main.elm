@@ -188,7 +188,9 @@ view model =
                     Utils.mapMsg ReportMsg (ReportPage.view inner)
 
                 Stats inner ->
-                    Utils.mapMsg StatsMsg (StatsPage.view inner)
+                    Utils.mapMsg StatsMsg (StatsPage.view inner )
+
+
 
                 Trace inner ->
                     Utils.mapMsg TraceMsg (TracePage.view inner)

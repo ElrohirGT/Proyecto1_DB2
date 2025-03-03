@@ -10,8 +10,15 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*") // 🔥 Permite solicitudes desde cualquier origen
+	(*w).Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Content-Type")
+}
+
 func GetStatisticsHandler(db *neo4j.DriverWithContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
 		if db == nil {
 			http.Error(w, "500 Internal Server Error - DB connection is nil", http.StatusInternalServerError)
 			return
