@@ -115,7 +115,7 @@ func NewDeleteManyRelationsHandler(client *neo4j.DriverWithContext) http.Handler
 			return
 		}
 
-		response := DeleteResponse{
+		response := DeleteManyResponse{
 			DeletedCount: result.Summary.Counters().RelationshipsDeleted(),
 		}
 
