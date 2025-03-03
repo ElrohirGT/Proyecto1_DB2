@@ -61,6 +61,7 @@ func main() {
 		// Multiple Nodes
 		r.Put("/properties", app.UpdatePropertiesHandler)
 		r.Delete("/properties", app.DeletePropertiesHandler)
+		r.Post("/relationProperty", app.CreateRelationPropertiesHandler)
 
 		// Relations
 		r.Post("/relation", app.CreateRelationHandler)

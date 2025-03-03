@@ -7,6 +7,7 @@ import (
 	node "github.com/ElrohirGT/Proyecto1_DB2/api/Node"
 	properties "github.com/ElrohirGT/Proyecto1_DB2/api/Properties"
 	relation "github.com/ElrohirGT/Proyecto1_DB2/api/Relation"
+	relationproperties "github.com/ElrohirGT/Proyecto1_DB2/api/RelationProperties"
 	"github.com/ElrohirGT/Proyecto1_DB2/api/health"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
@@ -31,6 +32,9 @@ type Api struct {
 	DeleteRelationHandler      http.HandlerFunc
 	DeleteManyRelationsHandler http.HandlerFunc
 
+	// RELATION PROPERTIES
+	CreateRelationPropertiesHandler http.HandlerFunc
+
 	// CRUD (multiple)
 	UpdatePropertiesHandler http.HandlerFunc
 	DeletePropertiesHandler http.HandlerFunc
@@ -47,17 +51,21 @@ func NewApi(
 	return &Api{
 		dbClient: mongoClient,
 
-		CheckHealthHandler:         health.CheckHealthHandler,
-		CreateNodeHandler:          node.NewCreateNodeHandler(mongoClient),
-		ReadNodeHandler:            node.NewReadNodeHandler(mongoClient),
-		UpdateNodeHandler:          node.NewUpdateNodeHandler(mongoClient),
-		DeleteNodeHandler:          node.NewDeleteNodeHandler(mongoClient),
-		DeleteManyNodesHandler:     node.NewDeleteManyNodesHandler(mongoClient),
+		CheckHealthHandler: health.CheckHealthHandler,
+
+		CreateNodeHandler:      node.NewCreateNodeHandler(mongoClient),
+		ReadNodeHandler:        node.NewReadNodeHandler(mongoClient),
+		UpdateNodeHandler:      node.NewUpdateNodeHandler(mongoClient),
+		DeleteNodeHandler:      node.NewDeleteNodeHandler(mongoClient),
+		DeleteManyNodesHandler: node.NewDeleteManyNodesHandler(mongoClient),
+
 		CreateRelationHandler:      relation.NewCreateRelationHandler(mongoClient),
 		ReadRelationHandler:        relation.NewReadRelationHandler(mongoClient),
 		UpdateRelationHandler:      relation.NewUpdateRelationHandler(mongoClient),
 		DeleteRelationHandler:      relation.NewDeleteRelationHandler(mongoClient),
 		DeleteManyRelationsHandler: relation.NewDeleteManyRelationsHandler(mongoClient),
+
+		CreateRelationPropertiesHandler: relationproperties.NewCreateRelationPropertiesHandler(mongoClient),
 
 		UpdatePropertiesHandler: properties.NewUpdatePropertiesHandler(mongoClient),
 		DeletePropertiesHandler: properties.NewDeleteNodePropertiesHandler(mongoClient),
