@@ -18,31 +18,24 @@ type DeleteRelationRequest struct {
 	Relation        utils.Neo4JObject `json:"Relation"`
 }
 
-type DeleteResponse struct {
-	DeletedRelation map[string]any `json:"DeletedRelation"`
-}
-
 func NewDeleteRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.Background()
 
 		if r.Method != http.MethodDelete {
-			w.WriteHeader(http.StatusMethodNotAllowed)
-			w.Write([]byte("405 Method Not Allowed - Use DELETE"))
+			http.Error(w, "405 Method Not Allowed - Use DELETE", http.StatusMethodNotAllowed)
 			return
 		}
 
 		var req DeleteRelationRequest
 		err := json.NewDecoder(r.Body).Decode(&req)
 		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte(fmt.Sprintf("400 Bad Request - Invalid JSON: %s", err.Error())))
+			http.Error(w, fmt.Sprintf("400 Bad Request - Invalid JSON: %s", err.Error()), http.StatusBadRequest)
 			return
 		}
 
 		if req.OriginNode.Category == "" || req.DestinationNode.Category == "" || req.Relation.Category == "" {
-			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("400 Bad Request - `OriginNode`, `DestinationNode`, y `Relation` son requeridos"))
+			http.Error(w, "400 Bad Request - OriginNode, DestinationNode, y Relation son requeridos", http.StatusBadRequest)
 			return
 		}
 
@@ -77,13 +70,11 @@ func NewDeleteRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc 
 			queryBuilder.WriteString(key)
 			i++
 		}
-		// Aquí cambiamos DELETE r por DELETE r RETURN properties(r) AS deletedRelation
-		queryBuilder.WriteString("}) RETURN properties(r) AS deletedRelation, type(r) AS relationType, startNode(r) AS startNode, endNode(r) AS endNode")
+		queryBuilder.WriteString("}) DELETE r RETURN COUNT(r) AS deletedCount")
 
 		query := queryBuilder.String()
 
 		params := make(map[string]any)
-
 		for property, val := range req.OriginNode.Properties {
 			params["n1_"+property] = val
 		}
@@ -94,42 +85,51 @@ func NewDeleteRelationHandler(client *neo4j.DriverWithContext) http.HandlerFunc 
 			params["n2_"+property] = val
 		}
 
-		log.Info().Str("query", query).Msg("Buscando y eliminando relación en Neo4j...")
-		result, err := neo4j.ExecuteQuery(ctx, *client, query, params, neo4j.EagerResultTransformer, neo4j.ExecuteQueryWithDatabase("neo4j"))
+		log.Info().Str("query", query).Interface("params", params).Msg("🔍 Ejecutando DELETE en Neo4j...")
 
+		result, err := neo4j.ExecuteQuery(ctx, *client, query, params, neo4j.EagerResultTransformer, neo4j.ExecuteQueryWithDatabase("neo4j"))
 		if err != nil {
 			log.Error().Err(err).Msg("Error al eliminar la relación en Neo4j")
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte(fmt.Sprintf("500 Internal Server Error - Neo4j Delete Error: %s", err.Error())))
+			http.Error(w, fmt.Sprintf("500 Internal Server Error - Neo4j Delete Error: %s", err.Error()), http.StatusInternalServerError)
 			return
 		}
 
 		if len(result.Records) == 0 {
 			log.Warn().Msg("No se encontró la relación para eliminar")
-			w.WriteHeader(http.StatusNotFound)
-			w.Write([]byte("404 ERROR - No relation found to delete"))
+			http.Error(w, "404 ERROR - No relation found to delete", http.StatusNotFound)
 			return
 		}
 
 		record := result.Records[0]
-		deletedRelation, _ := record.Get("deletedRelation")
-		relationType, _ := record.Get("relationType")
-		startNode, _ := record.Get("startNode")
-		endNode, _ := record.Get("endNode")
 
-		response := DeleteResponse{
-			DeletedRelation: map[string]any{
-				"type":       relationType,
-				"properties": deletedRelation,
-				"startNode":  startNode,
-				"endNode":    endNode,
-			},
+		deletedCountInterface, found := record.Get("deletedCount")
+		if !found {
+			log.Warn().Msg("No se encontró la relación para eliminar")
+			http.Error(w, "404 ERROR - No relation found to delete", http.StatusNotFound)
+			return
 		}
 
-		log.Info().Interface("Deleted Relation", response).Msg("Relación eliminada correctamente")
+		deletedCount, ok := deletedCountInterface.(int64)
+		if !ok {
+			log.Error().Msg("Error al convertir deletedCount a int64")
+			http.Error(w, "500 Internal Server Error - Error en la conversión de datos", http.StatusInternalServerError)
+			return
+		}
+
+		if deletedCount == 0 {
+			log.Warn().Msg("No se encontró la relación para eliminar")
+			http.Error(w, "404 ERROR - No relation found to delete", http.StatusNotFound)
+			return
+		}
+
+		if deletedCount == 0 {
+			log.Warn().Msg("No se encontró la relación para eliminar")
+			http.Error(w, "404 ERROR - No relation found to delete", http.StatusNotFound)
+			return
+		}
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(response)
+		json.NewEncoder(w).Encode(req)
 	}
 }
