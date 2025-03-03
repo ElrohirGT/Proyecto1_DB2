@@ -62,6 +62,7 @@ func main() {
 		r.Put("/properties", app.UpdatePropertiesHandler)
 		r.Delete("/properties", app.DeletePropertiesHandler)
 		r.Post("/relationProperty", app.CreateRelationPropertiesHandler)
+		r.Delete("/relationProperty", app.RemoveRelationPropertiesHandler)
 
 		// Relations
 		r.Post("/relation", app.CreateRelationHandler)

@@ -34,6 +34,7 @@ type Api struct {
 
 	// RELATION PROPERTIES
 	CreateRelationPropertiesHandler http.HandlerFunc
+	RemoveRelationPropertiesHandler http.HandlerFunc
 
 	// CRUD (multiple)
 	UpdatePropertiesHandler http.HandlerFunc
@@ -66,6 +67,7 @@ func NewApi(
 		DeleteManyRelationsHandler: relation.NewDeleteManyRelationsHandler(mongoClient),
 
 		CreateRelationPropertiesHandler: relationproperties.NewCreateRelationPropertiesHandler(mongoClient),
+		RemoveRelationPropertiesHandler: relationproperties.NewRemoveRelationPropertiesHandler(mongoClient),
 
 		UpdatePropertiesHandler: properties.NewUpdatePropertiesHandler(mongoClient),
 		DeletePropertiesHandler: properties.NewDeleteNodePropertiesHandler(mongoClient),
