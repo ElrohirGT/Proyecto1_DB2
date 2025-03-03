@@ -69,6 +69,7 @@ func main() {
 
 		// Functional requirements
 		r.Get("/history", app.GetProductHistoryHandler)
+		r.Get("/statistics", app.GetStatisticsHandler)
 
 	})
 

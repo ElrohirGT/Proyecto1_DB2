@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	functionalrequirements "github.com/ElrohirGT/Proyecto1_DB2/api/FunctionalRequirements"
-	"github.com/ElrohirGT/Proyecto1_DB2/api/Node"
-	"github.com/ElrohirGT/Proyecto1_DB2/api/Properties"
-	"github.com/ElrohirGT/Proyecto1_DB2/api/Relation"
+	node "github.com/ElrohirGT/Proyecto1_DB2/api/Node"
+	properties "github.com/ElrohirGT/Proyecto1_DB2/api/Properties"
+	relation "github.com/ElrohirGT/Proyecto1_DB2/api/Relation"
 	"github.com/ElrohirGT/Proyecto1_DB2/api/health"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
@@ -35,6 +35,7 @@ type Api struct {
 
 	// FUNC REQUIREMENTS
 	GetProductHistoryHandler http.HandlerFunc
+	GetStatisticsHandler     http.HandlerFunc
 }
 
 func NewApi(
@@ -58,5 +59,7 @@ func NewApi(
 		DeletePropertiesHandler: properties.NewDeleteNodePropertiesHandler(mongoClient),
 
 		GetProductHistoryHandler: functionalrequirements.NewGetHistoryHandler(mongoClient),
+		GetStatisticsHandler:     functionalrequirements.GetStatisticsHandler(mongoClient),
 	}
+
 }
