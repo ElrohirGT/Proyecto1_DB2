@@ -1,11 +1,12 @@
 module Pages.Trace exposing (..)
 
 import Api.Endpoint exposing (GetHistoryResponse, getHistory, getHistoryResponseDecoder, request)
-import Dict exposing (Dict)
+import Dict
 import Html.Styled exposing (button, div, h1, h2, input, p, pre, text)
 import Html.Styled.Attributes exposing (value)
 import Html.Styled.Events exposing (onClick, onInput)
 import Http
+import Json.Decode
 import Utils exposing (StyledDocument)
 
 
@@ -13,10 +14,12 @@ import Utils exposing (StyledDocument)
 -- MODEL
 
 
-type alias TracingReport =
-    { mainProducer : String
-    , needs : Dict String (List String)
-    }
+type alias Producers =
+    List String
+
+
+type alias HistoryState =
+    Result Http.Error Producers
 
 
 type alias APIResponse =
@@ -26,7 +29,7 @@ type alias APIResponse =
 type alias Model =
     { productId : String
     , isLoading : Bool
-    , history : Maybe APIResponse
+    , history : Maybe HistoryState
     }
 
 
@@ -82,8 +85,37 @@ update msg model =
         ProductIdChanged newValue ->
             ( { model | productId = newValue }, Cmd.none )
 
-        GotHistory response ->
-            ( { model | isLoading = False, history = Just response }, Cmd.none )
+        GotHistory apiResponse ->
+            let
+                producers : HistoryState
+                producers =
+                    let
+                        responseToProducerMapper : GetHistoryResponse -> Producers
+                        responseToProducerMapper historyResponse =
+                            historyResponse.values
+                                |> List.map
+                                    (\value ->
+                                        value.nodes
+                                            |> List.filterMap
+                                                (\n ->
+                                                    if List.any (\l -> l == "Provider") n.labels then
+                                                        Dict.get "name" n.props
+                                                            |> Maybe.andThen
+                                                                (\nameValue ->
+                                                                    nameValue
+                                                                        |> Json.Decode.decodeValue Json.Decode.string
+                                                                        |> Result.toMaybe
+                                                                )
+
+                                                    else
+                                                        Nothing
+                                                )
+                                    )
+                                |> List.concat
+                    in
+                    Result.map responseToProducerMapper apiResponse
+            in
+            ( { model | isLoading = False, history = Just producers }, Cmd.none )
 
 
 
@@ -121,9 +153,10 @@ view model =
                         Ok val ->
                             basicHeader
                                 ++ [ div []
-                                        [ h2 [] [ text "Main producer" ]
-                                        , p [] [ text "Dummy producer" ]
-                                        ]
+                                        ([ h2 [] [ text "Encontramos los siguientes proveedores:" ]
+                                         ]
+                                            ++ List.map (\v -> p [] [ text v ]) val
+                                        )
                                    ]
 
                         Err error ->

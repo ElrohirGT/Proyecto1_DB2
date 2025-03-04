@@ -11570,6 +11570,36 @@ var $author$project$Pages$Stats$update = F2(
 var $author$project$Pages$Trace$GotHistory = function (a) {
 	return {$: 'GotHistory', a: a};
 };
+var $elm$core$Maybe$andThen = F2(
+	function (callback, maybeValue) {
+		if (maybeValue.$ === 'Just') {
+			var value = maybeValue.a;
+			return callback(value);
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $elm$core$List$any = F2(
+	function (isOkay, list) {
+		any:
+		while (true) {
+			if (!list.b) {
+				return false;
+			} else {
+				var x = list.a;
+				var xs = list.b;
+				if (isOkay(x)) {
+					return true;
+				} else {
+					var $temp$isOkay = isOkay,
+						$temp$list = xs;
+					isOkay = $temp$isOkay;
+					list = $temp$list;
+					continue any;
+				}
+			}
+		}
+	});
 var $elm$url$Url$Builder$QueryParameter = F2(
 	function (a, b) {
 		return {$: 'QueryParameter', a: a, b: b};
@@ -11659,6 +11689,25 @@ var $author$project$Api$Endpoint$getHistoryResponseDecoder = A3(
 							return {nodes: nodes, relationships: relationships};
 						}))))),
 	$elm$json$Json$Decode$succeed($author$project$Api$Endpoint$GetHistoryResponse));
+var $elm$core$Result$map = F2(
+	function (func, ra) {
+		if (ra.$ === 'Ok') {
+			var a = ra.a;
+			return $elm$core$Result$Ok(
+				func(a));
+		} else {
+			var e = ra.a;
+			return $elm$core$Result$Err(e);
+		}
+	});
+var $elm$core$Result$toMaybe = function (result) {
+	if (result.$ === 'Ok') {
+		var v = result.a;
+		return $elm$core$Maybe$Just(v);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
 var $author$project$Pages$Trace$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -11685,12 +11734,40 @@ var $author$project$Pages$Trace$update = F2(
 						{productId: newValue}),
 					$elm$core$Platform$Cmd$none);
 			default:
-				var response = msg.a;
+				var apiResponse = msg.a;
+				var producers = function () {
+					var responseToProducerMapper = function (historyResponse) {
+						return $elm$core$List$concat(
+							A2(
+								$elm$core$List$map,
+								function (value) {
+									return A2(
+										$elm$core$List$filterMap,
+										function (n) {
+											return A2(
+												$elm$core$List$any,
+												function (l) {
+													return l === 'Provider';
+												},
+												n.labels) ? A2(
+												$elm$core$Maybe$andThen,
+												function (nameValue) {
+													return $elm$core$Result$toMaybe(
+														A2($elm$json$Json$Decode$decodeValue, $elm$json$Json$Decode$string, nameValue));
+												},
+												A2($elm$core$Dict$get, 'name', n.props)) : $elm$core$Maybe$Nothing;
+										},
+										value.nodes);
+								},
+								historyResponse.values));
+					};
+					return A2($elm$core$Result$map, responseToProducerMapper, apiResponse);
+				}();
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							history: $elm$core$Maybe$Just(response),
+							history: $elm$core$Maybe$Just(producers),
 							isLoading: false
 						}),
 					$elm$core$Platform$Cmd$none);
@@ -12706,27 +12783,6 @@ var $rtfeldman$elm_css$Css$prop1 = F2(
 		return A2($rtfeldman$elm_css$Css$property, key, arg.value);
 	});
 var $rtfeldman$elm_css$Css$center = $rtfeldman$elm_css$Css$prop1('center');
-var $elm$core$List$any = F2(
-	function (isOkay, list) {
-		any:
-		while (true) {
-			if (!list.b) {
-				return false;
-			} else {
-				var x = list.a;
-				var xs = list.b;
-				if (isOkay(x)) {
-					return true;
-				} else {
-					var $temp$isOkay = isOkay,
-						$temp$list = xs;
-					isOkay = $temp$isOkay;
-					list = $temp$list;
-					continue any;
-				}
-			}
-		}
-	});
 var $elm$core$List$all = F2(
 	function (isOkay, list) {
 		return !A2(
@@ -14486,6 +14542,7 @@ var $author$project$Pages$Trace$ProductIdChanged = function (a) {
 };
 var $author$project$Pages$Trace$SearchClicked = {$: 'SearchClicked'};
 var $rtfeldman$elm_css$Html$Styled$button = $rtfeldman$elm_css$Html$Styled$node('button');
+var $rtfeldman$elm_css$Html$Styled$h2 = $rtfeldman$elm_css$Html$Styled$node('h2');
 var $rtfeldman$elm_css$Html$Styled$input = $rtfeldman$elm_css$Html$Styled$node('input');
 var $rtfeldman$elm_css$VirtualDom$Styled$on = F2(
 	function (eventName, handler) {
@@ -14534,7 +14591,6 @@ var $rtfeldman$elm_css$Html$Styled$Events$onInput = function (tagger) {
 };
 var $rtfeldman$elm_css$Html$Styled$p = $rtfeldman$elm_css$Html$Styled$node('p');
 var $rtfeldman$elm_css$Html$Styled$pre = $rtfeldman$elm_css$Html$Styled$node('pre');
-var $elm$core$Debug$toString = _Debug_toString;
 var $rtfeldman$elm_css$Html$Styled$Attributes$value = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('value');
 var $author$project$Pages$Trace$view = function (model) {
 	return {
@@ -14599,17 +14655,29 @@ var $author$project$Pages$Trace$view = function (model) {
 									A2(
 									$rtfeldman$elm_css$Html$Styled$div,
 									_List_Nil,
-									_List_fromArray(
-										[
-											A2(
-											$rtfeldman$elm_css$Html$Styled$p,
-											_List_Nil,
-											_List_fromArray(
-												[
-													$rtfeldman$elm_css$Html$Styled$text(
-													$elm$core$Debug$toString(val))
-												]))
-										]))
+									_Utils_ap(
+										_List_fromArray(
+											[
+												A2(
+												$rtfeldman$elm_css$Html$Styled$h2,
+												_List_Nil,
+												_List_fromArray(
+													[
+														$rtfeldman$elm_css$Html$Styled$text('Encontramos los siguientes proveedores:')
+													]))
+											]),
+										A2(
+											$elm$core$List$map,
+											function (v) {
+												return A2(
+													$rtfeldman$elm_css$Html$Styled$p,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$rtfeldman$elm_css$Html$Styled$text(v)
+														]));
+											},
+											val)))
 								]));
 					} else {
 						var error = response.a;

@@ -27,7 +27,7 @@ func NewGetHistoryHandler(client *neo4j.DriverWithContext) http.HandlerFunc {
 		query := `MATCH p1=(:Provider)-[:PRODUCES]->(:Product {id: $id})
 RETURN p1
 UNION
-MATCH p1=(:Product)-[:PRODUCES]->(:Material)<-[:NEEDS]-(:Product {id: $id})
+MATCH p1=(:Provider)-[:PRODUCES]->(:Material)<-[:NEEDS]-(:Product {id: $id})
 RETURN p1`
 
 		params := make(map[string]any)
