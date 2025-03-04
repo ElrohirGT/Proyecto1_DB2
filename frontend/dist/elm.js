@@ -4639,7 +4639,6 @@ function _Browser_application(impl)
 	var onUrlChange = impl.onUrlChange;
 	var onUrlRequest = impl.onUrlRequest;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
-key['elm-hot-nav-key'] = true
 
 	return _Browser_document({
 		setup: function(sendToApp)
@@ -12779,11 +12778,437 @@ var $rtfeldman$elm_css$Css$property = F2(
 		return $rtfeldman$elm_css$Css$Preprocess$AppendProperty(
 			$rtfeldman$elm_css$Css$Structure$Property(key + (':' + value)));
 	});
+var $rtfeldman$elm_css$Css$backgroundColor = function (c) {
+	return A2($rtfeldman$elm_css$Css$property, 'background-color', c.value);
+};
 var $rtfeldman$elm_css$Css$prop1 = F2(
 	function (key, arg) {
 		return A2($rtfeldman$elm_css$Css$property, key, arg.value);
 	});
+var $rtfeldman$elm_css$Css$border = $rtfeldman$elm_css$Css$prop1('border');
+var $rtfeldman$elm_css$Css$color = function (c) {
+	return A2($rtfeldman$elm_css$Css$property, 'color', c.value);
+};
+var $author$project$Theme$colors = {accent: '#8f9044', background: '#352f3d', error: '#cf1500', secondary: '#fc8020', warning: '#f8a523'};
+var $rtfeldman$elm_css$Css$Structure$Compatible = {$: 'Compatible'};
+var $rtfeldman$elm_css$Css$withPrecedingHash = function (str) {
+	return A2($elm$core$String$startsWith, '#', str) ? str : A2(
+		$elm$core$String$cons,
+		_Utils_chr('#'),
+		str);
+};
+var $rtfeldman$elm_css$Css$erroneousHex = function (str) {
+	return {
+		alpha: 1,
+		blue: 0,
+		color: $rtfeldman$elm_css$Css$Structure$Compatible,
+		green: 0,
+		red: 0,
+		value: $rtfeldman$elm_css$Css$withPrecedingHash(str)
+	};
+};
+var $elm$core$String$foldr = _String_foldr;
+var $elm$core$String$toList = function (string) {
+	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
+};
+var $elm$core$String$fromChar = function (_char) {
+	return A2($elm$core$String$cons, _char, '');
+};
+var $elm$core$Basics$pow = _Basics_pow;
+var $rtfeldman$elm_hex$Hex$fromStringHelp = F3(
+	function (position, chars, accumulated) {
+		fromStringHelp:
+		while (true) {
+			if (!chars.b) {
+				return $elm$core$Result$Ok(accumulated);
+			} else {
+				var _char = chars.a;
+				var rest = chars.b;
+				switch (_char.valueOf()) {
+					case '0':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated;
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					case '1':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated + A2($elm$core$Basics$pow, 16, position);
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					case '2':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated + (2 * A2($elm$core$Basics$pow, 16, position));
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					case '3':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated + (3 * A2($elm$core$Basics$pow, 16, position));
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					case '4':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated + (4 * A2($elm$core$Basics$pow, 16, position));
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					case '5':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated + (5 * A2($elm$core$Basics$pow, 16, position));
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					case '6':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated + (6 * A2($elm$core$Basics$pow, 16, position));
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					case '7':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated + (7 * A2($elm$core$Basics$pow, 16, position));
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					case '8':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated + (8 * A2($elm$core$Basics$pow, 16, position));
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					case '9':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated + (9 * A2($elm$core$Basics$pow, 16, position));
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					case 'a':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated + (10 * A2($elm$core$Basics$pow, 16, position));
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					case 'b':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated + (11 * A2($elm$core$Basics$pow, 16, position));
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					case 'c':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated + (12 * A2($elm$core$Basics$pow, 16, position));
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					case 'd':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated + (13 * A2($elm$core$Basics$pow, 16, position));
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					case 'e':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated + (14 * A2($elm$core$Basics$pow, 16, position));
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					case 'f':
+						var $temp$position = position - 1,
+							$temp$chars = rest,
+							$temp$accumulated = accumulated + (15 * A2($elm$core$Basics$pow, 16, position));
+						position = $temp$position;
+						chars = $temp$chars;
+						accumulated = $temp$accumulated;
+						continue fromStringHelp;
+					default:
+						var nonHex = _char;
+						return $elm$core$Result$Err(
+							$elm$core$String$fromChar(nonHex) + ' is not a valid hexadecimal character.');
+				}
+			}
+		}
+	});
+var $elm$core$List$tail = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(xs);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $rtfeldman$elm_hex$Hex$fromString = function (str) {
+	if ($elm$core$String$isEmpty(str)) {
+		return $elm$core$Result$Err('Empty strings are not valid hexadecimal strings.');
+	} else {
+		var result = function () {
+			if (A2($elm$core$String$startsWith, '-', str)) {
+				var list = A2(
+					$elm$core$Maybe$withDefault,
+					_List_Nil,
+					$elm$core$List$tail(
+						$elm$core$String$toList(str)));
+				return A2(
+					$elm$core$Result$map,
+					$elm$core$Basics$negate,
+					A3(
+						$rtfeldman$elm_hex$Hex$fromStringHelp,
+						$elm$core$List$length(list) - 1,
+						list,
+						0));
+			} else {
+				return A3(
+					$rtfeldman$elm_hex$Hex$fromStringHelp,
+					$elm$core$String$length(str) - 1,
+					$elm$core$String$toList(str),
+					0);
+			}
+		}();
+		var formatError = function (err) {
+			return A2(
+				$elm$core$String$join,
+				' ',
+				_List_fromArray(
+					['\"' + (str + '\"'), 'is not a valid hexadecimal string because', err]));
+		};
+		return A2($elm$core$Result$mapError, formatError, result);
+	}
+};
+var $elm$core$String$toLower = _String_toLower;
+var $rtfeldman$elm_css$Css$validHex = F5(
+	function (str, _v0, _v1, _v2, _v3) {
+		var r1 = _v0.a;
+		var r2 = _v0.b;
+		var g1 = _v1.a;
+		var g2 = _v1.b;
+		var b1 = _v2.a;
+		var b2 = _v2.b;
+		var a1 = _v3.a;
+		var a2 = _v3.b;
+		var toResult = A2(
+			$elm$core$Basics$composeR,
+			$elm$core$String$fromList,
+			A2($elm$core$Basics$composeR, $elm$core$String$toLower, $rtfeldman$elm_hex$Hex$fromString));
+		var results = _Utils_Tuple2(
+			_Utils_Tuple2(
+				toResult(
+					_List_fromArray(
+						[r1, r2])),
+				toResult(
+					_List_fromArray(
+						[g1, g2]))),
+			_Utils_Tuple2(
+				toResult(
+					_List_fromArray(
+						[b1, b2])),
+				toResult(
+					_List_fromArray(
+						[a1, a2]))));
+		if ((((results.a.a.$ === 'Ok') && (results.a.b.$ === 'Ok')) && (results.b.a.$ === 'Ok')) && (results.b.b.$ === 'Ok')) {
+			var _v5 = results.a;
+			var red = _v5.a.a;
+			var green = _v5.b.a;
+			var _v6 = results.b;
+			var blue = _v6.a.a;
+			var alpha = _v6.b.a;
+			return {
+				alpha: alpha / 255,
+				blue: blue,
+				color: $rtfeldman$elm_css$Css$Structure$Compatible,
+				green: green,
+				red: red,
+				value: $rtfeldman$elm_css$Css$withPrecedingHash(str)
+			};
+		} else {
+			return $rtfeldman$elm_css$Css$erroneousHex(str);
+		}
+	});
+var $rtfeldman$elm_css$Css$hex = function (str) {
+	var withoutHash = A2($elm$core$String$startsWith, '#', str) ? A2($elm$core$String$dropLeft, 1, str) : str;
+	var _v0 = $elm$core$String$toList(withoutHash);
+	_v0$4:
+	while (true) {
+		if ((_v0.b && _v0.b.b) && _v0.b.b.b) {
+			if (!_v0.b.b.b.b) {
+				var r = _v0.a;
+				var _v1 = _v0.b;
+				var g = _v1.a;
+				var _v2 = _v1.b;
+				var b = _v2.a;
+				return A5(
+					$rtfeldman$elm_css$Css$validHex,
+					str,
+					_Utils_Tuple2(r, r),
+					_Utils_Tuple2(g, g),
+					_Utils_Tuple2(b, b),
+					_Utils_Tuple2(
+						_Utils_chr('f'),
+						_Utils_chr('f')));
+			} else {
+				if (!_v0.b.b.b.b.b) {
+					var r = _v0.a;
+					var _v3 = _v0.b;
+					var g = _v3.a;
+					var _v4 = _v3.b;
+					var b = _v4.a;
+					var _v5 = _v4.b;
+					var a = _v5.a;
+					return A5(
+						$rtfeldman$elm_css$Css$validHex,
+						str,
+						_Utils_Tuple2(r, r),
+						_Utils_Tuple2(g, g),
+						_Utils_Tuple2(b, b),
+						_Utils_Tuple2(a, a));
+				} else {
+					if (_v0.b.b.b.b.b.b) {
+						if (!_v0.b.b.b.b.b.b.b) {
+							var r1 = _v0.a;
+							var _v6 = _v0.b;
+							var r2 = _v6.a;
+							var _v7 = _v6.b;
+							var g1 = _v7.a;
+							var _v8 = _v7.b;
+							var g2 = _v8.a;
+							var _v9 = _v8.b;
+							var b1 = _v9.a;
+							var _v10 = _v9.b;
+							var b2 = _v10.a;
+							return A5(
+								$rtfeldman$elm_css$Css$validHex,
+								str,
+								_Utils_Tuple2(r1, r2),
+								_Utils_Tuple2(g1, g2),
+								_Utils_Tuple2(b1, b2),
+								_Utils_Tuple2(
+									_Utils_chr('f'),
+									_Utils_chr('f')));
+						} else {
+							if (_v0.b.b.b.b.b.b.b.b && (!_v0.b.b.b.b.b.b.b.b.b)) {
+								var r1 = _v0.a;
+								var _v11 = _v0.b;
+								var r2 = _v11.a;
+								var _v12 = _v11.b;
+								var g1 = _v12.a;
+								var _v13 = _v12.b;
+								var g2 = _v13.a;
+								var _v14 = _v13.b;
+								var b1 = _v14.a;
+								var _v15 = _v14.b;
+								var b2 = _v15.a;
+								var _v16 = _v15.b;
+								var a1 = _v16.a;
+								var _v17 = _v16.b;
+								var a2 = _v17.a;
+								return A5(
+									$rtfeldman$elm_css$Css$validHex,
+									str,
+									_Utils_Tuple2(r1, r2),
+									_Utils_Tuple2(g1, g2),
+									_Utils_Tuple2(b1, b2),
+									_Utils_Tuple2(a1, a2));
+							} else {
+								break _v0$4;
+							}
+						}
+					} else {
+						break _v0$4;
+					}
+				}
+			}
+		} else {
+			break _v0$4;
+		}
+	}
+	return $rtfeldman$elm_css$Css$erroneousHex(str);
+};
+var $rtfeldman$elm_css$Css$none = {backgroundImage: $rtfeldman$elm_css$Css$Structure$Compatible, blockAxisOverflow: $rtfeldman$elm_css$Css$Structure$Compatible, borderStyle: $rtfeldman$elm_css$Css$Structure$Compatible, cursor: $rtfeldman$elm_css$Css$Structure$Compatible, display: $rtfeldman$elm_css$Css$Structure$Compatible, hoverCapability: $rtfeldman$elm_css$Css$Structure$Compatible, inlineAxisOverflow: $rtfeldman$elm_css$Css$Structure$Compatible, keyframes: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleType: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleTypeOrPositionOrImage: $rtfeldman$elm_css$Css$Structure$Compatible, none: $rtfeldman$elm_css$Css$Structure$Compatible, outline: $rtfeldman$elm_css$Css$Structure$Compatible, pointerDevice: $rtfeldman$elm_css$Css$Structure$Compatible, pointerEvents: $rtfeldman$elm_css$Css$Structure$Compatible, resize: $rtfeldman$elm_css$Css$Structure$Compatible, scriptingSupport: $rtfeldman$elm_css$Css$Structure$Compatible, textDecorationLine: $rtfeldman$elm_css$Css$Structure$Compatible, textTransform: $rtfeldman$elm_css$Css$Structure$Compatible, touchAction: $rtfeldman$elm_css$Css$Structure$Compatible, transform: $rtfeldman$elm_css$Css$Structure$Compatible, updateFrequency: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'none'};
+var $rtfeldman$elm_css$Css$prop2 = F3(
+	function (key, argA, argB) {
+		return A2($rtfeldman$elm_css$Css$property, key, argA.value + (' ' + argB.value));
+	});
+var $rtfeldman$elm_css$Css$padding2 = $rtfeldman$elm_css$Css$prop2('padding');
+var $rtfeldman$elm_css$Css$PxUnits = {$: 'PxUnits'};
+var $rtfeldman$elm_css$Css$Internal$lengthConverter = F3(
+	function (units, unitLabel, numericValue) {
+		return {
+			absoluteLength: $rtfeldman$elm_css$Css$Structure$Compatible,
+			calc: $rtfeldman$elm_css$Css$Structure$Compatible,
+			flexBasis: $rtfeldman$elm_css$Css$Structure$Compatible,
+			fontSize: $rtfeldman$elm_css$Css$Structure$Compatible,
+			length: $rtfeldman$elm_css$Css$Structure$Compatible,
+			lengthOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible,
+			lengthOrAutoOrCoverOrContain: $rtfeldman$elm_css$Css$Structure$Compatible,
+			lengthOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible,
+			lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible,
+			lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible,
+			lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible,
+			lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible,
+			lineHeight: $rtfeldman$elm_css$Css$Structure$Compatible,
+			numericValue: numericValue,
+			textIndent: $rtfeldman$elm_css$Css$Structure$Compatible,
+			unitLabel: unitLabel,
+			units: units,
+			value: _Utils_ap(
+				$elm$core$String$fromFloat(numericValue),
+				unitLabel)
+		};
+	});
+var $rtfeldman$elm_css$Css$px = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PxUnits, 'px');
+var $rtfeldman$elm_css$Css$textDecoration = $rtfeldman$elm_css$Css$prop1('text-decoration');
+var $rtfeldman$elm_css$Css$UnitlessInteger = {$: 'UnitlessInteger'};
+var $rtfeldman$elm_css$Css$zero = {length: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAutoOrCoverOrContain: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible, number: $rtfeldman$elm_css$Css$Structure$Compatible, numericValue: 0, outline: $rtfeldman$elm_css$Css$Structure$Compatible, unitLabel: '', units: $rtfeldman$elm_css$Css$UnitlessInteger, value: '0'};
+var $author$project$Theme$btnStyles = _List_fromArray(
+	[
+		$rtfeldman$elm_css$Css$textDecoration($rtfeldman$elm_css$Css$none),
+		A2(
+		$rtfeldman$elm_css$Css$padding2,
+		$rtfeldman$elm_css$Css$px(10),
+		$rtfeldman$elm_css$Css$px(20)),
+		$rtfeldman$elm_css$Css$border($rtfeldman$elm_css$Css$zero),
+		$rtfeldman$elm_css$Css$color(
+		$rtfeldman$elm_css$Css$hex('#ffffff')),
+		$rtfeldman$elm_css$Css$backgroundColor(
+		$rtfeldman$elm_css$Css$hex($author$project$Theme$colors.accent))
+	]);
 var $rtfeldman$elm_css$Css$center = $rtfeldman$elm_css$Css$prop1('center');
+var $rtfeldman$elm_css$Css$row = {flexDirection: $rtfeldman$elm_css$Css$Structure$Compatible, flexDirectionOrWrap: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'row'};
+var $rtfeldman$elm_css$Css$column = _Utils_update(
+	$rtfeldman$elm_css$Css$row,
+	{value: 'column'});
 var $elm$core$List$all = F2(
 	function (isOkay, list) {
 		return !A2(
@@ -13631,15 +14056,6 @@ var $rtfeldman$elm_css$Css$Structure$styleBlockToMediaRule = F2(
 			return declaration;
 		}
 	});
-var $elm$core$List$tail = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return $elm$core$Maybe$Just(xs);
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
-};
 var $elm$core$List$takeReverse = F3(
 	function (n, list, kept) {
 		takeReverse:
@@ -14245,33 +14661,8 @@ var $rtfeldman$elm_css$Html$Styled$Internal$css = function (styles) {
 	return A3($rtfeldman$elm_css$VirtualDom$Styled$Attribute, classProperty, true, cssTemplate);
 };
 var $rtfeldman$elm_css$Html$Styled$Attributes$css = $rtfeldman$elm_css$Html$Styled$Internal$css;
+var $rtfeldman$elm_css$Css$displayFlex = A2($rtfeldman$elm_css$Css$property, 'display', 'flex');
 var $rtfeldman$elm_css$Html$Styled$div = $rtfeldman$elm_css$Html$Styled$node('div');
-var $rtfeldman$elm_css$VirtualDom$Styled$property = F2(
-	function (key, value) {
-		return A3(
-			$rtfeldman$elm_css$VirtualDom$Styled$Attribute,
-			A2($elm$virtual_dom$VirtualDom$property, key, value),
-			false,
-			'');
-	});
-var $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			$rtfeldman$elm_css$VirtualDom$Styled$property,
-			key,
-			$elm$json$Json$Encode$string(string));
-	});
-var $rtfeldman$elm_css$Html$Styled$Attributes$href = function (url) {
-	return A2($rtfeldman$elm_css$Html$Styled$Attributes$stringProperty, 'href', url);
-};
-var $author$project$Routing$goToStats = $rtfeldman$elm_css$Html$Styled$Attributes$href('/stats');
-var $author$project$Routing$goToTrace = $rtfeldman$elm_css$Html$Styled$Attributes$href('/trace');
-var $rtfeldman$elm_css$Html$Styled$h1 = $rtfeldman$elm_css$Html$Styled$node('h1');
-var $rtfeldman$elm_css$VirtualDom$Styled$text = function (str) {
-	return $rtfeldman$elm_css$VirtualDom$Styled$Unstyled(
-		$elm$virtual_dom$VirtualDom$text(str));
-};
-var $rtfeldman$elm_css$Html$Styled$text = $rtfeldman$elm_css$VirtualDom$Styled$text;
 var $rtfeldman$elm_css$Css$Preprocess$ApplyStyles = function (a) {
 	return {$: 'ApplyStyles', a: a};
 };
@@ -14337,33 +14728,68 @@ var $rtfeldman$elm_css$Css$Internal$getOverloadedProperty = F3(
 		}
 	});
 var $rtfeldman$elm_css$Css$Internal$IncompatibleUnits = {$: 'IncompatibleUnits'};
-var $rtfeldman$elm_css$Css$Structure$Compatible = {$: 'Compatible'};
-var $rtfeldman$elm_css$Css$Internal$lengthConverter = F3(
-	function (units, unitLabel, numericValue) {
-		return {
-			absoluteLength: $rtfeldman$elm_css$Css$Structure$Compatible,
-			calc: $rtfeldman$elm_css$Css$Structure$Compatible,
-			flexBasis: $rtfeldman$elm_css$Css$Structure$Compatible,
-			fontSize: $rtfeldman$elm_css$Css$Structure$Compatible,
-			length: $rtfeldman$elm_css$Css$Structure$Compatible,
-			lengthOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible,
-			lengthOrAutoOrCoverOrContain: $rtfeldman$elm_css$Css$Structure$Compatible,
-			lengthOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible,
-			lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible,
-			lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible,
-			lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible,
-			lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible,
-			lineHeight: $rtfeldman$elm_css$Css$Structure$Compatible,
-			numericValue: numericValue,
-			textIndent: $rtfeldman$elm_css$Css$Structure$Compatible,
-			unitLabel: unitLabel,
-			units: units,
-			value: _Utils_ap(
-				$elm$core$String$fromFloat(numericValue),
-				unitLabel)
-		};
-	});
 var $rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty = A3($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$Internal$IncompatibleUnits, '', 0);
+var $rtfeldman$elm_css$Css$alignItems = function (fn) {
+	return A3(
+		$rtfeldman$elm_css$Css$Internal$getOverloadedProperty,
+		'alignItems',
+		'align-items',
+		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
+};
+var $rtfeldman$elm_css$Css$height = $rtfeldman$elm_css$Css$prop1('height');
+var $rtfeldman$elm_css$Css$justifyContent = function (fn) {
+	return A3(
+		$rtfeldman$elm_css$Css$Internal$getOverloadedProperty,
+		'justifyContent',
+		'justify-content',
+		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
+};
+var $rtfeldman$elm_css$Css$VhUnits = {$: 'VhUnits'};
+var $rtfeldman$elm_css$Css$vh = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$VhUnits, 'vh');
+var $rtfeldman$elm_css$Css$VwUnits = {$: 'VwUnits'};
+var $rtfeldman$elm_css$Css$vw = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$VwUnits, 'vw');
+var $rtfeldman$elm_css$Css$width = $rtfeldman$elm_css$Css$prop1('width');
+var $author$project$Theme$divBackgroundStyles = _List_fromArray(
+	[
+		$rtfeldman$elm_css$Css$width(
+		$rtfeldman$elm_css$Css$vw(100)),
+		$rtfeldman$elm_css$Css$height(
+		$rtfeldman$elm_css$Css$vh(100)),
+		$rtfeldman$elm_css$Css$backgroundColor(
+		$rtfeldman$elm_css$Css$hex($author$project$Theme$colors.background)),
+		$rtfeldman$elm_css$Css$displayFlex,
+		$rtfeldman$elm_css$Css$justifyContent($rtfeldman$elm_css$Css$center),
+		$rtfeldman$elm_css$Css$alignItems($rtfeldman$elm_css$Css$center)
+	]);
+var $rtfeldman$elm_css$Css$flexDirection = $rtfeldman$elm_css$Css$prop1('flex-direction');
+var $rtfeldman$elm_css$VirtualDom$Styled$property = F2(
+	function (key, value) {
+		return A3(
+			$rtfeldman$elm_css$VirtualDom$Styled$Attribute,
+			A2($elm$virtual_dom$VirtualDom$property, key, value),
+			false,
+			'');
+	});
+var $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			$rtfeldman$elm_css$VirtualDom$Styled$property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $rtfeldman$elm_css$Html$Styled$Attributes$href = function (url) {
+	return A2($rtfeldman$elm_css$Html$Styled$Attributes$stringProperty, 'href', url);
+};
+var $author$project$Routing$goToStats = $rtfeldman$elm_css$Html$Styled$Attributes$href('/stats');
+var $author$project$Routing$goToTrace = $rtfeldman$elm_css$Html$Styled$Attributes$href('/trace');
+var $rtfeldman$elm_css$Html$Styled$h1 = $rtfeldman$elm_css$Html$Styled$node('h1');
+var $rtfeldman$elm_css$Css$minWidth = $rtfeldman$elm_css$Css$prop1('min-width');
+var $rtfeldman$elm_css$Css$spaceAround = $rtfeldman$elm_css$Css$prop1('space-around');
+var $rtfeldman$elm_css$VirtualDom$Styled$text = function (str) {
+	return $rtfeldman$elm_css$VirtualDom$Styled$Unstyled(
+		$elm$virtual_dom$VirtualDom$text(str));
+};
+var $rtfeldman$elm_css$Html$Styled$text = $rtfeldman$elm_css$VirtualDom$Styled$text;
 var $rtfeldman$elm_css$Css$textAlign = function (fn) {
 	return A3(
 		$rtfeldman$elm_css$Css$Internal$getOverloadedProperty,
@@ -14377,7 +14803,17 @@ var $author$project$Pages$Home$view = function (model) {
 			[
 				A2(
 				$rtfeldman$elm_css$Html$Styled$div,
-				_List_Nil,
+				_List_fromArray(
+					[
+						$rtfeldman$elm_css$Html$Styled$Attributes$css(
+						_Utils_ap(
+							$author$project$Theme$divBackgroundStyles,
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Css$flexDirection($rtfeldman$elm_css$Css$column),
+									A2($rtfeldman$elm_css$Css$property, 'gap', '2rem')
+								])))
+					]),
 				_List_fromArray(
 					[
 						A2(
@@ -14387,39 +14823,51 @@ var $author$project$Pages$Home$view = function (model) {
 								$rtfeldman$elm_css$Html$Styled$Attributes$css(
 								_List_fromArray(
 									[
-										$rtfeldman$elm_css$Css$textAlign($rtfeldman$elm_css$Css$center)
+										$rtfeldman$elm_css$Css$textAlign($rtfeldman$elm_css$Css$center),
+										$rtfeldman$elm_css$Css$color(
+										$rtfeldman$elm_css$Css$hex($author$project$Theme$colors.secondary))
 									]))
 							]),
 						_List_fromArray(
 							[
-								$rtfeldman$elm_css$Html$Styled$text('In Home!')
+								$rtfeldman$elm_css$Html$Styled$text('¡Bienvenido al Inicio!')
 							])),
 						A2(
 						$rtfeldman$elm_css$Html$Styled$div,
-						_List_Nil,
 						_List_fromArray(
 							[
-								A2(
-								$rtfeldman$elm_css$Html$Styled$a,
-								_List_fromArray(
-									[$author$project$Routing$goToTrace]),
+								$rtfeldman$elm_css$Html$Styled$Attributes$css(
 								_List_fromArray(
 									[
-										$rtfeldman$elm_css$Html$Styled$text('Go to Trace!')
+										$rtfeldman$elm_css$Css$displayFlex,
+										$rtfeldman$elm_css$Css$justifyContent($rtfeldman$elm_css$Css$spaceAround),
+										$rtfeldman$elm_css$Css$minWidth(
+										$rtfeldman$elm_css$Css$vw(50))
 									]))
-							])),
-						A2(
-						$rtfeldman$elm_css$Html$Styled$div,
-						_List_Nil,
+							]),
 						_List_fromArray(
 							[
 								A2(
 								$rtfeldman$elm_css$Html$Styled$a,
 								_List_fromArray(
-									[$author$project$Routing$goToStats]),
+									[
+										$author$project$Routing$goToTrace,
+										$rtfeldman$elm_css$Html$Styled$Attributes$css($author$project$Theme$btnStyles)
+									]),
 								_List_fromArray(
 									[
-										$rtfeldman$elm_css$Html$Styled$text('Go to Stats!')
+										$rtfeldman$elm_css$Html$Styled$text('Trazabilidad')
+									])),
+								A2(
+								$rtfeldman$elm_css$Html$Styled$a,
+								_List_fromArray(
+									[
+										$author$project$Routing$goToStats,
+										$rtfeldman$elm_css$Html$Styled$Attributes$css($author$project$Theme$btnStyles)
+									]),
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Html$Styled$text('Estadísticas')
 									]))
 							]))
 					]))
@@ -14542,400 +14990,15 @@ var $author$project$Pages$Trace$ProductIdChanged = function (a) {
 	return {$: 'ProductIdChanged', a: a};
 };
 var $author$project$Pages$Trace$SearchClicked = {$: 'SearchClicked'};
-var $rtfeldman$elm_css$Css$alignItems = function (fn) {
-	return A3(
-		$rtfeldman$elm_css$Css$Internal$getOverloadedProperty,
-		'alignItems',
-		'align-items',
-		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
-};
-var $rtfeldman$elm_css$Css$backgroundColor = function (c) {
-	return A2($rtfeldman$elm_css$Css$property, 'background-color', c.value);
-};
 var $rtfeldman$elm_css$Css$bold = {fontWeight: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'bold'};
-var $rtfeldman$elm_css$Css$border = $rtfeldman$elm_css$Css$prop1('border');
 var $rtfeldman$elm_css$Html$Styled$button = $rtfeldman$elm_css$Html$Styled$node('button');
-var $rtfeldman$elm_css$Css$color = function (c) {
-	return A2($rtfeldman$elm_css$Css$property, 'color', c.value);
-};
-var $author$project$Theme$colors = {accent: '#8f9044', background: '#352f3d', error: '#cf1500', secondary: '#fc8020', warning: '#f8a523'};
-var $rtfeldman$elm_css$Css$row = {flexDirection: $rtfeldman$elm_css$Css$Structure$Compatible, flexDirectionOrWrap: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'row'};
-var $rtfeldman$elm_css$Css$column = _Utils_update(
-	$rtfeldman$elm_css$Css$row,
-	{value: 'column'});
-var $rtfeldman$elm_css$Css$displayFlex = A2($rtfeldman$elm_css$Css$property, 'display', 'flex');
-var $rtfeldman$elm_css$Css$flexDirection = $rtfeldman$elm_css$Css$prop1('flex-direction');
 var $rtfeldman$elm_css$Css$fontWeight = function (_v0) {
 	var value = _v0.value;
 	return A2($rtfeldman$elm_css$Css$property, 'font-weight', value);
 };
 var $author$project$Routing$goToHome = $rtfeldman$elm_css$Html$Styled$Attributes$href('/');
 var $rtfeldman$elm_css$Html$Styled$h2 = $rtfeldman$elm_css$Html$Styled$node('h2');
-var $rtfeldman$elm_css$Css$height = $rtfeldman$elm_css$Css$prop1('height');
-var $rtfeldman$elm_css$Css$withPrecedingHash = function (str) {
-	return A2($elm$core$String$startsWith, '#', str) ? str : A2(
-		$elm$core$String$cons,
-		_Utils_chr('#'),
-		str);
-};
-var $rtfeldman$elm_css$Css$erroneousHex = function (str) {
-	return {
-		alpha: 1,
-		blue: 0,
-		color: $rtfeldman$elm_css$Css$Structure$Compatible,
-		green: 0,
-		red: 0,
-		value: $rtfeldman$elm_css$Css$withPrecedingHash(str)
-	};
-};
-var $elm$core$String$foldr = _String_foldr;
-var $elm$core$String$toList = function (string) {
-	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
-};
-var $elm$core$String$fromChar = function (_char) {
-	return A2($elm$core$String$cons, _char, '');
-};
-var $elm$core$Basics$pow = _Basics_pow;
-var $rtfeldman$elm_hex$Hex$fromStringHelp = F3(
-	function (position, chars, accumulated) {
-		fromStringHelp:
-		while (true) {
-			if (!chars.b) {
-				return $elm$core$Result$Ok(accumulated);
-			} else {
-				var _char = chars.a;
-				var rest = chars.b;
-				switch (_char.valueOf()) {
-					case '0':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated;
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					case '1':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated + A2($elm$core$Basics$pow, 16, position);
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					case '2':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated + (2 * A2($elm$core$Basics$pow, 16, position));
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					case '3':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated + (3 * A2($elm$core$Basics$pow, 16, position));
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					case '4':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated + (4 * A2($elm$core$Basics$pow, 16, position));
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					case '5':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated + (5 * A2($elm$core$Basics$pow, 16, position));
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					case '6':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated + (6 * A2($elm$core$Basics$pow, 16, position));
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					case '7':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated + (7 * A2($elm$core$Basics$pow, 16, position));
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					case '8':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated + (8 * A2($elm$core$Basics$pow, 16, position));
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					case '9':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated + (9 * A2($elm$core$Basics$pow, 16, position));
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					case 'a':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated + (10 * A2($elm$core$Basics$pow, 16, position));
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					case 'b':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated + (11 * A2($elm$core$Basics$pow, 16, position));
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					case 'c':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated + (12 * A2($elm$core$Basics$pow, 16, position));
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					case 'd':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated + (13 * A2($elm$core$Basics$pow, 16, position));
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					case 'e':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated + (14 * A2($elm$core$Basics$pow, 16, position));
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					case 'f':
-						var $temp$position = position - 1,
-							$temp$chars = rest,
-							$temp$accumulated = accumulated + (15 * A2($elm$core$Basics$pow, 16, position));
-						position = $temp$position;
-						chars = $temp$chars;
-						accumulated = $temp$accumulated;
-						continue fromStringHelp;
-					default:
-						var nonHex = _char;
-						return $elm$core$Result$Err(
-							$elm$core$String$fromChar(nonHex) + ' is not a valid hexadecimal character.');
-				}
-			}
-		}
-	});
-var $rtfeldman$elm_hex$Hex$fromString = function (str) {
-	if ($elm$core$String$isEmpty(str)) {
-		return $elm$core$Result$Err('Empty strings are not valid hexadecimal strings.');
-	} else {
-		var result = function () {
-			if (A2($elm$core$String$startsWith, '-', str)) {
-				var list = A2(
-					$elm$core$Maybe$withDefault,
-					_List_Nil,
-					$elm$core$List$tail(
-						$elm$core$String$toList(str)));
-				return A2(
-					$elm$core$Result$map,
-					$elm$core$Basics$negate,
-					A3(
-						$rtfeldman$elm_hex$Hex$fromStringHelp,
-						$elm$core$List$length(list) - 1,
-						list,
-						0));
-			} else {
-				return A3(
-					$rtfeldman$elm_hex$Hex$fromStringHelp,
-					$elm$core$String$length(str) - 1,
-					$elm$core$String$toList(str),
-					0);
-			}
-		}();
-		var formatError = function (err) {
-			return A2(
-				$elm$core$String$join,
-				' ',
-				_List_fromArray(
-					['\"' + (str + '\"'), 'is not a valid hexadecimal string because', err]));
-		};
-		return A2($elm$core$Result$mapError, formatError, result);
-	}
-};
-var $elm$core$String$toLower = _String_toLower;
-var $rtfeldman$elm_css$Css$validHex = F5(
-	function (str, _v0, _v1, _v2, _v3) {
-		var r1 = _v0.a;
-		var r2 = _v0.b;
-		var g1 = _v1.a;
-		var g2 = _v1.b;
-		var b1 = _v2.a;
-		var b2 = _v2.b;
-		var a1 = _v3.a;
-		var a2 = _v3.b;
-		var toResult = A2(
-			$elm$core$Basics$composeR,
-			$elm$core$String$fromList,
-			A2($elm$core$Basics$composeR, $elm$core$String$toLower, $rtfeldman$elm_hex$Hex$fromString));
-		var results = _Utils_Tuple2(
-			_Utils_Tuple2(
-				toResult(
-					_List_fromArray(
-						[r1, r2])),
-				toResult(
-					_List_fromArray(
-						[g1, g2]))),
-			_Utils_Tuple2(
-				toResult(
-					_List_fromArray(
-						[b1, b2])),
-				toResult(
-					_List_fromArray(
-						[a1, a2]))));
-		if ((((results.a.a.$ === 'Ok') && (results.a.b.$ === 'Ok')) && (results.b.a.$ === 'Ok')) && (results.b.b.$ === 'Ok')) {
-			var _v5 = results.a;
-			var red = _v5.a.a;
-			var green = _v5.b.a;
-			var _v6 = results.b;
-			var blue = _v6.a.a;
-			var alpha = _v6.b.a;
-			return {
-				alpha: alpha / 255,
-				blue: blue,
-				color: $rtfeldman$elm_css$Css$Structure$Compatible,
-				green: green,
-				red: red,
-				value: $rtfeldman$elm_css$Css$withPrecedingHash(str)
-			};
-		} else {
-			return $rtfeldman$elm_css$Css$erroneousHex(str);
-		}
-	});
-var $rtfeldman$elm_css$Css$hex = function (str) {
-	var withoutHash = A2($elm$core$String$startsWith, '#', str) ? A2($elm$core$String$dropLeft, 1, str) : str;
-	var _v0 = $elm$core$String$toList(withoutHash);
-	_v0$4:
-	while (true) {
-		if ((_v0.b && _v0.b.b) && _v0.b.b.b) {
-			if (!_v0.b.b.b.b) {
-				var r = _v0.a;
-				var _v1 = _v0.b;
-				var g = _v1.a;
-				var _v2 = _v1.b;
-				var b = _v2.a;
-				return A5(
-					$rtfeldman$elm_css$Css$validHex,
-					str,
-					_Utils_Tuple2(r, r),
-					_Utils_Tuple2(g, g),
-					_Utils_Tuple2(b, b),
-					_Utils_Tuple2(
-						_Utils_chr('f'),
-						_Utils_chr('f')));
-			} else {
-				if (!_v0.b.b.b.b.b) {
-					var r = _v0.a;
-					var _v3 = _v0.b;
-					var g = _v3.a;
-					var _v4 = _v3.b;
-					var b = _v4.a;
-					var _v5 = _v4.b;
-					var a = _v5.a;
-					return A5(
-						$rtfeldman$elm_css$Css$validHex,
-						str,
-						_Utils_Tuple2(r, r),
-						_Utils_Tuple2(g, g),
-						_Utils_Tuple2(b, b),
-						_Utils_Tuple2(a, a));
-				} else {
-					if (_v0.b.b.b.b.b.b) {
-						if (!_v0.b.b.b.b.b.b.b) {
-							var r1 = _v0.a;
-							var _v6 = _v0.b;
-							var r2 = _v6.a;
-							var _v7 = _v6.b;
-							var g1 = _v7.a;
-							var _v8 = _v7.b;
-							var g2 = _v8.a;
-							var _v9 = _v8.b;
-							var b1 = _v9.a;
-							var _v10 = _v9.b;
-							var b2 = _v10.a;
-							return A5(
-								$rtfeldman$elm_css$Css$validHex,
-								str,
-								_Utils_Tuple2(r1, r2),
-								_Utils_Tuple2(g1, g2),
-								_Utils_Tuple2(b1, b2),
-								_Utils_Tuple2(
-									_Utils_chr('f'),
-									_Utils_chr('f')));
-						} else {
-							if (_v0.b.b.b.b.b.b.b.b && (!_v0.b.b.b.b.b.b.b.b.b)) {
-								var r1 = _v0.a;
-								var _v11 = _v0.b;
-								var r2 = _v11.a;
-								var _v12 = _v11.b;
-								var g1 = _v12.a;
-								var _v13 = _v12.b;
-								var g2 = _v13.a;
-								var _v14 = _v13.b;
-								var b1 = _v14.a;
-								var _v15 = _v14.b;
-								var b2 = _v15.a;
-								var _v16 = _v15.b;
-								var a1 = _v16.a;
-								var _v17 = _v16.b;
-								var a2 = _v17.a;
-								return A5(
-									$rtfeldman$elm_css$Css$validHex,
-									str,
-									_Utils_Tuple2(r1, r2),
-									_Utils_Tuple2(g1, g2),
-									_Utils_Tuple2(b1, b2),
-									_Utils_Tuple2(a1, a2));
-							} else {
-								break _v0$4;
-							}
-						}
-					} else {
-						break _v0$4;
-					}
-				}
-			}
-		} else {
-			break _v0$4;
-		}
-	}
-	return $rtfeldman$elm_css$Css$erroneousHex(str);
-};
 var $rtfeldman$elm_css$Html$Styled$input = $rtfeldman$elm_css$Html$Styled$node('input');
-var $rtfeldman$elm_css$Css$justifyContent = function (fn) {
-	return A3(
-		$rtfeldman$elm_css$Css$Internal$getOverloadedProperty,
-		'justifyContent',
-		'justify-content',
-		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
-};
-var $rtfeldman$elm_css$Css$none = {backgroundImage: $rtfeldman$elm_css$Css$Structure$Compatible, blockAxisOverflow: $rtfeldman$elm_css$Css$Structure$Compatible, borderStyle: $rtfeldman$elm_css$Css$Structure$Compatible, cursor: $rtfeldman$elm_css$Css$Structure$Compatible, display: $rtfeldman$elm_css$Css$Structure$Compatible, hoverCapability: $rtfeldman$elm_css$Css$Structure$Compatible, inlineAxisOverflow: $rtfeldman$elm_css$Css$Structure$Compatible, keyframes: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleType: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleTypeOrPositionOrImage: $rtfeldman$elm_css$Css$Structure$Compatible, none: $rtfeldman$elm_css$Css$Structure$Compatible, outline: $rtfeldman$elm_css$Css$Structure$Compatible, pointerDevice: $rtfeldman$elm_css$Css$Structure$Compatible, pointerEvents: $rtfeldman$elm_css$Css$Structure$Compatible, resize: $rtfeldman$elm_css$Css$Structure$Compatible, scriptingSupport: $rtfeldman$elm_css$Css$Structure$Compatible, textDecorationLine: $rtfeldman$elm_css$Css$Structure$Compatible, textTransform: $rtfeldman$elm_css$Css$Structure$Compatible, touchAction: $rtfeldman$elm_css$Css$Structure$Compatible, transform: $rtfeldman$elm_css$Css$Structure$Compatible, updateFrequency: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'none'};
 var $rtfeldman$elm_css$Html$Styled$ol = $rtfeldman$elm_css$Html$Styled$node('ol');
 var $rtfeldman$elm_css$VirtualDom$Styled$on = F2(
 	function (eventName, handler) {
@@ -14982,53 +15045,13 @@ var $rtfeldman$elm_css$Html$Styled$Events$onInput = function (tagger) {
 			$rtfeldman$elm_css$Html$Styled$Events$alwaysStop,
 			A2($elm$json$Json$Decode$map, tagger, $rtfeldman$elm_css$Html$Styled$Events$targetValue)));
 };
-var $rtfeldman$elm_css$Css$prop2 = F3(
-	function (key, argA, argB) {
-		return A2($rtfeldman$elm_css$Css$property, key, argA.value + (' ' + argB.value));
-	});
-var $rtfeldman$elm_css$Css$padding2 = $rtfeldman$elm_css$Css$prop2('padding');
 var $rtfeldman$elm_css$Html$Styled$Attributes$placeholder = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('placeholder');
 var $rtfeldman$elm_css$Html$Styled$pre = $rtfeldman$elm_css$Html$Styled$node('pre');
-var $rtfeldman$elm_css$Css$PxUnits = {$: 'PxUnits'};
-var $rtfeldman$elm_css$Css$px = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PxUnits, 'px');
-var $rtfeldman$elm_css$Css$textDecoration = $rtfeldman$elm_css$Css$prop1('text-decoration');
 var $rtfeldman$elm_css$Html$Styled$Attributes$type_ = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('type');
 var $rtfeldman$elm_css$Html$Styled$Attributes$value = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('value');
-var $rtfeldman$elm_css$Css$VhUnits = {$: 'VhUnits'};
-var $rtfeldman$elm_css$Css$vh = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$VhUnits, 'vh');
-var $rtfeldman$elm_css$Css$VwUnits = {$: 'VwUnits'};
-var $rtfeldman$elm_css$Css$vw = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$VwUnits, 'vw');
-var $rtfeldman$elm_css$Css$width = $rtfeldman$elm_css$Css$prop1('width');
-var $rtfeldman$elm_css$Css$UnitlessInteger = {$: 'UnitlessInteger'};
-var $rtfeldman$elm_css$Css$zero = {length: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAutoOrCoverOrContain: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible, number: $rtfeldman$elm_css$Css$Structure$Compatible, numericValue: 0, outline: $rtfeldman$elm_css$Css$Structure$Compatible, unitLabel: '', units: $rtfeldman$elm_css$Css$UnitlessInteger, value: '0'};
 var $author$project$Pages$Trace$view = function (model) {
 	return {
 		body: function () {
-			var divBackgroundStyles = _List_fromArray(
-				[
-					$rtfeldman$elm_css$Css$width(
-					$rtfeldman$elm_css$Css$vw(100)),
-					$rtfeldman$elm_css$Css$height(
-					$rtfeldman$elm_css$Css$vh(100)),
-					$rtfeldman$elm_css$Css$backgroundColor(
-					$rtfeldman$elm_css$Css$hex($author$project$Theme$colors.background)),
-					$rtfeldman$elm_css$Css$displayFlex,
-					$rtfeldman$elm_css$Css$justifyContent($rtfeldman$elm_css$Css$center),
-					$rtfeldman$elm_css$Css$alignItems($rtfeldman$elm_css$Css$center)
-				]);
-			var btnStyles = _List_fromArray(
-				[
-					$rtfeldman$elm_css$Css$textDecoration($rtfeldman$elm_css$Css$none),
-					A2(
-					$rtfeldman$elm_css$Css$padding2,
-					$rtfeldman$elm_css$Css$px(10),
-					$rtfeldman$elm_css$Css$px(20)),
-					$rtfeldman$elm_css$Css$border($rtfeldman$elm_css$Css$zero),
-					$rtfeldman$elm_css$Css$color(
-					$rtfeldman$elm_css$Css$hex('#ffffff')),
-					$rtfeldman$elm_css$Css$backgroundColor(
-					$rtfeldman$elm_css$Css$hex($author$project$Theme$colors.accent))
-				]);
 			var header = _List_fromArray(
 				[
 					A2(
@@ -15076,7 +15099,7 @@ var $author$project$Pages$Trace$view = function (model) {
 							_List_fromArray(
 								[
 									$rtfeldman$elm_css$Html$Styled$Events$onClick($author$project$Pages$Trace$SearchClicked),
-									$rtfeldman$elm_css$Html$Styled$Attributes$css(btnStyles)
+									$rtfeldman$elm_css$Html$Styled$Attributes$css($author$project$Theme$btnStyles)
 								]),
 							_List_fromArray(
 								[
@@ -15088,7 +15111,7 @@ var $author$project$Pages$Trace$view = function (model) {
 					_List_fromArray(
 						[
 							$author$project$Routing$goToHome,
-							$rtfeldman$elm_css$Html$Styled$Attributes$css(btnStyles)
+							$rtfeldman$elm_css$Html$Styled$Attributes$css($author$project$Theme$btnStyles)
 						]),
 					_List_fromArray(
 						[
@@ -15281,7 +15304,7 @@ var $author$project$Pages$Trace$view = function (model) {
 						[
 							$rtfeldman$elm_css$Html$Styled$Attributes$css(
 							_Utils_ap(
-								divBackgroundStyles,
+								$author$project$Theme$divBackgroundStyles,
 								_List_fromArray(
 									[
 										$rtfeldman$elm_css$Css$flexDirection($rtfeldman$elm_css$Css$column),
@@ -15334,536 +15357,4 @@ var $author$project$Main$view = function (model) {
 };
 var $author$project$Main$main = $elm$browser$Browser$application(
 	{init: $author$project$Main$init, onUrlChange: $author$project$Main$UrlChanged, onUrlRequest: $author$project$Main$LinkClicked, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
-_Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$string)({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Url.Url":{"args":[],"type":"{ protocol : Url.Protocol, host : String.String, port_ : Maybe.Maybe Basics.Int, path : String.String, query : Maybe.Maybe String.String, fragment : Maybe.Maybe String.String }"},"Pages.Trace.APIResponse":{"args":[],"type":"Result.Result Http.Error Api.Endpoint.GetHistoryResponse"},"Api.Endpoint.GetHistoryResponse":{"args":[],"type":"{ values : List.List { nodes : List.List Models.Node.Node, relationships : List.List Models.Relation.Relation } }"},"Api.Endpoint.GetStatsResponse":{"args":[],"type":"{ topProducts : List.List Models.Product.Product, topProviders : List.List Models.Provider.Provider, topPurchasedProducts : List.List Models.PurchasedProduct.PurchasedProduct }"},"Models.Node.Node":{"args":[],"type":"{ id : Basics.Int, labels : List.List String.String, props : Dict.Dict String.String Json.Decode.Value }"},"Models.Product.Product":{"args":[],"type":"{ name : String.String, averageRating : Basics.Float }"},"Models.Provider.Provider":{"args":[],"type":"{ name : String.String, popularity : Basics.Int }"},"Models.PurchasedProduct.PurchasedProduct":{"args":[],"type":"{ productName : String.String, productId : String.String, purchases : Basics.Int }"},"Models.Relation.Relation":{"args":[],"type":"{ startId : Basics.Int, endId : Basics.Int, relType : String.String, props : Dict.Dict String.String Json.Decode.Value }"},"Json.Decode.Value":{"args":[],"type":"Json.Encode.Value"}},"unions":{"Main.Msg":{"args":[],"tags":{"UrlChanged":["Url.Url"],"LinkClicked":["Browser.UrlRequest"],"HomeMsg":["Pages.Home.Msg"],"NotFoundMsg":["Pages.NotFound.Msg"],"ReportMsg":["Pages.Report.Msg"],"StatsMsg":["Pages.Stats.Msg"],"TraceMsg":["Pages.Trace.Msg"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Pages.Home.Msg":{"args":[],"tags":{"None":[]}},"Pages.NotFound.Msg":{"args":[],"tags":{"None":[]}},"Pages.Report.Msg":{"args":[],"tags":{"None":[]}},"Pages.Stats.Msg":{"args":[],"tags":{"FetchStats":[],"StatsReceived":["Result.Result Http.Error Api.Endpoint.GetStatsResponse"]}},"Pages.Trace.Msg":{"args":[],"tags":{"SearchClicked":[],"GotHistory":["Pages.Trace.APIResponse"],"ProductIdChanged":["String.String"]}},"Url.Protocol":{"args":[],"tags":{"Http":[],"Https":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Browser.UrlRequest":{"args":[],"tags":{"Internal":["Url.Url"],"External":["String.String"]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Basics.Float":{"args":[],"tags":{"Float":[]}},"List.List":{"args":["a"],"tags":{}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Json.Encode.Value":{"args":[],"tags":{"Value":[]}},"Dict.NColor":{"args":[],"tags":{"Red":[],"Black":[]}}}}})}});
-
-//////////////////// HMR BEGIN ////////////////////
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Original Author: Flux Xu @fluxxu
-*/
-
-/*
-    A note about the environment that this code runs in...
-
-    assumed globals:
-        - `module` (from Node.js module system and webpack)
-
-    assumed in scope after injection into the Elm IIFE:
-        - `scope` (has an 'Elm' property which contains the public Elm API)
-        - various functions defined by Elm which we have to hook such as `_Platform_initialize` and `_Scheduler_binding`
- */
-
-if (module.hot) {
-    (function () {
-        "use strict";
-
-        //polyfill for IE: https://github.com/fluxxu/elm-hot-loader/issues/16
-        if (typeof Object.assign != 'function') {
-            Object.assign = function (target) {
-                'use strict';
-                if (target == null) {
-                    throw new TypeError('Cannot convert undefined or null to object');
-                }
-
-                target = Object(target);
-                for (var index = 1; index < arguments.length; index++) {
-                    var source = arguments[index];
-                    if (source != null) {
-                        for (var key in source) {
-                            if (Object.prototype.hasOwnProperty.call(source, key)) {
-                                target[key] = source[key];
-                            }
-                        }
-                    }
-                }
-                return target;
-            };
-        }
-
-        // Elm 0.19.1 introduced a '$' prefix at the beginning of the symbols it emits,
-        // and we check for `Maybe.Just` because we expect it to be present in all Elm programs.
-        var elmVersion;
-        if (typeof elm$core$Maybe$Just !== 'undefined')
-            elmVersion = '0.19.0';
-        else if (typeof $elm$core$Maybe$Just !== 'undefined')
-            elmVersion = '0.19.1';
-        else
-            throw new Error("Could not determine Elm version");
-
-        function elmSymbol(symbol) {
-            try {
-                switch (elmVersion) {
-                    case '0.19.0':
-                        return eval(symbol);
-                    case '0.19.1':
-                        return eval('$' + symbol);
-                    default:
-                        throw new Error('Cannot resolve ' + symbol + '. Elm version unknown!')
-                }
-            } catch (e) {
-                if (e instanceof ReferenceError) {
-                    return undefined;
-                } else {
-                    throw e;
-                }
-            }
-        }
-
-        var instances = module.hot.data
-            ? module.hot.data.instances || {}
-            : {};
-        var uid = module.hot.data
-            ? module.hot.data.uid || 0
-            : 0;
-
-        if (Object.keys(instances).length === 0) {
-            log("[elm-hot] Enabled");
-        }
-
-        var cancellers = [];
-
-        // These 2 variables act as dynamically-scoped variables which are set only when the
-        // Elm module's hooked init function is called.
-        var initializingInstance = null;
-        var swappingInstance = null;
-
-        module.hot.accept();
-        module.hot.dispose(function (data) {
-            data.instances = instances;
-            data.uid = uid;
-
-            // Cleanup pending async tasks
-
-            // First, make sure that no new tasks can be started until we finish replacing the code
-            _Scheduler_binding = function () {
-                return _Scheduler_fail(new Error('[elm-hot] Inactive Elm instance.'))
-            };
-
-            // Second, kill pending tasks belonging to the old instance
-            if (cancellers.length) {
-                log('[elm-hot] Killing ' + cancellers.length + ' running processes...');
-                try {
-                    cancellers.forEach(function (cancel) {
-                        cancel();
-                    });
-                } catch (e) {
-                    console.warn('[elm-hot] Kill process error: ' + e.message);
-                }
-            }
-        });
-
-        function log(message) {
-            if (module.hot.verbose) {
-                console.log(message)
-            }
-        }
-
-        function getId() {
-            return ++uid;
-        }
-
-        function findPublicModules(parent, path) {
-            var modules = [];
-            for (var key in parent) {
-                var child = parent[key];
-                var currentPath = path ? path + '.' + key : key;
-                if ('init' in child) {
-                    modules.push({
-                        path: currentPath,
-                        module: child
-                    });
-                } else {
-                    modules = modules.concat(findPublicModules(child, currentPath));
-                }
-            }
-            return modules;
-        }
-
-        function registerInstance(domNode, flags, path, portSubscribes, portSends) {
-            var id = getId();
-
-            var instance = {
-                id: id,
-                path: path,
-                domNode: domNode,
-                flags: flags,
-                portSubscribes: portSubscribes,
-                portSends: portSends,
-                lastState: null // last Elm app state (root model)
-            };
-
-            return instances[id] = instance
-        }
-
-        function isFullscreenApp() {
-            // Returns true if the Elm app will take over the entire DOM body.
-            return typeof elmSymbol("elm$browser$Browser$application") !== 'undefined'
-                || typeof elmSymbol("elm$browser$Browser$document") !== 'undefined';
-        }
-
-        function wrapDomNode(node) {
-            // When embedding an Elm app into a specific DOM node, Elm will replace the provided
-            // DOM node with the Elm app's content. When the Elm app is compiled normally, the
-            // original DOM node is reused (its attributes and content changes, but the object
-            // in memory remains the same). But when compiled using `--debug`, Elm will completely
-            // destroy the original DOM node and instead replace it with 2 brand new nodes: one
-            // for your Elm app's content and the other for the Elm debugger UI. In this case,
-            // if you held a reference to the DOM node provided for embedding, it would be orphaned
-            // after Elm module initialization.
-            //
-            // So in order to make both cases consistent and isolate us from changes in how Elm
-            // does this, we will insert a dummy node to wrap the node for embedding and hold
-            // a reference to the dummy node.
-            //
-            // We will also put a tag on the dummy node so that the Elm developer knows who went
-            // behind their back and rudely put stuff in their DOM.
-            var dummyNode = document.createElement("div");
-            dummyNode.setAttribute("data-elm-hot", "true");
-            dummyNode.style.height = "inherit";
-            var parentNode = node.parentNode;
-            parentNode.replaceChild(dummyNode, node);
-            dummyNode.appendChild(node);
-            return dummyNode;
-        }
-
-        function wrapPublicModule(path, module) {
-            var originalInit = module.init;
-            if (originalInit) {
-                module.init = function (args) {
-                    var elm;
-                    var portSubscribes = {};
-                    var portSends = {};
-                    var domNode = null;
-                    var flags = null;
-                    if (typeof args !== 'undefined') {
-                        // normal case
-                        domNode = args['node'] && !isFullscreenApp()
-                            ? wrapDomNode(args['node'])
-                            : document.body;
-                        flags = args['flags'];
-                    } else {
-                        // rare case: Elm allows init to be called without any arguments at all
-                        domNode = document.body;
-                        flags = undefined
-                    }
-                    initializingInstance = registerInstance(domNode, flags, path, portSubscribes, portSends);
-                    elm = originalInit(args);
-                    wrapPorts(elm, portSubscribes, portSends);
-                    initializingInstance = null;
-                    return elm;
-                };
-            } else {
-                console.error("Could not find a public module to wrap at path " + path)
-            }
-        }
-
-        function swap(Elm, instance) {
-            log('[elm-hot] Hot-swapping module: ' + instance.path);
-
-            swappingInstance = instance;
-
-            // remove from the DOM everything that had been created by the old Elm app
-            var containerNode = instance.domNode;
-            while (containerNode.lastChild) {
-                containerNode.removeChild(containerNode.lastChild);
-            }
-
-            var m = getAt(instance.path.split('.'), Elm);
-            var elm;
-            if (m) {
-                // prepare to initialize the new Elm module
-                var args = {flags: instance.flags};
-                if (containerNode === document.body) {
-                    // fullscreen case: no additional args needed
-                } else {
-                    // embed case: provide a new node for Elm to use
-                    var nodeForEmbed = document.createElement("div");
-                    containerNode.appendChild(nodeForEmbed);
-                    args['node'] = nodeForEmbed;
-                }
-
-                elm = m.init(args);
-
-                Object.keys(instance.portSubscribes).forEach(function (portName) {
-                    if (portName in elm.ports && 'subscribe' in elm.ports[portName]) {
-                        var handlers = instance.portSubscribes[portName];
-                        if (!handlers.length) {
-                            return;
-                        }
-                        log('[elm-hot] Reconnect ' + handlers.length + ' handler(s) to port \''
-                            + portName + '\' (' + instance.path + ').');
-                        handlers.forEach(function (handler) {
-                            elm.ports[portName].subscribe(handler);
-                        });
-                    } else {
-                        delete instance.portSubscribes[portName];
-                        log('[elm-hot] Port was removed: ' + portName);
-                    }
-                });
-
-                Object.keys(instance.portSends).forEach(function (portName) {
-                    if (portName in elm.ports && 'send' in elm.ports[portName]) {
-                        log('[elm-hot] Replace old port send with the new send');
-                        instance.portSends[portName] = elm.ports[portName].send;
-                    } else {
-                        delete instance.portSends[portName];
-                        log('[elm-hot] Port was removed: ' + portName);
-                    }
-                });
-            } else {
-                log('[elm-hot] Module was removed: ' + instance.path);
-            }
-
-            swappingInstance = null;
-        }
-
-        function wrapPorts(elm, portSubscribes, portSends) {
-            var portNames = Object.keys(elm.ports || {});
-            //hook ports
-            if (portNames.length) {
-                // hook outgoing ports
-                portNames
-                    .filter(function (name) {
-                        return 'subscribe' in elm.ports[name];
-                    })
-                    .forEach(function (portName) {
-                        var port = elm.ports[portName];
-                        var subscribe = port.subscribe;
-                        var unsubscribe = port.unsubscribe;
-                        elm.ports[portName] = Object.assign(port, {
-                            subscribe: function (handler) {
-                                log('[elm-hot] ports.' + portName + '.subscribe called.');
-                                if (!portSubscribes[portName]) {
-                                    portSubscribes[portName] = [handler];
-                                } else {
-                                    //TODO handle subscribing to single handler more than once?
-                                    portSubscribes[portName].push(handler);
-                                }
-                                return subscribe.call(port, handler);
-                            },
-                            unsubscribe: function (handler) {
-                                log('[elm-hot] ports.' + portName + '.unsubscribe called.');
-                                var list = portSubscribes[portName];
-                                if (list && list.indexOf(handler) !== -1) {
-                                    list.splice(list.lastIndexOf(handler), 1);
-                                } else {
-                                    console.warn('[elm-hot] ports.' + portName + '.unsubscribe: handler not subscribed');
-                                }
-                                return unsubscribe.call(port, handler);
-                            }
-                        });
-                    });
-
-                // hook incoming ports
-                portNames
-                    .filter(function (name) {
-                        return 'send' in elm.ports[name];
-                    })
-                    .forEach(function (portName) {
-                        var port = elm.ports[portName];
-                        portSends[portName] = port.send;
-                        elm.ports[portName] = Object.assign(port, {
-                            send: function (val) {
-                                return portSends[portName].call(port, val);
-                            }
-                        });
-                    });
-            }
-            return portSubscribes;
-        }
-
-        /*
-        Breadth-first search for a `Browser.Navigation.Key` in the user's app model.
-        Returns the key and keypath or null if not found.
-        */
-        function findNavKey(rootModel) {
-            var queue = [];
-            if (isDebuggerModel(rootModel)) {
-                /*
-                 Extract the user's app model from the Elm Debugger's model. The Elm debugger
-                 can hold multiple references to the user's model (e.g. in its "history"). So
-                 we must be careful to only search within the "state" part of the Debugger.
-                */
-                queue.push({value: rootModel['state'], keypath: ['state']});
-            } else {
-                queue.push({value: rootModel, keypath: []});
-            }
-
-            while (queue.length !== 0) {
-                var item = queue.shift();
-
-                if (typeof item.value === "undefined" || item.value === null) {
-                    continue;
-                }
-
-                // The nav key is identified by a runtime tag added by the elm-hot injector.
-                if (item.value.hasOwnProperty("elm-hot-nav-key")) {
-                    // found it!
-                    return item;
-                }
-
-                if (typeof item.value !== "object") {
-                    continue;
-                }
-
-                for (var propName in item.value) {
-                    if (!item.value.hasOwnProperty(propName)) continue;
-                    var newKeypath = item.keypath.slice();
-                    newKeypath.push(propName);
-                    queue.push({value: item.value[propName], keypath: newKeypath})
-                }
-            }
-
-            return null;
-        }
-
-
-        function isDebuggerModel(model) {
-            // Up until elm/browser 1.0.2, the Elm debugger could be identified by a
-            // property named "expando". But in version 1.0.2 that was renamed to "expandoModel"
-            return model
-                && (model.hasOwnProperty("expando") || model.hasOwnProperty("expandoModel"))
-                && model.hasOwnProperty("state");
-        }
-
-        function getAt(keyPath, obj) {
-            return keyPath.reduce(function (xs, x) {
-                return (xs && xs[x]) ? xs[x] : null
-            }, obj)
-        }
-
-        function removeNavKeyListeners(navKey) {
-            window.removeEventListener('popstate', navKey.value);
-            window.navigator.userAgent.indexOf('Trident') < 0 || window.removeEventListener('hashchange', navKey.value);
-        }
-
-        // hook program creation
-        var initialize = _Platform_initialize;
-        _Platform_initialize = function (flagDecoder, args, init, update, subscriptions, stepperBuilder) {
-            var instance = initializingInstance || swappingInstance;
-            var tryFirstRender = !!swappingInstance;
-
-            var hookedInit = function (args) {
-                var initialStateTuple = init(args);
-                if (swappingInstance) {
-                    var oldModel = swappingInstance.lastState;
-                    var newModel = initialStateTuple.a;
-
-                    if (typeof elmSymbol("elm$browser$Browser$application") !== 'undefined') {
-                        var oldKeyLoc = findNavKey(oldModel);
-
-                        // attempt to find the Browser.Navigation.Key in the newly-constructed model
-                        // and bring it along with the rest of the old data.
-                        var newKeyLoc = findNavKey(newModel);
-                        var error = null;
-                        if (newKeyLoc === null) {
-                            error = "could not find Browser.Navigation.Key in the new app model";
-                        } else if (oldKeyLoc === null) {
-                            error = "could not find Browser.Navigation.Key in the old app model.";
-                        } else if (newKeyLoc.keypath.toString() !== oldKeyLoc.keypath.toString()) {
-                            error = "the location of the Browser.Navigation.Key in the model has changed.";
-                        } else {
-                            // remove event listeners attached to the old nav key
-                            removeNavKeyListeners(oldKeyLoc.value);
-
-                            // insert the new nav key into the old model in the exact same location
-                            var parentKeyPath = oldKeyLoc.keypath.slice(0, -1);
-                            var lastSegment = oldKeyLoc.keypath.slice(-1)[0];
-                            var oldParent = getAt(parentKeyPath, oldModel);
-                            oldParent[lastSegment] = newKeyLoc.value;
-                        }
-
-                        if (error !== null) {
-                            console.error("[elm-hot] Hot-swapping " + instance.path + " not possible: " + error);
-                            oldModel = newModel;
-                        }
-                    }
-
-                    // the heart of the app state hot-swap
-                    initialStateTuple.a = oldModel;
-
-                    // ignore any Cmds returned by the init during hot-swap
-                    initialStateTuple.b = elmSymbol("elm$core$Platform$Cmd$none");
-                } else {
-                    // capture the initial state for later
-                    initializingInstance.lastState = initialStateTuple.a;
-                }
-
-                return initialStateTuple
-            };
-
-            var hookedStepperBuilder = function (sendToApp, model) {
-                var result;
-                // first render may fail if shape of model changed too much
-                if (tryFirstRender) {
-                    tryFirstRender = false;
-                    try {
-                        result = stepperBuilder(sendToApp, model)
-                    } catch (e) {
-                        throw new Error('[elm-hot] Hot-swapping ' + instance.path +
-                            ' is not possible, please reload page. Error: ' + e.message)
-                    }
-                } else {
-                    result = stepperBuilder(sendToApp, model)
-                }
-
-                return function (nextModel, isSync) {
-                    if (instance) {
-                        // capture the state after every step so that later we can restore from it during a hot-swap
-                        instance.lastState = nextModel
-                    }
-                    return result(nextModel, isSync)
-                }
-            };
-
-            return initialize(flagDecoder, args, hookedInit, update, subscriptions, hookedStepperBuilder)
-        };
-
-        // hook process creation
-        var originalBinding = _Scheduler_binding;
-        _Scheduler_binding = function (originalCallback) {
-            return originalBinding(function () {
-                // start the scheduled process, which may return a cancellation function.
-                var cancel = originalCallback.apply(this, arguments);
-                if (cancel) {
-                    cancellers.push(cancel);
-                    return function () {
-                        cancellers.splice(cancellers.indexOf(cancel), 1);
-                        return cancel();
-                    };
-                }
-                return cancel;
-            });
-        };
-
-        scope['_elm_hot_loader_init'] = function (Elm) {
-            // swap instances
-            var removedInstances = [];
-            for (var id in instances) {
-                var instance = instances[id];
-                if (instance.domNode.parentNode) {
-                    swap(Elm, instance);
-                } else {
-                    removedInstances.push(id);
-                }
-            }
-
-            removedInstances.forEach(function (id) {
-                delete instance[id];
-            });
-
-            // wrap all public modules
-            var publicModules = findPublicModules(Elm);
-            publicModules.forEach(function (m) {
-                wrapPublicModule(m.path, m.module);
-            });
-        }
-    })();
-
-    scope['_elm_hot_loader_init'](scope['Elm']);
-}
-//////////////////// HMR END ////////////////////
-
-
-}(this));
+_Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$string)({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Url.Url":{"args":[],"type":"{ protocol : Url.Protocol, host : String.String, port_ : Maybe.Maybe Basics.Int, path : String.String, query : Maybe.Maybe String.String, fragment : Maybe.Maybe String.String }"},"Pages.Trace.APIResponse":{"args":[],"type":"Result.Result Http.Error Api.Endpoint.GetHistoryResponse"},"Api.Endpoint.GetHistoryResponse":{"args":[],"type":"{ values : List.List { nodes : List.List Models.Node.Node, relationships : List.List Models.Relation.Relation } }"},"Api.Endpoint.GetStatsResponse":{"args":[],"type":"{ topProducts : List.List Models.Product.Product, topProviders : List.List Models.Provider.Provider, topPurchasedProducts : List.List Models.PurchasedProduct.PurchasedProduct }"},"Models.Node.Node":{"args":[],"type":"{ id : Basics.Int, labels : List.List String.String, props : Dict.Dict String.String Json.Decode.Value }"},"Models.Product.Product":{"args":[],"type":"{ name : String.String, averageRating : Basics.Float }"},"Models.Provider.Provider":{"args":[],"type":"{ name : String.String, popularity : Basics.Int }"},"Models.PurchasedProduct.PurchasedProduct":{"args":[],"type":"{ productName : String.String, productId : String.String, purchases : Basics.Int }"},"Models.Relation.Relation":{"args":[],"type":"{ startId : Basics.Int, endId : Basics.Int, relType : String.String, props : Dict.Dict String.String Json.Decode.Value }"},"Json.Decode.Value":{"args":[],"type":"Json.Encode.Value"}},"unions":{"Main.Msg":{"args":[],"tags":{"UrlChanged":["Url.Url"],"LinkClicked":["Browser.UrlRequest"],"HomeMsg":["Pages.Home.Msg"],"NotFoundMsg":["Pages.NotFound.Msg"],"ReportMsg":["Pages.Report.Msg"],"StatsMsg":["Pages.Stats.Msg"],"TraceMsg":["Pages.Trace.Msg"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Pages.Home.Msg":{"args":[],"tags":{"None":[]}},"Pages.NotFound.Msg":{"args":[],"tags":{"None":[]}},"Pages.Report.Msg":{"args":[],"tags":{"None":[]}},"Pages.Stats.Msg":{"args":[],"tags":{"FetchStats":[],"StatsReceived":["Result.Result Http.Error Api.Endpoint.GetStatsResponse"]}},"Pages.Trace.Msg":{"args":[],"tags":{"SearchClicked":[],"GotHistory":["Pages.Trace.APIResponse"],"ProductIdChanged":["String.String"]}},"Url.Protocol":{"args":[],"tags":{"Http":[],"Https":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Browser.UrlRequest":{"args":[],"tags":{"Internal":["Url.Url"],"External":["String.String"]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Basics.Float":{"args":[],"tags":{"Float":[]}},"List.List":{"args":["a"],"tags":{}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Json.Encode.Value":{"args":[],"tags":{"Value":[]}},"Dict.NColor":{"args":[],"tags":{"Red":[],"Black":[]}}}}})}});}(this));

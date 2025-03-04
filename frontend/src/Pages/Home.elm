@@ -1,12 +1,11 @@
 module Pages.Home exposing (..)
 
-import Css exposing (center, textAlign)
+import Css exposing (center, color, column, displayFlex, flexDirection, justifyContent, minWidth, row, spaceAround, textAlign)
 import Html.Styled exposing (a, div, h1, text)
 import Html.Styled.Attributes exposing (css)
-import Routing exposing (goToTrace)
-import Routing exposing (goToTrace)
+import Routing exposing (goToStats, goToTrace)
+import Theme exposing (colors)
 import Utils exposing (StyledDocument)
-import Routing exposing (goToStats)
 
 
 type alias Model =
@@ -36,15 +35,24 @@ view : Model -> StyledDocument Msg
 view model =
     { title = "Home!"
     , body =
-        [ div []
+        [ div [ css (Theme.divBackgroundStyles ++ [ flexDirection column, Css.property "gap" "2rem" ]) ]
             [ h1
                 [ css
                     [ textAlign center
+                    , color (Css.hex colors.secondary)
                     ]
                 ]
-                [ text "In Home!" ]
-            , div [] [ a [ goToTrace ] [ text "Go to Trace!" ] ] 
-            , div [] [ a [ goToStats ] [ text "Go to Stats!" ] ]  
+                [ text "¡Bienvenido al Inicio!" ]
+            , div
+                [ css
+                    [ displayFlex
+                    , justifyContent spaceAround
+                    , minWidth (Css.vw 50)
+                    ]
+                ]
+                [ a [ goToTrace, css Theme.btnStyles ] [ text "Trazabilidad" ]
+                , a [ goToStats, css Theme.btnStyles ] [ text "Estadísticas" ]
+                ]
             ]
         ]
     }

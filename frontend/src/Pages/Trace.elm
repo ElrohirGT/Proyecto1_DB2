@@ -130,23 +130,6 @@ view model =
     { title = "Trace!"
     , body =
         let
-            divBackgroundStyles =
-                [ width (Css.vw 100)
-                , height (Css.vh 100)
-                , backgroundColor (Css.hex colors.background)
-                , displayFlex
-                , justifyContent center
-                , alignItems center
-                ]
-
-            btnStyles =
-                [ textDecoration none
-                , padding2 (px 10) (px 20)
-                , border zero
-                , color (Css.hex "#ffffff")
-                , backgroundColor (Css.hex colors.accent)
-                ]
-
             header =
                 [ h1
                     [ css
@@ -171,13 +154,13 @@ view model =
                         []
                     , button
                         [ onClick SearchClicked
-                        , css btnStyles
+                        , css Theme.btnStyles
                         ]
                         [ text "Buscar" ]
                     ]
                 , a
                     [ goToHome
-                    , css btnStyles
+                    , css Theme.btnStyles
                     ]
                     [ text "Regresar a Inicio" ]
                 ]
@@ -260,7 +243,7 @@ view model =
         in
         [ div
             [ css
-                (divBackgroundStyles
+                (Theme.divBackgroundStyles
                     ++ [ flexDirection column
                        , Css.property "gap" "1rem"
                        ]
