@@ -44,6 +44,14 @@ RETURN p1`
 			return
 		}
 
+		if len(result.Records) == 0 {
+			log.Error().Err(err).Msg("No records found!")
+			w.WriteHeader(http.StatusNotFound)
+			msg := fmt.Sprintf("NOT FOUND - No product with id `%s` exists!", productId)
+			w.Write([]byte(msg))
+			return
+		}
+
 		var buff bytes.Buffer
 		enc := json.NewEncoder(&buff)
 

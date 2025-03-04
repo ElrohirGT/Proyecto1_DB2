@@ -4639,6 +4639,7 @@ function _Browser_application(impl)
 	var onUrlChange = impl.onUrlChange;
 	var onUrlRequest = impl.onUrlRequest;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
+key['elm-hot-nav-key'] = true
 
 	return _Browser_document({
 		setup: function(sendToApp)
@@ -14551,6 +14552,7 @@ var $rtfeldman$elm_css$Css$alignItems = function (fn) {
 var $rtfeldman$elm_css$Css$backgroundColor = function (c) {
 	return A2($rtfeldman$elm_css$Css$property, 'background-color', c.value);
 };
+var $rtfeldman$elm_css$Css$bold = {fontWeight: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'bold'};
 var $rtfeldman$elm_css$Css$border = $rtfeldman$elm_css$Css$prop1('border');
 var $rtfeldman$elm_css$Html$Styled$button = $rtfeldman$elm_css$Html$Styled$node('button');
 var $rtfeldman$elm_css$Css$color = function (c) {
@@ -14563,6 +14565,10 @@ var $rtfeldman$elm_css$Css$column = _Utils_update(
 	{value: 'column'});
 var $rtfeldman$elm_css$Css$displayFlex = A2($rtfeldman$elm_css$Css$property, 'display', 'flex');
 var $rtfeldman$elm_css$Css$flexDirection = $rtfeldman$elm_css$Css$prop1('flex-direction');
+var $rtfeldman$elm_css$Css$fontWeight = function (_v0) {
+	var value = _v0.value;
+	return A2($rtfeldman$elm_css$Css$property, 'font-weight', value);
+};
 var $author$project$Routing$goToHome = $rtfeldman$elm_css$Html$Styled$Attributes$href('/');
 var $rtfeldman$elm_css$Html$Styled$h2 = $rtfeldman$elm_css$Html$Styled$node('h2');
 var $rtfeldman$elm_css$Css$height = $rtfeldman$elm_css$Css$prop1('height');
@@ -14930,6 +14936,7 @@ var $rtfeldman$elm_css$Css$justifyContent = function (fn) {
 		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
 };
 var $rtfeldman$elm_css$Css$none = {backgroundImage: $rtfeldman$elm_css$Css$Structure$Compatible, blockAxisOverflow: $rtfeldman$elm_css$Css$Structure$Compatible, borderStyle: $rtfeldman$elm_css$Css$Structure$Compatible, cursor: $rtfeldman$elm_css$Css$Structure$Compatible, display: $rtfeldman$elm_css$Css$Structure$Compatible, hoverCapability: $rtfeldman$elm_css$Css$Structure$Compatible, inlineAxisOverflow: $rtfeldman$elm_css$Css$Structure$Compatible, keyframes: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleType: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleTypeOrPositionOrImage: $rtfeldman$elm_css$Css$Structure$Compatible, none: $rtfeldman$elm_css$Css$Structure$Compatible, outline: $rtfeldman$elm_css$Css$Structure$Compatible, pointerDevice: $rtfeldman$elm_css$Css$Structure$Compatible, pointerEvents: $rtfeldman$elm_css$Css$Structure$Compatible, resize: $rtfeldman$elm_css$Css$Structure$Compatible, scriptingSupport: $rtfeldman$elm_css$Css$Structure$Compatible, textDecorationLine: $rtfeldman$elm_css$Css$Structure$Compatible, textTransform: $rtfeldman$elm_css$Css$Structure$Compatible, touchAction: $rtfeldman$elm_css$Css$Structure$Compatible, transform: $rtfeldman$elm_css$Css$Structure$Compatible, updateFrequency: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'none'};
+var $rtfeldman$elm_css$Html$Styled$ol = $rtfeldman$elm_css$Html$Styled$node('ol');
 var $rtfeldman$elm_css$VirtualDom$Styled$on = F2(
 	function (eventName, handler) {
 		return A3(
@@ -14975,16 +14982,17 @@ var $rtfeldman$elm_css$Html$Styled$Events$onInput = function (tagger) {
 			$rtfeldman$elm_css$Html$Styled$Events$alwaysStop,
 			A2($elm$json$Json$Decode$map, tagger, $rtfeldman$elm_css$Html$Styled$Events$targetValue)));
 };
-var $rtfeldman$elm_css$Html$Styled$p = $rtfeldman$elm_css$Html$Styled$node('p');
 var $rtfeldman$elm_css$Css$prop2 = F3(
 	function (key, argA, argB) {
 		return A2($rtfeldman$elm_css$Css$property, key, argA.value + (' ' + argB.value));
 	});
 var $rtfeldman$elm_css$Css$padding2 = $rtfeldman$elm_css$Css$prop2('padding');
+var $rtfeldman$elm_css$Html$Styled$Attributes$placeholder = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('placeholder');
 var $rtfeldman$elm_css$Html$Styled$pre = $rtfeldman$elm_css$Html$Styled$node('pre');
 var $rtfeldman$elm_css$Css$PxUnits = {$: 'PxUnits'};
 var $rtfeldman$elm_css$Css$px = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PxUnits, 'px');
 var $rtfeldman$elm_css$Css$textDecoration = $rtfeldman$elm_css$Css$prop1('text-decoration');
+var $rtfeldman$elm_css$Html$Styled$Attributes$type_ = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('type');
 var $rtfeldman$elm_css$Html$Styled$Attributes$value = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('value');
 var $rtfeldman$elm_css$Css$VhUnits = {$: 'VhUnits'};
 var $rtfeldman$elm_css$Css$vh = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$VhUnits, 'vh');
@@ -15021,173 +15029,102 @@ var $author$project$Pages$Trace$view = function (model) {
 					$rtfeldman$elm_css$Css$backgroundColor(
 					$rtfeldman$elm_css$Css$hex($author$project$Theme$colors.accent))
 				]);
-			if (model.isLoading) {
-				return _List_fromArray(
-					[
-						A2(
-						$rtfeldman$elm_css$Html$Styled$div,
-						_List_fromArray(
-							[
-								$rtfeldman$elm_css$Html$Styled$Attributes$css(divBackgroundStyles)
-							]),
-						_List_fromArray(
-							[
-								A2(
-								$rtfeldman$elm_css$Html$Styled$h1,
-								_List_fromArray(
-									[
-										$rtfeldman$elm_css$Html$Styled$Attributes$css(
-										_List_fromArray(
-											[
-												$rtfeldman$elm_css$Css$color(
-												$rtfeldman$elm_css$Css$hex($author$project$Theme$colors.warning))
-											]))
-									]),
-								_List_fromArray(
-									[
-										$rtfeldman$elm_css$Html$Styled$text('Cargando...')
-									]))
-							]))
-					]);
-			} else {
-				var basicHeader = _List_fromArray(
-					[
-						A2(
-						$rtfeldman$elm_css$Html$Styled$div,
-						_List_fromArray(
-							[
-								$rtfeldman$elm_css$Html$Styled$Attributes$css(
-								_Utils_ap(
-									divBackgroundStyles,
-									_List_fromArray(
-										[
-											$rtfeldman$elm_css$Css$flexDirection($rtfeldman$elm_css$Css$column),
-											A2($rtfeldman$elm_css$Css$property, 'gap', '1rem')
-										])))
-							]),
-						_List_fromArray(
-							[
-								A2(
-								$rtfeldman$elm_css$Html$Styled$h1,
-								_List_fromArray(
-									[
-										$rtfeldman$elm_css$Html$Styled$Attributes$css(
-										_List_fromArray(
-											[
-												$rtfeldman$elm_css$Css$color(
-												$rtfeldman$elm_css$Css$hex($author$project$Theme$colors.secondary)),
-												$rtfeldman$elm_css$Css$textAlign($rtfeldman$elm_css$Css$center)
-											]))
-									]),
-								_List_fromArray(
-									[
-										$rtfeldman$elm_css$Html$Styled$text('¡Bienvenido al Trazador de Productos!')
-									])),
-								A2(
-								$rtfeldman$elm_css$Html$Styled$div,
-								_List_fromArray(
-									[
-										$rtfeldman$elm_css$Html$Styled$Attributes$css(
-										_List_fromArray(
-											[
-												$rtfeldman$elm_css$Css$displayFlex,
-												$rtfeldman$elm_css$Css$flexDirection($rtfeldman$elm_css$Css$row),
-												A2($rtfeldman$elm_css$Css$property, 'gap', '0.5rem')
-											]))
-									]),
-								_List_fromArray(
-									[
-										A2(
-										$rtfeldman$elm_css$Html$Styled$input,
-										_List_fromArray(
-											[
-												$rtfeldman$elm_css$Html$Styled$Attributes$value(model.productId),
-												$rtfeldman$elm_css$Html$Styled$Events$onInput($author$project$Pages$Trace$ProductIdChanged)
-											]),
-										_List_Nil),
-										A2(
-										$rtfeldman$elm_css$Html$Styled$button,
-										_List_fromArray(
-											[
-												$rtfeldman$elm_css$Html$Styled$Events$onClick($author$project$Pages$Trace$SearchClicked),
-												$rtfeldman$elm_css$Html$Styled$Attributes$css(btnStyles)
-											]),
-										_List_fromArray(
-											[
-												$rtfeldman$elm_css$Html$Styled$text('Buscar')
-											]))
-									])),
-								A2(
-								$rtfeldman$elm_css$Html$Styled$a,
-								_List_fromArray(
-									[
-										$author$project$Routing$goToHome,
-										$rtfeldman$elm_css$Html$Styled$Attributes$css(btnStyles)
-									]),
-								_List_fromArray(
-									[
-										$rtfeldman$elm_css$Html$Styled$text('Regresar a Inicio')
-									]))
-							]))
-					]);
-				var _v0 = model.history;
-				if (_v0.$ === 'Nothing') {
-					return basicHeader;
-				} else {
-					var response = _v0.a;
-					if (response.$ === 'Ok') {
-						var val = response.a;
-						return _Utils_ap(
-							basicHeader,
+			var header = _List_fromArray(
+				[
+					A2(
+					$rtfeldman$elm_css$Html$Styled$h1,
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Html$Styled$Attributes$css(
 							_List_fromArray(
 								[
-									A2(
-									$rtfeldman$elm_css$Html$Styled$div,
-									_List_Nil,
-									_Utils_ap(
-										_List_fromArray(
-											[
-												A2(
-												$rtfeldman$elm_css$Html$Styled$h2,
-												_List_Nil,
-												_List_fromArray(
-													[
-														$rtfeldman$elm_css$Html$Styled$text('Encontramos los siguientes proveedores:')
-													]))
-											]),
-										A2(
-											$elm$core$List$map,
-											function (v) {
-												return A2(
-													$rtfeldman$elm_css$Html$Styled$p,
-													_List_Nil,
-													_List_fromArray(
-														[
-															$rtfeldman$elm_css$Html$Styled$text(v)
-														]));
-											},
-											val)))
-								]));
+									$rtfeldman$elm_css$Css$color(
+									$rtfeldman$elm_css$Css$hex($author$project$Theme$colors.secondary)),
+									$rtfeldman$elm_css$Css$textAlign($rtfeldman$elm_css$Css$center)
+								]))
+						]),
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Html$Styled$text('¡Bienvenido al Trazador de Productos!')
+						])),
+					A2(
+					$rtfeldman$elm_css$Html$Styled$div,
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Html$Styled$Attributes$css(
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Css$displayFlex,
+									$rtfeldman$elm_css$Css$flexDirection($rtfeldman$elm_css$Css$row),
+									A2($rtfeldman$elm_css$Css$property, 'gap', '0.5rem')
+								]))
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$rtfeldman$elm_css$Html$Styled$input,
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Html$Styled$Attributes$value(model.productId),
+									$rtfeldman$elm_css$Html$Styled$Events$onInput($author$project$Pages$Trace$ProductIdChanged),
+									$rtfeldman$elm_css$Html$Styled$Attributes$type_('number'),
+									$rtfeldman$elm_css$Html$Styled$Attributes$placeholder('ID del producto:')
+								]),
+							_List_Nil),
+							A2(
+							$rtfeldman$elm_css$Html$Styled$button,
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Html$Styled$Events$onClick($author$project$Pages$Trace$SearchClicked),
+									$rtfeldman$elm_css$Html$Styled$Attributes$css(btnStyles)
+								]),
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Html$Styled$text('Buscar')
+								]))
+						])),
+					A2(
+					$rtfeldman$elm_css$Html$Styled$a,
+					_List_fromArray(
+						[
+							$author$project$Routing$goToHome,
+							$rtfeldman$elm_css$Html$Styled$Attributes$css(btnStyles)
+						]),
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Html$Styled$text('Regresar a Inicio')
+						]))
+				]);
+			var mainContent = function () {
+				if (model.isLoading) {
+					return _List_fromArray(
+						[
+							A2(
+							$rtfeldman$elm_css$Html$Styled$h1,
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Html$Styled$Attributes$css(
+									_List_fromArray(
+										[
+											$rtfeldman$elm_css$Css$color(
+											$rtfeldman$elm_css$Css$hex($author$project$Theme$colors.warning))
+										]))
+								]),
+							_List_fromArray(
+								[
+									$rtfeldman$elm_css$Html$Styled$text('Cargando...')
+								]))
+						]);
+				} else {
+					var _v0 = model.history;
+					if (_v0.$ === 'Nothing') {
+						return header;
 					} else {
-						var error = response.a;
-						var _v2 = A2($elm$core$Debug$log, 'HTTP ERROR: ', error);
-						if (error.$ === 'BadBody') {
-							var debugError = error.a;
+						var response = _v0.a;
+						if (response.$ === 'Ok') {
+							var val = response.a;
 							return _Utils_ap(
-								basicHeader,
-								_List_fromArray(
-									[
-										A2(
-										$rtfeldman$elm_css$Html$Styled$pre,
-										_List_Nil,
-										_List_fromArray(
-											[
-												$rtfeldman$elm_css$Html$Styled$text(debugError)
-											]))
-									]));
-						} else {
-							return _Utils_ap(
-								basicHeader,
+								header,
 								_List_fromArray(
 									[
 										A2(
@@ -15195,13 +15132,164 @@ var $author$project$Pages$Trace$view = function (model) {
 										_List_Nil,
 										_List_fromArray(
 											[
-												$rtfeldman$elm_css$Html$Styled$text('An error occurred while trying to get the product history!')
+												A2(
+												$rtfeldman$elm_css$Html$Styled$h2,
+												_List_fromArray(
+													[
+														$rtfeldman$elm_css$Html$Styled$Attributes$css(
+														_List_fromArray(
+															[
+																$rtfeldman$elm_css$Css$color(
+																$rtfeldman$elm_css$Css$hex($author$project$Theme$colors.secondary))
+															]))
+													]),
+												_List_fromArray(
+													[
+														$rtfeldman$elm_css$Html$Styled$text('Los proveedores son:')
+													])),
+												A2(
+												$rtfeldman$elm_css$Html$Styled$ol,
+												_List_Nil,
+												A2(
+													$elm$core$List$map,
+													function (v) {
+														return A2(
+															$rtfeldman$elm_css$Html$Styled$li,
+															_List_fromArray(
+																[
+																	$rtfeldman$elm_css$Html$Styled$Attributes$css(
+																	_List_fromArray(
+																		[
+																			$rtfeldman$elm_css$Css$color(
+																			$rtfeldman$elm_css$Css$hex('#ffffff'))
+																		]))
+																]),
+															_List_fromArray(
+																[
+																	$rtfeldman$elm_css$Html$Styled$text(v)
+																]));
+													},
+													val))
 											]))
 									]));
+						} else {
+							var error = response.a;
+							var _v2 = A2($elm$core$Debug$log, 'HTTP ERROR: ', error);
+							switch (error.$) {
+								case 'BadBody':
+									var debugError = error.a;
+									return _Utils_ap(
+										header,
+										_List_fromArray(
+											[
+												A2(
+												$rtfeldman$elm_css$Html$Styled$pre,
+												_List_fromArray(
+													[
+														$rtfeldman$elm_css$Html$Styled$Attributes$css(
+														_List_fromArray(
+															[
+																$rtfeldman$elm_css$Css$color(
+																$rtfeldman$elm_css$Css$hex($author$project$Theme$colors.error)),
+																$rtfeldman$elm_css$Css$fontWeight($rtfeldman$elm_css$Css$bold)
+															]))
+													]),
+												_List_fromArray(
+													[
+														$rtfeldman$elm_css$Html$Styled$text(debugError)
+													]))
+											]));
+								case 'BadStatus':
+									var status = error.a;
+									return (status === 404) ? _Utils_ap(
+										header,
+										_List_fromArray(
+											[
+												A2(
+												$rtfeldman$elm_css$Html$Styled$div,
+												_List_fromArray(
+													[
+														$rtfeldman$elm_css$Html$Styled$Attributes$css(
+														_List_fromArray(
+															[
+																$rtfeldman$elm_css$Css$color(
+																$rtfeldman$elm_css$Css$hex($author$project$Theme$colors.error)),
+																$rtfeldman$elm_css$Css$fontWeight($rtfeldman$elm_css$Css$bold)
+															]))
+													]),
+												_List_fromArray(
+													[
+														$rtfeldman$elm_css$Html$Styled$text(
+														A2(
+															$elm$core$String$join,
+															' ',
+															_List_fromArray(
+																['No product with ID:', model.productId, 'exists!'])))
+													]))
+											])) : _Utils_ap(
+										header,
+										_List_fromArray(
+											[
+												A2(
+												$rtfeldman$elm_css$Html$Styled$div,
+												_List_fromArray(
+													[
+														$rtfeldman$elm_css$Html$Styled$Attributes$css(
+														_List_fromArray(
+															[
+																$rtfeldman$elm_css$Css$color(
+																$rtfeldman$elm_css$Css$hex($author$project$Theme$colors.error)),
+																$rtfeldman$elm_css$Css$fontWeight($rtfeldman$elm_css$Css$bold)
+															]))
+													]),
+												_List_fromArray(
+													[
+														$rtfeldman$elm_css$Html$Styled$text('An error occurred while trying to get the product history!')
+													]))
+											]));
+								default:
+									return _Utils_ap(
+										header,
+										_List_fromArray(
+											[
+												A2(
+												$rtfeldman$elm_css$Html$Styled$div,
+												_List_fromArray(
+													[
+														$rtfeldman$elm_css$Html$Styled$Attributes$css(
+														_List_fromArray(
+															[
+																$rtfeldman$elm_css$Css$color(
+																$rtfeldman$elm_css$Css$hex($author$project$Theme$colors.error))
+															]))
+													]),
+												_List_fromArray(
+													[
+														$rtfeldman$elm_css$Html$Styled$text('An error occurred while trying to get the product history!')
+													]))
+											]));
+							}
 						}
 					}
 				}
-			}
+			}();
+			return _List_fromArray(
+				[
+					A2(
+					$rtfeldman$elm_css$Html$Styled$div,
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Html$Styled$Attributes$css(
+							_Utils_ap(
+								divBackgroundStyles,
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Css$flexDirection($rtfeldman$elm_css$Css$column),
+										A2($rtfeldman$elm_css$Css$property, 'gap', '1rem')
+									])))
+						]),
+					mainContent)
+				]);
 		}(),
 		title: 'Trace!'
 	};
@@ -15246,4 +15334,536 @@ var $author$project$Main$view = function (model) {
 };
 var $author$project$Main$main = $elm$browser$Browser$application(
 	{init: $author$project$Main$init, onUrlChange: $author$project$Main$UrlChanged, onUrlRequest: $author$project$Main$LinkClicked, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
-_Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$string)({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Url.Url":{"args":[],"type":"{ protocol : Url.Protocol, host : String.String, port_ : Maybe.Maybe Basics.Int, path : String.String, query : Maybe.Maybe String.String, fragment : Maybe.Maybe String.String }"},"Pages.Trace.APIResponse":{"args":[],"type":"Result.Result Http.Error Api.Endpoint.GetHistoryResponse"},"Api.Endpoint.GetHistoryResponse":{"args":[],"type":"{ values : List.List { nodes : List.List Models.Node.Node, relationships : List.List Models.Relation.Relation } }"},"Api.Endpoint.GetStatsResponse":{"args":[],"type":"{ topProducts : List.List Models.Product.Product, topProviders : List.List Models.Provider.Provider, topPurchasedProducts : List.List Models.PurchasedProduct.PurchasedProduct }"},"Models.Node.Node":{"args":[],"type":"{ id : Basics.Int, labels : List.List String.String, props : Dict.Dict String.String Json.Decode.Value }"},"Models.Product.Product":{"args":[],"type":"{ name : String.String, averageRating : Basics.Float }"},"Models.Provider.Provider":{"args":[],"type":"{ name : String.String, popularity : Basics.Int }"},"Models.PurchasedProduct.PurchasedProduct":{"args":[],"type":"{ productName : String.String, productId : String.String, purchases : Basics.Int }"},"Models.Relation.Relation":{"args":[],"type":"{ startId : Basics.Int, endId : Basics.Int, relType : String.String, props : Dict.Dict String.String Json.Decode.Value }"},"Json.Decode.Value":{"args":[],"type":"Json.Encode.Value"}},"unions":{"Main.Msg":{"args":[],"tags":{"UrlChanged":["Url.Url"],"LinkClicked":["Browser.UrlRequest"],"HomeMsg":["Pages.Home.Msg"],"NotFoundMsg":["Pages.NotFound.Msg"],"ReportMsg":["Pages.Report.Msg"],"StatsMsg":["Pages.Stats.Msg"],"TraceMsg":["Pages.Trace.Msg"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Pages.Home.Msg":{"args":[],"tags":{"None":[]}},"Pages.NotFound.Msg":{"args":[],"tags":{"None":[]}},"Pages.Report.Msg":{"args":[],"tags":{"None":[]}},"Pages.Stats.Msg":{"args":[],"tags":{"FetchStats":[],"StatsReceived":["Result.Result Http.Error Api.Endpoint.GetStatsResponse"]}},"Pages.Trace.Msg":{"args":[],"tags":{"SearchClicked":[],"GotHistory":["Pages.Trace.APIResponse"],"ProductIdChanged":["String.String"]}},"Url.Protocol":{"args":[],"tags":{"Http":[],"Https":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Browser.UrlRequest":{"args":[],"tags":{"Internal":["Url.Url"],"External":["String.String"]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Basics.Float":{"args":[],"tags":{"Float":[]}},"List.List":{"args":["a"],"tags":{}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Json.Encode.Value":{"args":[],"tags":{"Value":[]}},"Dict.NColor":{"args":[],"tags":{"Red":[],"Black":[]}}}}})}});}(this));
+_Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$string)({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Url.Url":{"args":[],"type":"{ protocol : Url.Protocol, host : String.String, port_ : Maybe.Maybe Basics.Int, path : String.String, query : Maybe.Maybe String.String, fragment : Maybe.Maybe String.String }"},"Pages.Trace.APIResponse":{"args":[],"type":"Result.Result Http.Error Api.Endpoint.GetHistoryResponse"},"Api.Endpoint.GetHistoryResponse":{"args":[],"type":"{ values : List.List { nodes : List.List Models.Node.Node, relationships : List.List Models.Relation.Relation } }"},"Api.Endpoint.GetStatsResponse":{"args":[],"type":"{ topProducts : List.List Models.Product.Product, topProviders : List.List Models.Provider.Provider, topPurchasedProducts : List.List Models.PurchasedProduct.PurchasedProduct }"},"Models.Node.Node":{"args":[],"type":"{ id : Basics.Int, labels : List.List String.String, props : Dict.Dict String.String Json.Decode.Value }"},"Models.Product.Product":{"args":[],"type":"{ name : String.String, averageRating : Basics.Float }"},"Models.Provider.Provider":{"args":[],"type":"{ name : String.String, popularity : Basics.Int }"},"Models.PurchasedProduct.PurchasedProduct":{"args":[],"type":"{ productName : String.String, productId : String.String, purchases : Basics.Int }"},"Models.Relation.Relation":{"args":[],"type":"{ startId : Basics.Int, endId : Basics.Int, relType : String.String, props : Dict.Dict String.String Json.Decode.Value }"},"Json.Decode.Value":{"args":[],"type":"Json.Encode.Value"}},"unions":{"Main.Msg":{"args":[],"tags":{"UrlChanged":["Url.Url"],"LinkClicked":["Browser.UrlRequest"],"HomeMsg":["Pages.Home.Msg"],"NotFoundMsg":["Pages.NotFound.Msg"],"ReportMsg":["Pages.Report.Msg"],"StatsMsg":["Pages.Stats.Msg"],"TraceMsg":["Pages.Trace.Msg"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Pages.Home.Msg":{"args":[],"tags":{"None":[]}},"Pages.NotFound.Msg":{"args":[],"tags":{"None":[]}},"Pages.Report.Msg":{"args":[],"tags":{"None":[]}},"Pages.Stats.Msg":{"args":[],"tags":{"FetchStats":[],"StatsReceived":["Result.Result Http.Error Api.Endpoint.GetStatsResponse"]}},"Pages.Trace.Msg":{"args":[],"tags":{"SearchClicked":[],"GotHistory":["Pages.Trace.APIResponse"],"ProductIdChanged":["String.String"]}},"Url.Protocol":{"args":[],"tags":{"Http":[],"Https":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Browser.UrlRequest":{"args":[],"tags":{"Internal":["Url.Url"],"External":["String.String"]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Basics.Float":{"args":[],"tags":{"Float":[]}},"List.List":{"args":["a"],"tags":{}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Json.Encode.Value":{"args":[],"tags":{"Value":[]}},"Dict.NColor":{"args":[],"tags":{"Red":[],"Black":[]}}}}})}});
+
+//////////////////// HMR BEGIN ////////////////////
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Original Author: Flux Xu @fluxxu
+*/
+
+/*
+    A note about the environment that this code runs in...
+
+    assumed globals:
+        - `module` (from Node.js module system and webpack)
+
+    assumed in scope after injection into the Elm IIFE:
+        - `scope` (has an 'Elm' property which contains the public Elm API)
+        - various functions defined by Elm which we have to hook such as `_Platform_initialize` and `_Scheduler_binding`
+ */
+
+if (module.hot) {
+    (function () {
+        "use strict";
+
+        //polyfill for IE: https://github.com/fluxxu/elm-hot-loader/issues/16
+        if (typeof Object.assign != 'function') {
+            Object.assign = function (target) {
+                'use strict';
+                if (target == null) {
+                    throw new TypeError('Cannot convert undefined or null to object');
+                }
+
+                target = Object(target);
+                for (var index = 1; index < arguments.length; index++) {
+                    var source = arguments[index];
+                    if (source != null) {
+                        for (var key in source) {
+                            if (Object.prototype.hasOwnProperty.call(source, key)) {
+                                target[key] = source[key];
+                            }
+                        }
+                    }
+                }
+                return target;
+            };
+        }
+
+        // Elm 0.19.1 introduced a '$' prefix at the beginning of the symbols it emits,
+        // and we check for `Maybe.Just` because we expect it to be present in all Elm programs.
+        var elmVersion;
+        if (typeof elm$core$Maybe$Just !== 'undefined')
+            elmVersion = '0.19.0';
+        else if (typeof $elm$core$Maybe$Just !== 'undefined')
+            elmVersion = '0.19.1';
+        else
+            throw new Error("Could not determine Elm version");
+
+        function elmSymbol(symbol) {
+            try {
+                switch (elmVersion) {
+                    case '0.19.0':
+                        return eval(symbol);
+                    case '0.19.1':
+                        return eval('$' + symbol);
+                    default:
+                        throw new Error('Cannot resolve ' + symbol + '. Elm version unknown!')
+                }
+            } catch (e) {
+                if (e instanceof ReferenceError) {
+                    return undefined;
+                } else {
+                    throw e;
+                }
+            }
+        }
+
+        var instances = module.hot.data
+            ? module.hot.data.instances || {}
+            : {};
+        var uid = module.hot.data
+            ? module.hot.data.uid || 0
+            : 0;
+
+        if (Object.keys(instances).length === 0) {
+            log("[elm-hot] Enabled");
+        }
+
+        var cancellers = [];
+
+        // These 2 variables act as dynamically-scoped variables which are set only when the
+        // Elm module's hooked init function is called.
+        var initializingInstance = null;
+        var swappingInstance = null;
+
+        module.hot.accept();
+        module.hot.dispose(function (data) {
+            data.instances = instances;
+            data.uid = uid;
+
+            // Cleanup pending async tasks
+
+            // First, make sure that no new tasks can be started until we finish replacing the code
+            _Scheduler_binding = function () {
+                return _Scheduler_fail(new Error('[elm-hot] Inactive Elm instance.'))
+            };
+
+            // Second, kill pending tasks belonging to the old instance
+            if (cancellers.length) {
+                log('[elm-hot] Killing ' + cancellers.length + ' running processes...');
+                try {
+                    cancellers.forEach(function (cancel) {
+                        cancel();
+                    });
+                } catch (e) {
+                    console.warn('[elm-hot] Kill process error: ' + e.message);
+                }
+            }
+        });
+
+        function log(message) {
+            if (module.hot.verbose) {
+                console.log(message)
+            }
+        }
+
+        function getId() {
+            return ++uid;
+        }
+
+        function findPublicModules(parent, path) {
+            var modules = [];
+            for (var key in parent) {
+                var child = parent[key];
+                var currentPath = path ? path + '.' + key : key;
+                if ('init' in child) {
+                    modules.push({
+                        path: currentPath,
+                        module: child
+                    });
+                } else {
+                    modules = modules.concat(findPublicModules(child, currentPath));
+                }
+            }
+            return modules;
+        }
+
+        function registerInstance(domNode, flags, path, portSubscribes, portSends) {
+            var id = getId();
+
+            var instance = {
+                id: id,
+                path: path,
+                domNode: domNode,
+                flags: flags,
+                portSubscribes: portSubscribes,
+                portSends: portSends,
+                lastState: null // last Elm app state (root model)
+            };
+
+            return instances[id] = instance
+        }
+
+        function isFullscreenApp() {
+            // Returns true if the Elm app will take over the entire DOM body.
+            return typeof elmSymbol("elm$browser$Browser$application") !== 'undefined'
+                || typeof elmSymbol("elm$browser$Browser$document") !== 'undefined';
+        }
+
+        function wrapDomNode(node) {
+            // When embedding an Elm app into a specific DOM node, Elm will replace the provided
+            // DOM node with the Elm app's content. When the Elm app is compiled normally, the
+            // original DOM node is reused (its attributes and content changes, but the object
+            // in memory remains the same). But when compiled using `--debug`, Elm will completely
+            // destroy the original DOM node and instead replace it with 2 brand new nodes: one
+            // for your Elm app's content and the other for the Elm debugger UI. In this case,
+            // if you held a reference to the DOM node provided for embedding, it would be orphaned
+            // after Elm module initialization.
+            //
+            // So in order to make both cases consistent and isolate us from changes in how Elm
+            // does this, we will insert a dummy node to wrap the node for embedding and hold
+            // a reference to the dummy node.
+            //
+            // We will also put a tag on the dummy node so that the Elm developer knows who went
+            // behind their back and rudely put stuff in their DOM.
+            var dummyNode = document.createElement("div");
+            dummyNode.setAttribute("data-elm-hot", "true");
+            dummyNode.style.height = "inherit";
+            var parentNode = node.parentNode;
+            parentNode.replaceChild(dummyNode, node);
+            dummyNode.appendChild(node);
+            return dummyNode;
+        }
+
+        function wrapPublicModule(path, module) {
+            var originalInit = module.init;
+            if (originalInit) {
+                module.init = function (args) {
+                    var elm;
+                    var portSubscribes = {};
+                    var portSends = {};
+                    var domNode = null;
+                    var flags = null;
+                    if (typeof args !== 'undefined') {
+                        // normal case
+                        domNode = args['node'] && !isFullscreenApp()
+                            ? wrapDomNode(args['node'])
+                            : document.body;
+                        flags = args['flags'];
+                    } else {
+                        // rare case: Elm allows init to be called without any arguments at all
+                        domNode = document.body;
+                        flags = undefined
+                    }
+                    initializingInstance = registerInstance(domNode, flags, path, portSubscribes, portSends);
+                    elm = originalInit(args);
+                    wrapPorts(elm, portSubscribes, portSends);
+                    initializingInstance = null;
+                    return elm;
+                };
+            } else {
+                console.error("Could not find a public module to wrap at path " + path)
+            }
+        }
+
+        function swap(Elm, instance) {
+            log('[elm-hot] Hot-swapping module: ' + instance.path);
+
+            swappingInstance = instance;
+
+            // remove from the DOM everything that had been created by the old Elm app
+            var containerNode = instance.domNode;
+            while (containerNode.lastChild) {
+                containerNode.removeChild(containerNode.lastChild);
+            }
+
+            var m = getAt(instance.path.split('.'), Elm);
+            var elm;
+            if (m) {
+                // prepare to initialize the new Elm module
+                var args = {flags: instance.flags};
+                if (containerNode === document.body) {
+                    // fullscreen case: no additional args needed
+                } else {
+                    // embed case: provide a new node for Elm to use
+                    var nodeForEmbed = document.createElement("div");
+                    containerNode.appendChild(nodeForEmbed);
+                    args['node'] = nodeForEmbed;
+                }
+
+                elm = m.init(args);
+
+                Object.keys(instance.portSubscribes).forEach(function (portName) {
+                    if (portName in elm.ports && 'subscribe' in elm.ports[portName]) {
+                        var handlers = instance.portSubscribes[portName];
+                        if (!handlers.length) {
+                            return;
+                        }
+                        log('[elm-hot] Reconnect ' + handlers.length + ' handler(s) to port \''
+                            + portName + '\' (' + instance.path + ').');
+                        handlers.forEach(function (handler) {
+                            elm.ports[portName].subscribe(handler);
+                        });
+                    } else {
+                        delete instance.portSubscribes[portName];
+                        log('[elm-hot] Port was removed: ' + portName);
+                    }
+                });
+
+                Object.keys(instance.portSends).forEach(function (portName) {
+                    if (portName in elm.ports && 'send' in elm.ports[portName]) {
+                        log('[elm-hot] Replace old port send with the new send');
+                        instance.portSends[portName] = elm.ports[portName].send;
+                    } else {
+                        delete instance.portSends[portName];
+                        log('[elm-hot] Port was removed: ' + portName);
+                    }
+                });
+            } else {
+                log('[elm-hot] Module was removed: ' + instance.path);
+            }
+
+            swappingInstance = null;
+        }
+
+        function wrapPorts(elm, portSubscribes, portSends) {
+            var portNames = Object.keys(elm.ports || {});
+            //hook ports
+            if (portNames.length) {
+                // hook outgoing ports
+                portNames
+                    .filter(function (name) {
+                        return 'subscribe' in elm.ports[name];
+                    })
+                    .forEach(function (portName) {
+                        var port = elm.ports[portName];
+                        var subscribe = port.subscribe;
+                        var unsubscribe = port.unsubscribe;
+                        elm.ports[portName] = Object.assign(port, {
+                            subscribe: function (handler) {
+                                log('[elm-hot] ports.' + portName + '.subscribe called.');
+                                if (!portSubscribes[portName]) {
+                                    portSubscribes[portName] = [handler];
+                                } else {
+                                    //TODO handle subscribing to single handler more than once?
+                                    portSubscribes[portName].push(handler);
+                                }
+                                return subscribe.call(port, handler);
+                            },
+                            unsubscribe: function (handler) {
+                                log('[elm-hot] ports.' + portName + '.unsubscribe called.');
+                                var list = portSubscribes[portName];
+                                if (list && list.indexOf(handler) !== -1) {
+                                    list.splice(list.lastIndexOf(handler), 1);
+                                } else {
+                                    console.warn('[elm-hot] ports.' + portName + '.unsubscribe: handler not subscribed');
+                                }
+                                return unsubscribe.call(port, handler);
+                            }
+                        });
+                    });
+
+                // hook incoming ports
+                portNames
+                    .filter(function (name) {
+                        return 'send' in elm.ports[name];
+                    })
+                    .forEach(function (portName) {
+                        var port = elm.ports[portName];
+                        portSends[portName] = port.send;
+                        elm.ports[portName] = Object.assign(port, {
+                            send: function (val) {
+                                return portSends[portName].call(port, val);
+                            }
+                        });
+                    });
+            }
+            return portSubscribes;
+        }
+
+        /*
+        Breadth-first search for a `Browser.Navigation.Key` in the user's app model.
+        Returns the key and keypath or null if not found.
+        */
+        function findNavKey(rootModel) {
+            var queue = [];
+            if (isDebuggerModel(rootModel)) {
+                /*
+                 Extract the user's app model from the Elm Debugger's model. The Elm debugger
+                 can hold multiple references to the user's model (e.g. in its "history"). So
+                 we must be careful to only search within the "state" part of the Debugger.
+                */
+                queue.push({value: rootModel['state'], keypath: ['state']});
+            } else {
+                queue.push({value: rootModel, keypath: []});
+            }
+
+            while (queue.length !== 0) {
+                var item = queue.shift();
+
+                if (typeof item.value === "undefined" || item.value === null) {
+                    continue;
+                }
+
+                // The nav key is identified by a runtime tag added by the elm-hot injector.
+                if (item.value.hasOwnProperty("elm-hot-nav-key")) {
+                    // found it!
+                    return item;
+                }
+
+                if (typeof item.value !== "object") {
+                    continue;
+                }
+
+                for (var propName in item.value) {
+                    if (!item.value.hasOwnProperty(propName)) continue;
+                    var newKeypath = item.keypath.slice();
+                    newKeypath.push(propName);
+                    queue.push({value: item.value[propName], keypath: newKeypath})
+                }
+            }
+
+            return null;
+        }
+
+
+        function isDebuggerModel(model) {
+            // Up until elm/browser 1.0.2, the Elm debugger could be identified by a
+            // property named "expando". But in version 1.0.2 that was renamed to "expandoModel"
+            return model
+                && (model.hasOwnProperty("expando") || model.hasOwnProperty("expandoModel"))
+                && model.hasOwnProperty("state");
+        }
+
+        function getAt(keyPath, obj) {
+            return keyPath.reduce(function (xs, x) {
+                return (xs && xs[x]) ? xs[x] : null
+            }, obj)
+        }
+
+        function removeNavKeyListeners(navKey) {
+            window.removeEventListener('popstate', navKey.value);
+            window.navigator.userAgent.indexOf('Trident') < 0 || window.removeEventListener('hashchange', navKey.value);
+        }
+
+        // hook program creation
+        var initialize = _Platform_initialize;
+        _Platform_initialize = function (flagDecoder, args, init, update, subscriptions, stepperBuilder) {
+            var instance = initializingInstance || swappingInstance;
+            var tryFirstRender = !!swappingInstance;
+
+            var hookedInit = function (args) {
+                var initialStateTuple = init(args);
+                if (swappingInstance) {
+                    var oldModel = swappingInstance.lastState;
+                    var newModel = initialStateTuple.a;
+
+                    if (typeof elmSymbol("elm$browser$Browser$application") !== 'undefined') {
+                        var oldKeyLoc = findNavKey(oldModel);
+
+                        // attempt to find the Browser.Navigation.Key in the newly-constructed model
+                        // and bring it along with the rest of the old data.
+                        var newKeyLoc = findNavKey(newModel);
+                        var error = null;
+                        if (newKeyLoc === null) {
+                            error = "could not find Browser.Navigation.Key in the new app model";
+                        } else if (oldKeyLoc === null) {
+                            error = "could not find Browser.Navigation.Key in the old app model.";
+                        } else if (newKeyLoc.keypath.toString() !== oldKeyLoc.keypath.toString()) {
+                            error = "the location of the Browser.Navigation.Key in the model has changed.";
+                        } else {
+                            // remove event listeners attached to the old nav key
+                            removeNavKeyListeners(oldKeyLoc.value);
+
+                            // insert the new nav key into the old model in the exact same location
+                            var parentKeyPath = oldKeyLoc.keypath.slice(0, -1);
+                            var lastSegment = oldKeyLoc.keypath.slice(-1)[0];
+                            var oldParent = getAt(parentKeyPath, oldModel);
+                            oldParent[lastSegment] = newKeyLoc.value;
+                        }
+
+                        if (error !== null) {
+                            console.error("[elm-hot] Hot-swapping " + instance.path + " not possible: " + error);
+                            oldModel = newModel;
+                        }
+                    }
+
+                    // the heart of the app state hot-swap
+                    initialStateTuple.a = oldModel;
+
+                    // ignore any Cmds returned by the init during hot-swap
+                    initialStateTuple.b = elmSymbol("elm$core$Platform$Cmd$none");
+                } else {
+                    // capture the initial state for later
+                    initializingInstance.lastState = initialStateTuple.a;
+                }
+
+                return initialStateTuple
+            };
+
+            var hookedStepperBuilder = function (sendToApp, model) {
+                var result;
+                // first render may fail if shape of model changed too much
+                if (tryFirstRender) {
+                    tryFirstRender = false;
+                    try {
+                        result = stepperBuilder(sendToApp, model)
+                    } catch (e) {
+                        throw new Error('[elm-hot] Hot-swapping ' + instance.path +
+                            ' is not possible, please reload page. Error: ' + e.message)
+                    }
+                } else {
+                    result = stepperBuilder(sendToApp, model)
+                }
+
+                return function (nextModel, isSync) {
+                    if (instance) {
+                        // capture the state after every step so that later we can restore from it during a hot-swap
+                        instance.lastState = nextModel
+                    }
+                    return result(nextModel, isSync)
+                }
+            };
+
+            return initialize(flagDecoder, args, hookedInit, update, subscriptions, hookedStepperBuilder)
+        };
+
+        // hook process creation
+        var originalBinding = _Scheduler_binding;
+        _Scheduler_binding = function (originalCallback) {
+            return originalBinding(function () {
+                // start the scheduled process, which may return a cancellation function.
+                var cancel = originalCallback.apply(this, arguments);
+                if (cancel) {
+                    cancellers.push(cancel);
+                    return function () {
+                        cancellers.splice(cancellers.indexOf(cancel), 1);
+                        return cancel();
+                    };
+                }
+                return cancel;
+            });
+        };
+
+        scope['_elm_hot_loader_init'] = function (Elm) {
+            // swap instances
+            var removedInstances = [];
+            for (var id in instances) {
+                var instance = instances[id];
+                if (instance.domNode.parentNode) {
+                    swap(Elm, instance);
+                } else {
+                    removedInstances.push(id);
+                }
+            }
+
+            removedInstances.forEach(function (id) {
+                delete instance[id];
+            });
+
+            // wrap all public modules
+            var publicModules = findPublicModules(Elm);
+            publicModules.forEach(function (m) {
+                wrapPublicModule(m.path, m.module);
+            });
+        }
+    })();
+
+    scope['_elm_hot_loader_init'](scope['Elm']);
+}
+//////////////////// HMR END ////////////////////
+
+
+}(this));

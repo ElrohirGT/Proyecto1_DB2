@@ -1,10 +1,10 @@
 module Pages.Trace exposing (..)
 
 import Api.Endpoint exposing (GetHistoryResponse, getHistory, getHistoryResponseDecoder, request)
-import Css exposing (alignItems, backgroundColor, border, center, color, column, displayFlex, flexDirection, height, justifyContent, none, padding2, px, row, textAlign, textDecoration, verticalAlign, width, zero)
+import Css exposing (alignItems, backgroundColor, bold, border, center, color, column, displayFlex, flexDirection, fontWeight, height, justifyContent, none, padding2, px, row, textAlign, textDecoration, verticalAlign, width, zero)
 import Dict
-import Html.Styled exposing (a, button, div, h1, h2, input, p, pre, text)
-import Html.Styled.Attributes exposing (css, value)
+import Html.Styled exposing (a, button, div, h1, h2, input, li, ol, p, pre, text)
+import Html.Styled.Attributes exposing (css, placeholder, type_, value)
 import Html.Styled.Events exposing (onClick, onInput)
 import Http
 import Json.Decode
@@ -146,85 +146,126 @@ view model =
                 , color (Css.hex "#ffffff")
                 , backgroundColor (Css.hex colors.accent)
                 ]
-        in
-        if model.isLoading then
-            [ div
-                [ css divBackgroundStyles ]
-                [ h1 [ css [ color (Css.hex colors.warning) ] ] [ text "Cargando..." ] ]
-            ]
 
-        else
-            let
-                basicHeader =
-                    [ div
-                        [ css
-                            (divBackgroundStyles
-                                ++ [ flexDirection column
-                                   , Css.property "gap" "1rem"
-                                   ]
-                            )
-                        ]
-                        [ h1
-                            [ css
-                                [ color (Css.hex colors.secondary)
-                                , textAlign center
-                                ]
-                            ]
-                            [ text "¡Bienvenido al Trazador de Productos!" ]
-                        , div
-                            [ css
-                                [ displayFlex
-                                , flexDirection row
-                                , Css.property "gap" "0.5rem"
-                                ]
-                            ]
-                            [ input
-                                [ value model.productId
-                                , onInput ProductIdChanged
-                                ]
-                                []
-                            , button
-                                [ onClick SearchClicked
-                                , css btnStyles
-                                ]
-                                [ text "Buscar" ]
-                            ]
-                        , a
-                            [ goToHome
-                            , css btnStyles
-                            ]
-                            [ text "Regresar a Inicio" ]
+            header =
+                [ h1
+                    [ css
+                        [ color (Css.hex colors.secondary)
+                        , textAlign center
                         ]
                     ]
-            in
-            case model.history of
-                Nothing ->
-                    basicHeader
+                    [ text "¡Bienvenido al Trazador de Productos!" ]
+                , div
+                    [ css
+                        [ displayFlex
+                        , flexDirection row
+                        , Css.property "gap" "0.5rem"
+                        ]
+                    ]
+                    [ input
+                        [ value model.productId
+                        , onInput ProductIdChanged
+                        , type_ "number"
+                        , placeholder "ID del producto:"
+                        ]
+                        []
+                    , button
+                        [ onClick SearchClicked
+                        , css btnStyles
+                        ]
+                        [ text "Buscar" ]
+                    ]
+                , a
+                    [ goToHome
+                    , css btnStyles
+                    ]
+                    [ text "Regresar a Inicio" ]
+                ]
 
-                Just response ->
-                    case response of
-                        Ok val ->
-                            basicHeader
-                                ++ [ div []
-                                        ([ h2 [] [ text "Encontramos los siguientes proveedores:" ]
-                                         ]
-                                            ++ List.map (\v -> p [] [ text v ]) val
-                                        )
-                                   ]
+            mainContent =
+                if model.isLoading then
+                    [ h1 [ css [ color (Css.hex colors.warning) ] ] [ text "Cargando..." ] ]
 
-                        Err error ->
-                            let
-                                _ =
-                                    Debug.log "HTTP ERROR: " error
-                            in
-                            case error of
-                                Http.BadBody debugError ->
-                                    basicHeader
-                                        ++ [ pre [] [ text debugError ]
+                else
+                    case model.history of
+                        Nothing ->
+                            header
+
+                        Just response ->
+                            case response of
+                                Ok val ->
+                                    header
+                                        ++ [ div []
+                                                [ h2
+                                                    [ css
+                                                        [ color (Css.hex colors.secondary)
+                                                        ]
+                                                    ]
+                                                    [ text "Los proveedores son:" ]
+                                                , ol [] (List.map (\v -> li [ css [ color (Css.hex "#ffffff") ] ] [ text v ]) val)
+                                                ]
                                            ]
 
-                                _ ->
-                                    basicHeader
-                                        ++ [ div [] [ text "An error occurred while trying to get the product history!" ]
-                                           ]
+                                Err error ->
+                                    let
+                                        _ =
+                                            Debug.log "HTTP ERROR: " error
+                                    in
+                                    case error of
+                                        Http.BadBody debugError ->
+                                            header
+                                                ++ [ pre
+                                                        [ css
+                                                            [ color (Css.hex colors.error)
+                                                            , fontWeight bold
+                                                            ]
+                                                        ]
+                                                        [ text debugError ]
+                                                   ]
+
+                                        Http.BadStatus status ->
+                                            if status == 404 then
+                                                header
+                                                    ++ [ div
+                                                            [ css
+                                                                [ color (Css.hex colors.error)
+                                                                , fontWeight bold
+                                                                ]
+                                                            ]
+                                                            [ text
+                                                                (String.join " "
+                                                                    [ "No product with ID:"
+                                                                    , model.productId
+                                                                    , "exists!"
+                                                                    ]
+                                                                )
+                                                            ]
+                                                       ]
+
+                                            else
+                                                header
+                                                    ++ [ div
+                                                            [ css
+                                                                [ color (Css.hex colors.error)
+                                                                , fontWeight bold
+                                                                ]
+                                                            ]
+                                                            [ text "An error occurred while trying to get the product history!" ]
+                                                       ]
+
+                                        _ ->
+                                            header
+                                                ++ [ div [ css [ color (Css.hex colors.error) ] ] [ text "An error occurred while trying to get the product history!" ]
+                                                   ]
+        in
+        [ div
+            [ css
+                (divBackgroundStyles
+                    ++ [ flexDirection column
+                       , Css.property "gap" "1rem"
+                       ]
+                )
+            ]
+            mainContent
+        ]
     }
