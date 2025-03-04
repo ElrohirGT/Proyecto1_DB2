@@ -1,12 +1,22 @@
 module Pages.Trace exposing (..)
 
 import Api.Endpoint exposing (GetHistoryResponse, getHistory, getHistoryResponseDecoder, request)
-import Html.Styled exposing (button, div, h1, input, pre, text)
+import Dict exposing (Dict)
+import Html.Styled exposing (button, div, h1, h2, input, p, pre, text)
 import Html.Styled.Attributes exposing (value)
 import Html.Styled.Events exposing (onClick, onInput)
 import Http
-import Json.Decode as Decode
 import Utils exposing (StyledDocument)
+
+
+
+-- MODEL
+
+
+type alias TracingReport =
+    { mainProducer : String
+    , needs : Dict String (List String)
+    }
 
 
 type alias APIResponse =
@@ -28,6 +38,10 @@ exampleResponse =
 init : ( Model, Cmd Msg )
 init =
     ( Model "5" False Nothing, Cmd.none )
+
+
+
+-- UPDATE
 
 
 type Msg
@@ -72,6 +86,10 @@ update msg model =
             ( { model | isLoading = False, history = Just response }, Cmd.none )
 
 
+
+-- VIEW
+
+
 view : Model -> StyledDocument Msg
 view model =
     { title = "Trace!"
@@ -103,7 +121,8 @@ view model =
                         Ok val ->
                             basicHeader
                                 ++ [ div []
-                                        [ Html.Styled.p [] [ text (Debug.toString val) ]
+                                        [ h2 [] [ text "Main producer" ]
+                                        , p [] [ text "Dummy producer" ]
                                         ]
                                    ]
 
