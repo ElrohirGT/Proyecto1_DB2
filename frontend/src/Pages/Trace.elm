@@ -1,12 +1,15 @@
 module Pages.Trace exposing (..)
 
 import Api.Endpoint exposing (GetHistoryResponse, getHistory, getHistoryResponseDecoder, request)
+import Css exposing (alignItems, backgroundColor, border, center, color, column, displayFlex, flexDirection, height, justifyContent, none, padding2, px, row, textAlign, textDecoration, verticalAlign, width, zero)
 import Dict
-import Html.Styled exposing (button, div, h1, h2, input, p, pre, text)
-import Html.Styled.Attributes exposing (value)
+import Html.Styled exposing (a, button, div, h1, h2, input, p, pre, text)
+import Html.Styled.Attributes exposing (css, value)
 import Html.Styled.Events exposing (onClick, onInput)
 import Http
 import Json.Decode
+import Routing exposing (goToHome)
+import Theme exposing (colors)
 import Utils exposing (StyledDocument)
 
 
@@ -126,21 +129,71 @@ view : Model -> StyledDocument Msg
 view model =
     { title = "Trace!"
     , body =
+        let
+            divBackgroundStyles =
+                [ width (Css.vw 100)
+                , height (Css.vh 100)
+                , backgroundColor (Css.hex colors.background)
+                , displayFlex
+                , justifyContent center
+                , alignItems center
+                ]
+
+            btnStyles =
+                [ textDecoration none
+                , padding2 (px 10) (px 20)
+                , border zero
+                , color (Css.hex "#ffffff")
+                , backgroundColor (Css.hex colors.accent)
+                ]
+        in
         if model.isLoading then
-            [ h1 [] [ text "Cargando..." ]
+            [ div
+                [ css divBackgroundStyles ]
+                [ h1 [ css [ color (Css.hex colors.warning) ] ] [ text "Cargando..." ] ]
             ]
 
         else
             let
                 basicHeader =
-                    [ h1 [] [ text "Welcome to the product tracer!" ]
-                    , div []
-                        [ input
-                            [ value model.productId
-                            , onInput ProductIdChanged
+                    [ div
+                        [ css
+                            (divBackgroundStyles
+                                ++ [ flexDirection column
+                                   , Css.property "gap" "1rem"
+                                   ]
+                            )
+                        ]
+                        [ h1
+                            [ css
+                                [ color (Css.hex colors.secondary)
+                                , textAlign center
+                                ]
                             ]
-                            []
-                        , button [ onClick SearchClicked ] [ text "Search" ]
+                            [ text "¡Bienvenido al Trazador de Productos!" ]
+                        , div
+                            [ css
+                                [ displayFlex
+                                , flexDirection row
+                                , Css.property "gap" "0.5rem"
+                                ]
+                            ]
+                            [ input
+                                [ value model.productId
+                                , onInput ProductIdChanged
+                                ]
+                                []
+                            , button
+                                [ onClick SearchClicked
+                                , css btnStyles
+                                ]
+                                [ text "Buscar" ]
+                            ]
+                        , a
+                            [ goToHome
+                            , css btnStyles
+                            ]
+                            [ text "Regresar a Inicio" ]
                         ]
                     ]
             in

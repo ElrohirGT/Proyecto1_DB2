@@ -43,7 +43,12 @@ goToTrace : Attribute msg
 goToTrace =
     href "/trace"
 
+
 goToStats : Attribute msg
 goToStats =
     href "/stats"
 
+
+goToHome : Attribute msg
+goToHome =
+    href "/"
